@@ -5,7 +5,7 @@ Digest diario de noticias tech -> resumen con Gemini -> envío por WhatsApp (Cal
 Variables de entorno requeridas (se configuran como GitHub Secrets):
   GEMINI_API_KEY       -> API key de Google AI Studio
   CALLMEBOT_PHONE       -> tu número de WhatsApp en formato internacional, ej: 56912345678
-  CALLMEBOT_API_KEY      -> API key que te dio el bot de CallMeBot por WhatsApp
+  CALLMEBOT_API_KEY     -> API key que te dio el bot de CallMeBot por WhatsApp
 
 Uso local (para probar):
   export GEMINI_API_KEY=xxx
@@ -20,6 +20,7 @@ import json
 import datetime
 import urllib.parse
 import urllib.request
+import urllib.error
 
 import feedparser
 
@@ -42,15 +43,31 @@ HN_MIN_SCORE = 80       # solo considerar historias con este puntaje o más
 MAX_ITEMS_PER_RSS_FEED = 12
 HOURS_LOOKBACK = 30  # ventana de tiempo para considerar una noticia "de hoy"
 
-GEMINI_MODEL = "gemini-2.5-flash"
-GEMINI_URL = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent"
-)
+GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
+
+# Orden de preferencia de modelos. El script elige el primero que tu key
+# realmente soporte (consultando la lista de modelos disponibles). Si Google
+# cambia los nombres, esto sigue funcionando igual.
+PREFERRED_MODEL_HINTS = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "flash-latest",
+    "flash",
+]
 
 
 def log(msg):
     print(f"[news_digest] {msg}", file=sys.stderr)
+
+
+def http_get_json(url, timeout=30):
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            return json.load(resp)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="ignore")
+        log(f"HTTP {e.code} en GET {url.split('?')[0]} -> {body[:300]}")
+        raise
 
 
 # ---------------------------------------------------------------------------
@@ -131,6 +148,43 @@ def fetch_hn_items():
 
 
 # ---------------------------------------------------------------------------
+# Selección automática de modelo Gemini
+# ---------------------------------------------------------------------------
+
+def pick_gemini_model(api_key):
+    """Consulta los modelos disponibles para esta key y elige el mejor flash
+    que soporte generateContent. Así no dependemos de un nombre fijo."""
+    data = http_get_json(f"{GEMINI_BASE}/models?key={api_key}")
+    models = data.get("models", [])
+
+    # Solo modelos que soportan generateContent
+    usable = []
+    for m in models:
+        methods = m.get("supportedGenerationMethods", [])
+        name = m.get("name", "")  # viene como "models/gemini-2.5-flash"
+        short = name.split("/")[-1]
+        if "generateContent" not in methods:
+            continue
+        # Evitar modelos especializados (imagen, audio, embeddings, etc.)
+        if any(bad in short for bad in ("image", "tts", "audio", "embedding", "vision")):
+            continue
+        usable.append(short)
+
+    if not usable:
+        raise RuntimeError("Tu API key no tiene ningún modelo con generateContent disponible.")
+
+    # Elegir según el orden de preferencia
+    for hint in PREFERRED_MODEL_HINTS:
+        for short in usable:
+            if hint in short and "preview" not in short:
+                log(f"Modelo Gemini elegido: {short}")
+                return short
+    # Si ninguno calza con las pistas, tomar el primero utilizable
+    log(f"Modelo Gemini elegido (fallback): {usable[0]}")
+    return usable[0]
+
+
+# ---------------------------------------------------------------------------
 # Resumen con Gemini
 # ---------------------------------------------------------------------------
 
@@ -170,22 +224,29 @@ Lista cruda de titulares:
 
 
 def summarize_with_gemini(items, api_key):
-    prompt = build_prompt(items)
+    model = pick_gemini_model(api_key)
+    url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
 
+    prompt = build_prompt(items)
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.3},
     }
 
     req = urllib.request.Request(
-        f"{GEMINI_URL}?key={api_key}",
+        url,
         data=json.dumps(body).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST",
     )
 
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        data = json.load(resp)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.load(resp)
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", errors="ignore")
+        log(f"HTTP {e.code} desde Gemini ({model}) -> {detail[:400]}")
+        raise
 
     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
