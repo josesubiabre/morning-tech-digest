@@ -5,12 +5,12 @@ Digest diario de noticias tech -> resumen con Gemini -> envío por WhatsApp (Cal
 Variables de entorno requeridas (se configuran como GitHub Secrets):
   GEMINI_API_KEY       -> API key de Google AI Studio
   CALLMEBOT_PHONE       -> tu número de WhatsApp en formato internacional, ej: 56912345678
-  CALLMEBOT_APIKEY      -> API key que te dio el bot de CallMeBot por WhatsApp
+  CALLMEBOT_API_KEY      -> API key que te dio el bot de CallMeBot por WhatsApp
 
 Uso local (para probar):
   export GEMINI_API_KEY=xxx
   export CALLMEBOT_PHONE=xxx
-  export CALLMEBOT_APIKEY=xxx
+  export CALLMEBOT_API_KEY=xxx
   python news_digest.py
 """
 
@@ -231,12 +231,12 @@ def save_digest_to_history(digest_text, items):
 def main():
     gemini_key = os.environ.get("GEMINI_API_KEY")
     phone = os.environ.get("CALLMEBOT_PHONE")
-    callmebot_key = os.environ.get("CALLMEBOT_APIKEY")
+    callmebot_key = os.environ.get("CALLMEBOT_API_KEY")
 
     missing = [name for name, val in [
         ("GEMINI_API_KEY", gemini_key),
         ("CALLMEBOT_PHONE", phone),
-        ("CALLMEBOT_APIKEY", callmebot_key),
+        ("CALLMEBOT_API_KEY", callmebot_key),
     ] if not val]
     if missing:
         log(f"Faltan variables de entorno: {', '.join(missing)}")

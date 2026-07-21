@@ -52,7 +52,7 @@ Crea estos tres secrets:
 |----------------------|-----------------------------------------------------|
 | `GEMINI_API_KEY`     | La API key de Gemini del paso 2                     |
 | `CALLMEBOT_PHONE`    | Tu número, ej: `56912345678`                        |
-| `CALLMEBOT_APIKEY`   | La API key que te dio CallMeBot por WhatsApp        |
+| `CALLMEBOT_API_KEY`   | La API key que te dio CallMeBot por WhatsApp        |
 
 ### 5. Probar manualmente
 
@@ -87,6 +87,6 @@ chat de WhatsApp con CallMeBot.
 pip install -r requirements.txt
 export GEMINI_API_KEY=xxx
 export CALLMEBOT_PHONE=xxx
-export CALLMEBOT_APIKEY=xxx
+export CALLMEBOT_API_KEY=xxx
 python news_digest.py
 ```
