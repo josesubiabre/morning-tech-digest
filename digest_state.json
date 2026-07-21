@@ -2,28 +2,28 @@
   "history": {
     "2026-07-21": [
       {
-        "link": "blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber",
-        "source_title": "gemini 36 flash 35 flashlite and 35 flash cyber",
-        "titulo": "Google lanza Gemini 3.6 Flash y modelo de seguridad"
+        "link": "techcrunch.com/2026/07/21/google-releases-three-new-gemini-models-but-no-3-5-pro",
+        "source_title": "google releases three new gemini models  but no 35 pro",
+        "titulo": "Google lanza Gemini 3.6 Flash y modelos especializados"
       },
       {
-        "link": "techcrunch.com/2026/07/21/us-threatens-sanctions-against-chinese-ai-models-over-ip-theft",
-        "source_title": "us threatens sanctions against chinese ai models over ip theft",
-        "titulo": "EEUU amenaza con sanciones a modelos de IA chinos"
+        "link": "techcrunch.com/2026/07/21/this-uber-alumn-just-raised-a-10m-pre-seed-to-build-portable-nuclear-enegry",
+        "source_title": "bluecore energy raises 10m to build portable nuclear reactors on barges",
+        "titulo": "Bluecore Energy levanta 10 millones para reactores"
+      },
+      {
+        "link": "wired.com/story/nvidia-wants-to-own-every-chip-inside-an-ai-data-center",
+        "source_title": "nvidia wants to own every chip inside ai data centers",
+        "titulo": "Nvidia presenta su plataforma Vera Rubin"
       },
       {
         "link": "arstechnica.com/tech-policy/2026/07/judge-halts-paramounts-111b-purchase-of-warner-bros-in-win-for-us-states",
         "source_title": "judge halts paramounts 111b purchase of warner bros in win for us states",
-        "titulo": "Frenan compra de Warner Bros. por Paramount"
-      },
-      {
-        "link": "techcrunch.com/2026/07/21/ai-music-generator-suno-breach-affects-55m-users-per-have-i-been-pwned",
-        "source_title": "ai music generator suno breach affects 55m users per have i been pwned",
-        "titulo": "Fuga masiva de datos en Suno afecta a 55M"
+        "titulo": "Juez frena la compra de Warner Bros por Paramount"
       }
     ]
   },
   "sent": {
-    "2026-07-21": "2026-07-21T11:53:56-04:00"
+    "2026-07-21": "2026-07-21T13:42:51-04:00"
   }
 }
