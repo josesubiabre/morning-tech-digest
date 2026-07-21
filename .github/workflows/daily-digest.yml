@@ -1,0 +1,42 @@
+name: Daily Tech News Digest
+
+on:
+  schedule:
+    # 12:00 UTC = 08:00 en Chile (UTC-4). Si Chile cambia a horario de
+    # verano (UTC-3), este cron llegará a las 09:00 hora local — ajustar
+    # a "0 11 * * *" en esa temporada si quieres que sea siempre a las 8.
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}  # permite ejecutarlo manualmente desde la pestaña Actions
+
+permissions:
+  contents: write  # necesario para poder commitear el digest de vuelta al repo
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run digest script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+          CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+        run: python news_digest.py
+
+      - name: Commit digest history
+        run: |
+          git config user.name "tech-news-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add digests/
+          git diff --staged --quiet || git commit -m "Digest del $(date -u +'%Y-%m-%d')"
+          git push
