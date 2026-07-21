@@ -45,6 +45,7 @@ SENT_KEEP_DAYS = 14    # cuánto conservar el registro de envíos
 
 MIN_NEWS = 4
 MAX_NEWS = 5
+EXTRA_NEWS = 3            # noticias del modo --more (botón "Más noticias")
 MAX_SUMMARY_CHARS = 350   # tope por resumen individual
 MAX_MESSAGE_CHARS = 3500  # tope del mensaje completo de WhatsApp
 

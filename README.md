@@ -71,6 +71,15 @@ la segunda sirve de reintento automático si la primera falló o el cron de
 GitHub venía atrasado (pasa seguido). No hay que tocar nada cuando Chile
 entra o sale del horario de verano.
 
+## Pedir más noticias durante el día
+
+¿Quedaste con gusto a poco? En tu repo: **Actions → Más noticias → Run workflow**
+(sirve el navegador o la app de GitHub en el teléfono). En ~1 minuto te llegan
+por WhatsApp 3 noticias adicionales que no estaban en el digest de la mañana ni
+en los últimos días, y quedan agregadas al archivo del día en `digests/`. Puedes
+pedirlas más de una vez: cada tanda excluye también las extra anteriores. La
+cantidad se ajusta con `EXTRA_NEWS` en `config.py`.
+
 ## Cómo funciona el digest
 
 - Se recolectan titulares **con su extracto RSS**, y Gemini resume solo hechos

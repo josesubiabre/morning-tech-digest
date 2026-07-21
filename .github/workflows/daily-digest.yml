@@ -18,11 +18,11 @@ on:
 permissions:
   contents: write  # necesario para poder commitear el digest de vuelta al repo
 
-# Nunca correr dos digests a la vez: si una ejecución atrasada sigue viva
-# cuando parte la siguiente, la segunda espera en cola (y al partir verá el
-# estado ya commiteado y saldrá sin enviar).
+# Nunca correr dos envíos a la vez (incluido el workflow "Más noticias", que
+# comparte este grupo): si una ejecución sigue viva cuando parte la siguiente,
+# la segunda espera en cola y al partir ve el estado ya commiteado.
 concurrency:
-  group: daily-digest
+  group: digest
   cancel-in-progress: false
 
 jobs:

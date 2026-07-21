@@ -1,0 +1,61 @@
+name: Más noticias
+
+# Botón manual: Actions → "Más noticias" → Run workflow (web o app de GitHub).
+# Envía por WhatsApp EXTRA_NEWS noticias adicionales sin repetir nada de lo ya
+# enviado hoy ni en los últimos días.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # necesario para commitear historial y estado de vuelta al repo
+
+# Mismo grupo que el digest diario: nunca corren dos envíos a la vez (si uno
+# está vivo, el otro espera en cola y parte con el estado ya actualizado).
+concurrency:
+  group: digest
+  cancel-in-progress: false
+
+jobs:
+  send-more:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send extra news
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+        run: python news_digest.py --more
+
+      - name: Commit digest history
+        run: |
+          git config user.name "tech-news-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A  # digests/ y digest_state.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios que commitear"
+            exit 0
+          fi
+          git commit -m "Noticias extra del $(date -u +'%Y-%m-%d')"
+          # main puede haber avanzado mientras corría el job (un push manual):
+          # rebase y reintento en vez de fallar dejando el envío sin registrar.
+          for i in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push rechazado (el remoto avanzó); rebase y reintento ($i/3)"
+            git pull --rebase origin main
+          done
+          echo "No se pudo pushear tras 3 rebases"
+          exit 1

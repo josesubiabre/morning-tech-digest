@@ -4,6 +4,7 @@ import json
 import unittest
 from unittest import mock
 
+from config import MIN_NEWS, MAX_NEWS
 from summarizers import gemini
 from utils import normalize_link
 
@@ -60,6 +61,20 @@ class TestParseDigestJson(unittest.TestCase):
         ]})
         with self.assertRaises(ValueError):
             gemini.parse_digest_json(raw, BY_NORM)
+
+
+class TestPromptExtra(unittest.TestCase):
+    def test_prompt_normal_pide_mezcla(self):
+        prompt = gemini.build_prompt(ITEMS, [], "2026-07-21")
+        self.assertIn(f"entre {MIN_NEWS} y {MAX_NEWS} noticias", prompt)
+        self.assertIn("mezcla", prompt)
+
+    def test_prompt_extra_pide_adicionales_sin_mezcla(self):
+        prompt = gemini.build_prompt(ITEMS, [], "2026-07-21",
+                                     min_news=3, max_news=3, extra=True)
+        self.assertIn("exactamente 3 noticias adicionales", prompt)
+        self.assertIn("También hoy:", prompt)
+        self.assertNotIn("mezcla", prompt)
 
 
 class TestReintentoJsonInvalido(unittest.TestCase):

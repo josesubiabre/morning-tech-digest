@@ -68,7 +68,8 @@ def rank_gemini_models(api_key):
     return ranked
 
 
-def build_prompt(items, recent_topics, today):
+def build_prompt(items, recent_topics, today, min_news=MIN_NEWS, max_news=MAX_NEWS,
+                 extra=False):
     lines = []
     for i, item in enumerate(items, 1):
         score = f" (HN score: {item['score']})" if item.get("score") else ""
@@ -82,6 +83,27 @@ def build_prompt(items, recent_topics, today):
 
     covered = "\n".join(f"- {t}" for t in recent_topics) or "- (nada aún)"
 
+    if extra:
+        seleccion = f"""1. El lector ya recibió el digest de hoy y pidió más noticias. Elige exactamente \
+{max_news} noticias adicionales, las mejores que queden (menos solo si de verdad no hay \
+más material relevante)."""
+        encabezado_instr = """4. Escribe además un encabezado de UNA frase que abra con "También hoy:" y \
+capture estas noticias adicionales."""
+        cubiertos_instr = """5. Estos temas ya fueron cubiertos en días anteriores o en el digest de esta \
+mañana; NO los repitas salvo que haya una actualización real (y en ese caso menciona que \
+es una actualización):"""
+    else:
+        seleccion = f"""1. Elige entre {min_news} y {max_news} noticias, las más importantes del día, intentando \
+esta mezcla (ajústala si algún rubro no tiene nada relevante hoy):
+   - 1 o 2 de IA
+   - 1 de startups/producto
+   - 1 de big tech/mercado
+   - 1 de seguridad, regulación o algo inesperado"""
+        encabezado_instr = """4. Escribe además un encabezado editorial de UNA frase que capture el día, por ejemplo: \
+"Hoy domina: Google acelera X y el mercado reacciona a Y"."""
+        cubiertos_instr = """5. Estos temas ya fueron cubiertos en días anteriores; NO los repitas salvo que haya una \
+actualización real (y en ese caso menciona que es una actualización):"""
+
     prompt = f"""Eres el editor de un digest diario de tecnología para un lector en Chile \
 interesado en: IA aplicada, startups, producto, infraestructura/cloud, venture capital, \
 regulación tecnológica y movimientos de empresas relevantes. Le interesan poco: reviews \
@@ -90,20 +112,13 @@ de teléfonos y gadgets menores, gaming y cultura tech.
 Abajo tienes la lista cruda de titulares de hoy ({today}), cada uno con su extracto y link.
 
 Tu tarea:
-1. Elige entre {MIN_NEWS} y {MAX_NEWS} noticias, las más importantes del día, intentando \
-esta mezcla (ajústala si algún rubro no tiene nada relevante hoy):
-   - 1 o 2 de IA
-   - 1 de startups/producto
-   - 1 de big tech/mercado
-   - 1 de seguridad, regulación o algo inesperado
+{seleccion}
 2. Elimina duplicados o noticias muy similares (quédate con la mejor fuente).
 3. Resume cada noticia elegida en 1-2 frases en español (Chile), directo y sin relleno: \
 qué pasó y por qué importa. Usa SOLO hechos respaldados por el titular y el extracto; \
 no completes con conocimiento externo ni especules.
-4. Escribe además un encabezado editorial de UNA frase que capture el día, por ejemplo: \
-"Hoy domina: Google acelera X y el mercado reacciona a Y".
-5. Estos temas ya fueron cubiertos en días anteriores; NO los repitas salvo que haya una \
-actualización real (y en ese caso menciona que es una actualización):
+{encabezado_instr}
+{cubiertos_instr}
 {covered}
 
 Responde SOLO con un objeto JSON válido, sin texto adicional ni markdown, con esta \
@@ -121,8 +136,8 @@ Lista cruda de titulares:
     return prompt
 
 
-def parse_digest_json(text, items_by_norm_link):
-    """Valida la respuesta de Gemini: JSON con encabezado y 1..MAX_NEWS noticias
+def parse_digest_json(text, items_by_norm_link, max_news=MAX_NEWS):
+    """Valida la respuesta de Gemini: JSON con encabezado y 1..max_news noticias
     cuyos links existan en las fuentes recolectadas. Lanza ValueError si no sirve."""
     cleaned = text.strip()
     if cleaned.startswith("```"):
@@ -160,7 +175,7 @@ def parse_digest_json(text, items_by_norm_link):
             "norm_link": norm,
             "source_title": normalize_title(source_item["title"]),
         })
-        if len(noticias) >= MAX_NEWS:
+        if len(noticias) >= max_news:
             break
 
     if not noticias:
@@ -168,8 +183,9 @@ def parse_digest_json(text, items_by_norm_link):
     return encabezado, noticias
 
 
-def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, today):
-    prompt = build_prompt(items, recent_topics, today)
+def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, today,
+                          min_news=MIN_NEWS, max_news=MAX_NEWS, extra=False):
+    prompt = build_prompt(items, recent_topics, today, min_news, max_news, extra)
     body = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
@@ -236,7 +252,7 @@ def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, tod
             try:
                 parts = data["candidates"][0]["content"]["parts"]
                 text = "\n".join(p["text"] for p in parts if p.get("text")).strip()
-                encabezado, noticias = parse_digest_json(text, items_by_norm_link)
+                encabezado, noticias = parse_digest_json(text, items_by_norm_link, max_news)
             except (KeyError, IndexError, TypeError, ValueError) as e:
                 log(f"Respuesta inválida de {model}: {e}")
                 last_error = e
