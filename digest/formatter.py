@@ -1,9 +1,20 @@
 """Construcción del mensaje de WhatsApp y del archivo de historial en digests/."""
 
 import os
+import re
 
 from config import MAX_MESSAGE_CHARS
 from utils import log
+
+
+def sanitize_whatsapp_text(text):
+    """Limpia texto que va dentro del mensaje (no links): elimina separadores
+    tipo "__________" o "----" que rompen el formato en WhatsApp, y colapsa
+    espacios repetidos."""
+    t = re.sub(r"_{3,}", " ", text or "")
+    t = re.sub(r"-{4,}", " ", t)
+    t = re.sub(r"[ \t]{2,}", " ", t)
+    return t.strip()
 
 
 def digest_file_url(today):
@@ -17,17 +28,25 @@ def digest_file_url(today):
 
 
 def build_whatsapp_message(encabezado, noticias, now_local, today):
+    """Arma el mensaje de forma determinista: encabezado con emoji y fecha,
+    noticias numeradas con fuente y link, y footer con la versión extendida.
+    Nunca emite separadores de guiones/underscores."""
     header = f"📰 *Resumen tech - {now_local.strftime('%d-%m-%Y')}*"
     footer = None
     url = digest_file_url(today)
     if url:
         footer = f"_Versión extendida: {url}_"
 
+    encabezado = sanitize_whatsapp_text(encabezado)
+
     blocks = [header]
     if encabezado:
         blocks.append(f"_{encabezado}_")
-    for n in noticias:
-        blocks.append(f"*{n['titulo']}*\n{n['resumen']}\n{n['link']}")
+    for i, n in enumerate(noticias, 1):
+        titulo = sanitize_whatsapp_text(n["titulo"])
+        resumen = sanitize_whatsapp_text(n["resumen"])
+        fuente = f" — {n['source']}" if n.get("source") else ""
+        blocks.append(f"*{i}. {titulo}*{fuente}\n{resumen}\n{n['link']}")
     if footer:
         blocks.append(footer)
 
@@ -39,7 +58,8 @@ def build_whatsapp_message(encabezado, noticias, now_local, today):
         log("Mensaje muy largo para WhatsApp; quitando la última noticia")
         message = "\n\n".join(blocks)
 
-    return message
+    # Nunca más de una línea en blanco seguida
+    return re.sub(r"\n{3,}", "\n\n", message)
 
 
 def save_digest_to_history(encabezado, noticias, items, today):

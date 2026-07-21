@@ -42,7 +42,12 @@ MAX_NEWS = 5
 MAX_SUMMARY_CHARS = 350   # tope por resumen individual
 MAX_MESSAGE_CHARS = 3500  # tope del mensaje completo de WhatsApp
 
-CALLMEBOT_CHUNK_CHARS = 1100   # CallMeBot corta mensajes largos; enviar en partes
+# CallMeBot mutila los mensajes que superan ~700 caracteres: corta a mitad
+# de palabra, descarta texto e inserta su propio separador "__________".
+# Por eso cada parte (incluido el sufijo "Parte i/n") debe quedar bajo ese
+# umbral con margen.
+CALLMEBOT_CHUNK_CHARS = 650    # tamaño objetivo de cada parte, sufijo incluido
+CALLMEBOT_MAX_CHARS = 700      # tope duro: nunca enviar una parte mayor que esto
 CALLMEBOT_DELAY_SECONDS = 3    # pausa entre partes para que lleguen en orden
 
 # ---------------------------------------------------------------------------

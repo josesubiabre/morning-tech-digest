@@ -1,4 +1,11 @@
-"""Envío por WhatsApp vía CallMeBot, en partes para evitar cortes."""
+"""Envío por WhatsApp vía CallMeBot, en partes cortas para evitar que los mutile.
+
+CallMeBot corta los mensajes que superan ~700 caracteres: trunca a mitad de
+palabra, descarta texto e inserta su propio separador "__________". Por eso
+cada parte enviada (sufijo "Parte i/n" incluido) debe quedar bajo
+CALLMEBOT_CHUNK_CHARS, y send_callmebot_message rechaza cualquier texto que
+supere CALLMEBOT_MAX_CHARS como defensa final.
+"""
 
 import re
 import time
@@ -6,11 +13,22 @@ import urllib.parse
 import urllib.request
 import urllib.error
 
-from config import CALLMEBOT_CHUNK_CHARS, CALLMEBOT_DELAY_SECONDS, USER_AGENT
+from config import (
+    CALLMEBOT_CHUNK_CHARS,
+    CALLMEBOT_MAX_CHARS,
+    CALLMEBOT_DELAY_SECONDS,
+    USER_AGENT,
+)
 from utils import log
+
+PART_SUFFIX_RESERVE = 16  # espacio para "\n\n_Parte xx/yy_" dentro del límite
 
 
 def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
+    """Divide el mensaje en partes de a lo más `limit` caracteres, contando el
+    sufijo "_Parte i/n_". Respeta los bloques separados por línea en blanco."""
+    effective = max(200, limit - PART_SUFFIX_RESERVE)
+
     blocks = text.split("\n\n")
     chunks = []
     current = ""
@@ -18,19 +36,19 @@ def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
     for block in blocks:
         candidate = block if not current else f"{current}\n\n{block}"
 
-        if len(candidate) <= limit:
+        if len(candidate) <= effective:
             current = candidate
             continue
 
         if current:
             chunks.append(current)
 
-        if len(block) <= limit:
+        if len(block) <= effective:
             current = block
         else:
             # Fallback para bloques demasiado largos: cortar por caracteres.
-            for i in range(0, len(block), limit):
-                chunks.append(block[i:i + limit])
+            for i in range(0, len(block), effective):
+                chunks.append(block[i:i + effective])
             current = ""
 
     if current:
@@ -46,7 +64,22 @@ def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
     ]
 
 
+def _mask_secrets(text, phone, apikey):
+    """Evita que el número o la API key terminen en los logs o excepciones."""
+    masked = text
+    for secret in (str(apikey or ""), str(phone or "")):
+        if secret:
+            masked = masked.replace(secret, "***")
+    return masked
+
+
 def send_callmebot_message(text, phone, apikey):
+    if len(text) > CALLMEBOT_MAX_CHARS:
+        raise RuntimeError(
+            f"Parte de {len(text)} caracteres supera el máximo de "
+            f"{CALLMEBOT_MAX_CHARS}; no se envía para evitar que llegue mutilada."
+        )
+
     params = urllib.parse.urlencode({
         "phone": phone,
         "text": text,
@@ -60,13 +93,14 @@ def send_callmebot_message(text, phone, apikey):
         with urllib.request.urlopen(req, timeout=30) as resp:
             result = resp.read().decode("utf-8", errors="ignore")
     except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="ignore")
+        body = _mask_secrets(e.read().decode("utf-8", errors="ignore"), phone, apikey)
         raise RuntimeError(
             f"CallMeBot falló con HTTP {e.code}: {body[:300]}"
         ) from e
 
     cleaned = re.sub(r"\s+", " ", result).strip()
-    log(f"CallMeBot respondió: {cleaned[:300]}")
+    safe = _mask_secrets(cleaned, phone, apikey)
+    log(f"CallMeBot respondió: {safe[:300]}")
 
     lowered = cleaned.lower()
 
@@ -83,7 +117,7 @@ def send_callmebot_message(text, phone, apikey):
     )
 
     if any(marker in lowered for marker in hard_error_markers):
-        raise RuntimeError(f"CallMeBot no aceptó el envío: {cleaned[:300]}")
+        raise RuntimeError(f"CallMeBot no aceptó el envío: {safe[:300]}")
 
     return cleaned
 

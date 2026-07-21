@@ -156,6 +156,7 @@ def parse_digest_json(text, items_by_norm_link):
             "titulo": truncate(titulo, 80),
             "resumen": truncate(resumen, MAX_SUMMARY_CHARS),
             "link": source_item["link"],
+            "source": source_item["source"],
             "norm_link": norm,
             "source_title": normalize_title(source_item["title"]),
         })
@@ -182,6 +183,7 @@ def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, tod
 
     for model in candidates:
         url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
+        json_retry_used = False  # máximo un segundo intento por JSON inválido
 
         for attempt in range(1, TRIES_PER_MODEL + 1):
             req = urllib.request.Request(
@@ -228,8 +230,9 @@ def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, tod
                     time.sleep(RETRY_DELAY)
                 continue  # reintenta; si se agotan los intentos, siguiente modelo
 
-            # Extraer el texto y validar el JSON. Si el modelo no respetó el
-            # formato, probamos con el siguiente modelo.
+            # Extraer el texto y parsear el JSON. Si el modelo no respetó el
+            # formato, se reintenta UNA vez con el mismo modelo y después se
+            # pasa al siguiente.
             try:
                 parts = data["candidates"][0]["content"]["parts"]
                 text = "\n".join(p["text"] for p in parts if p.get("text")).strip()
@@ -237,6 +240,10 @@ def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, tod
             except (KeyError, IndexError, TypeError, ValueError) as e:
                 log(f"Respuesta inválida de {model}: {e}")
                 last_error = e
+                if not json_retry_used and attempt < TRIES_PER_MODEL:
+                    json_retry_used = True
+                    log(f"Reintentando una vez con {model} por JSON inválido.")
+                    continue
                 break  # probar el siguiente modelo
 
             log(f"Resumen generado con {model} ({len(noticias)} noticias)")

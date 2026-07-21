@@ -32,7 +32,12 @@ from config import SEND_HOUR_LOCAL
 from utils import log, now_santiago, normalize_link
 from collectors import fetch_rss_items, fetch_hn_items
 from state import load_state, save_state, prune_state, recent_coverage
-from digest import drop_recent_duplicates, build_whatsapp_message, save_digest_to_history
+from digest import (
+    drop_recent_duplicates,
+    validate_noticias,
+    build_whatsapp_message,
+    save_digest_to_history,
+)
 from summarizers import summarize_with_gemini
 from senders import send_whatsapp
 
@@ -88,6 +93,7 @@ def main():
     encabezado, noticias = summarize_with_gemini(
         items, gemini_key, recent_topics, items_by_norm_link, today
     )
+    noticias = validate_noticias(noticias)
 
     message = build_whatsapp_message(encabezado, noticias, now_local, today)
     send_whatsapp(message, phone, callmebot_key)
