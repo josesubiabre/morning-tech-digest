@@ -18,6 +18,7 @@ import os
 import sys
 import json
 import datetime
+import http.client
 import urllib.parse
 import urllib.request
 import urllib.error
@@ -56,7 +57,9 @@ PREFERRED_MODEL_HINTS = [
     "flash",
 ]
 
-MAX_MODEL_ATTEMPTS = 5  # cuántos modelos probar antes de rendirse
+MAX_MODEL_ATTEMPTS = 5   # cuántos modelos probar antes de rendirse
+GEMINI_TIMEOUT = 180     # segundos de espera por respuesta (modelos con thinking demoran)
+TRIES_PER_MODEL = 2      # reintentos por modelo ante timeout o error de red
 
 
 def log(msg):
@@ -247,28 +250,53 @@ def summarize_with_gemini(items, api_key):
 
     for model in candidates:
         url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
-        req = urllib.request.Request(
-            url,
-            data=body,
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
 
-        try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                data = json.load(resp)
-            log(f"Resumen generado con {model}")
-            return data["candidates"][0]["content"]["parts"][0]["text"].strip()
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", errors="ignore")
-            log(f"HTTP {e.code} desde Gemini ({model}) -> {detail[:400]}")
-            last_error = e
-            # 404: modelo listado pero no disponible para esta key.
-            # 429: sin cuota en este modelo. 403: sin permiso.
-            # En todos esos casos vale la pena probar el siguiente modelo.
-            if e.code in (403, 404, 429):
-                continue
-            raise
+        for attempt in range(1, TRIES_PER_MODEL + 1):
+            req = urllib.request.Request(
+                url,
+                data=body,
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+
+            try:
+                with urllib.request.urlopen(req, timeout=GEMINI_TIMEOUT) as resp:
+                    data = json.load(resp)
+            except urllib.error.HTTPError as e:
+                detail = e.read().decode("utf-8", errors="ignore")
+                log(f"HTTP {e.code} desde Gemini ({model}) -> {detail[:400]}")
+                last_error = e
+                # 404: modelo listado pero no disponible para esta key.
+                # 429: sin cuota en este modelo. 403: sin permiso.
+                # Reintentar no ayuda -> probar el siguiente modelo.
+                if e.code in (403, 404, 429):
+                    break
+                # 5xx suele ser transitorio -> reintentar este modelo.
+                if e.code >= 500 and attempt < TRIES_PER_MODEL:
+                    continue
+                raise
+            except (OSError, http.client.HTTPException) as e:
+                # Timeout de lectura, corte de conexión, error de red, etc.
+                log(f"Error de red con {model} (intento {attempt}/{TRIES_PER_MODEL}): {e}")
+                last_error = e
+                continue  # reintenta; si se agotan los intentos, siguiente modelo
+
+            # Extraer el texto de forma tolerante (algunos modelos devuelven
+            # varias partes, o respuestas vacías por filtros de seguridad).
+            try:
+                parts = data["candidates"][0]["content"]["parts"]
+                text = "\n".join(p["text"] for p in parts if p.get("text")).strip()
+            except (KeyError, IndexError, TypeError) as e:
+                log(f"Respuesta inesperada de {model}: {json.dumps(data)[:400]}")
+                last_error = e
+                break  # probar el siguiente modelo
+
+            if text:
+                log(f"Resumen generado con {model}")
+                return text
+
+            log(f"{model} devolvió una respuesta vacía, probando el siguiente modelo")
+            break
 
     raise RuntimeError(
         f"Ningún modelo Gemini funcionó (probados: {', '.join(candidates)})."
