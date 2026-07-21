@@ -21,15 +21,19 @@ def now_santiago():
     return datetime.datetime.now(ZoneInfo(TIMEZONE))
 
 
-def http_get_json(url, timeout=30):
+def http_get_bytes(url, timeout=30):
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return json.load(resp)
+            return resp.read()
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="ignore")
         log(f"HTTP {e.code} en GET {url.split('?')[0]} -> {body[:300]}")
         raise
+
+
+def http_get_json(url, timeout=30):
+    return json.loads(http_get_bytes(url, timeout=timeout))
 
 
 def strip_html(text):

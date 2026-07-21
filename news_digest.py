@@ -12,8 +12,10 @@ Variables de entorno requeridas (se configuran como GitHub Secrets):
   CALLMEBOT_API_KEY     -> API key que te dio el bot de CallMeBot por WhatsApp
 
 Comportamiento:
-  - Solo envía a las 08:00 hora de Chile (America/Santiago). El workflow corre a las
-    11:00 y 12:00 UTC; la ejecución que no calza con las 08:00 locales sale sin enviar.
+  - Envía cuando la hora de Chile (America/Santiago) cae entre las 08:00 y las
+    09:59. El workflow corre a las 11:00 y 12:00 UTC; la ventana tolera los
+    atrasos habituales del cron de Actions, y como el estado registra lo ya
+    enviado, la ejecución sobrante queda como reintento si la primera falló.
   - Si el digest de hoy ya fue enviado (según digest_state.json), no reenvía.
   - Las ejecuciones manuales (workflow_dispatch) saltan el control de hora.
   - El flag --force salta ambos controles (hora y ya-enviado).
@@ -28,7 +30,7 @@ Uso local (para probar):
 import os
 import sys
 
-from config import SEND_HOUR_LOCAL
+from config import SEND_HOUR_LOCAL, SEND_WINDOW_END_LOCAL
 from utils import log, now_santiago, normalize_link
 from collectors import fetch_rss_items, fetch_hn_items
 from state import load_state, save_state, prune_state, recent_coverage
@@ -71,12 +73,17 @@ def main():
             "Usa --force para reenviar.")
         sys.exit(0)
 
-    # Control de horario: el cron corre a las 11:00 y 12:00 UTC; solo la
-    # ejecución que cae a las 08:00 de Chile envía (así el cambio de hora
-    # chileno no requiere editar el workflow).
-    if not force and not is_manual and now_local.hour != SEND_HOUR_LOCAL:
+    # Control de horario: el cron corre a las 11:00 y 12:00 UTC, pero los cron
+    # de Actions suelen atrasarse, así que se acepta cualquier ejecución dentro
+    # de la ventana local (el control de ya-enviado de arriba evita duplicados
+    # y la ejecución sobrante sirve de reintento si la primera falló; el cambio
+    # de hora chileno tampoco requiere editar el workflow).
+    if not force and not is_manual and not (
+        SEND_HOUR_LOCAL <= now_local.hour <= SEND_WINDOW_END_LOCAL
+    ):
         log(f"Hora local en Chile: {now_local.strftime('%H:%M')}. "
-            f"El envío corresponde a las {SEND_HOUR_LOCAL:02d}:00. Saliendo sin enviar.")
+            f"El envío corresponde a las {SEND_HOUR_LOCAL:02d}:00-"
+            f"{SEND_WINDOW_END_LOCAL:02d}:59. Saliendo sin enviar.")
         sys.exit(0)
 
     items = fetch_rss_items() + fetch_hn_items()

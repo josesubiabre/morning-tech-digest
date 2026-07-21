@@ -2,9 +2,10 @@ name: Daily Tech News Digest
 
 on:
   schedule:
-    # Corre a las 11:00 y 12:00 UTC. El script decide (usando America/Santiago)
-    # cuál de las dos corresponde a las 08:00 de Chile y solo esa envía; la otra
-    # sale de inmediato. Así el cambio de hora chileno no requiere editar esto.
+    # Corre a las 11:00 y 12:00 UTC. El script envía solo si la hora en Chile
+    # (America/Santiago) cae en la ventana 08:00-09:59; el control de ya-enviado
+    # evita duplicados, así que la ejecución sobrante actúa de reintento si la
+    # primera falló, y el cambio de hora chileno no requiere editar esto.
     - cron: "0 11 * * *"
     - cron: "0 12 * * *"
   workflow_dispatch:
@@ -17,9 +18,17 @@ on:
 permissions:
   contents: write  # necesario para poder commitear el digest de vuelta al repo
 
+# Nunca correr dos digests a la vez: si una ejecución atrasada sigue viva
+# cuando parte la siguiente, la segunda espera en cola (y al partir verá el
+# estado ya commiteado y saldrá sin enviar).
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
 jobs:
   send-digest:
     runs-on: ubuntu-latest
+    timeout-minutes: 30  # corta descargas o APIs colgadas; el otro cron reintenta
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -46,5 +55,20 @@ jobs:
           git config user.name "tech-news-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A  # digests/ y digest_state.json
-          git diff --staged --quiet || git commit -m "Digest del $(date -u +'%Y-%m-%d')"
-          git push
+          if git diff --staged --quiet; then
+            echo "Sin cambios que commitear"
+            exit 0
+          fi
+          git commit -m "Digest del $(date -u +'%Y-%m-%d')"
+          # main puede haber avanzado mientras corría el job (un push manual):
+          # sin esto el push fallaba y el digest quedaba enviado pero sin
+          # registrar (dedup ciega + link de versión extendida en 404).
+          for i in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push rechazado (el remoto avanzó); rebase y reintento ($i/3)"
+            git pull --rebase origin main
+          done
+          echo "No se pudo pushear tras 3 rebases"
+          exit 1

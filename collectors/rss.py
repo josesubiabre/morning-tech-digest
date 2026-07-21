@@ -6,23 +6,34 @@ import feedparser
 
 from config import (
     RSS_FEEDS,
-    USER_AGENT,
+    RSS_TIMEOUT,
     MAX_ITEMS_PER_RSS_FEED,
     HOURS_LOOKBACK,
     EXCERPT_MAX_CHARS,
 )
-from utils import log, strip_html, truncate
+from utils import log, http_get_bytes, strip_html, truncate
 
 
 def fetch_rss_items():
     cutoff = datetime.datetime.utcnow() - datetime.timedelta(hours=HOURS_LOOKBACK)
     items = []
+    per_feed = []
 
     for source, url in RSS_FEEDS.items():
+        # Descarga propia con timeout: feedparser no acepta uno, y un feed
+        # colgado dejaba el job pegado sin límite de tiempo.
         try:
-            parsed = feedparser.parse(url, agent=USER_AGENT)
+            raw = http_get_bytes(url, timeout=RSS_TIMEOUT)
         except Exception as e:
-            log(f"Error parseando {source}: {e}")
+            log(f"Error descargando {source}: {e}")
+            continue
+
+        # feedparser no lanza excepciones por contenido malo: deja el
+        # problema en bozo_exception y devuelve entries vacío.
+        parsed = feedparser.parse(raw)
+        if not parsed.entries:
+            reason = parsed.get("bozo_exception") or "feed sin entradas"
+            log(f"Feed de {source} sin items utilizables: {reason}")
             continue
 
         count = 0
@@ -51,5 +62,8 @@ def fetch_rss_items():
             })
             count += 1
 
-    log(f"RSS: {len(items)} items recolectados")
+        per_feed.append(f"{source} {count}")
+
+    detail = ", ".join(per_feed) or "ninguna fuente respondió"
+    log(f"RSS: {len(items)} items recolectados ({detail})")
     return items

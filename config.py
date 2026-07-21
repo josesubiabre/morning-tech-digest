@@ -20,6 +20,7 @@ HN_MIN_SCORE = 80       # solo considerar historias con este puntaje o más
 HN_MAX_WORKERS = 8      # consultas en paralelo a la API de HN
 
 MAX_ITEMS_PER_RSS_FEED = 12
+RSS_TIMEOUT = 30          # segundos máximos de descarga por feed
 HOURS_LOOKBACK = 30       # ventana de tiempo para considerar una noticia "de hoy"
 EXCERPT_MAX_CHARS = 1000  # largo máximo del extracto RSS que se le pasa a Gemini
 
@@ -29,6 +30,11 @@ EXCERPT_MAX_CHARS = 1000  # largo máximo del extracto RSS que se le pasa a Gemi
 
 TIMEZONE = "America/Santiago"
 SEND_HOUR_LOCAL = 8    # hora local (Chile) a la que corresponde enviar
+# Los cron de GitHub Actions suelen atrasarse (a veces más de una hora), así
+# que se acepta enviar hasta esta hora local inclusive (ventana 08:00-09:59).
+# El control de ya-enviado evita duplicados cuando ambas ejecuciones caen en
+# la ventana; la sobrante queda como reintento automático si la primera falló.
+SEND_WINDOW_END_LOCAL = 9
 STATE_PATH = "digest_state.json"
 HISTORY_DAYS = 7       # días hacia atrás para no repetir noticias
 SENT_KEEP_DAYS = 14    # cuánto conservar el registro de envíos

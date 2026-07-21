@@ -63,10 +63,13 @@ marca el checkbox **force** al lanzar el workflow.
 
 ### 6. Listo
 
-El workflow corre todos los días a las 11:00 y 12:00 UTC, y el script decide
-solo (usando la zona horaria `America/Santiago`) cuál de las dos ejecuciones
-corresponde a las 08:00 de Chile — la otra sale sin enviar. No hay que tocar
-nada cuando Chile entra o sale del horario de verano.
+El workflow corre todos los días a las 11:00 y 12:00 UTC, y el script envía
+solo cuando la hora en Chile (zona `America/Santiago`) cae entre las 08:00 y
+las 09:59 — la ejecución que queda fuera sale sin enviar. Como el estado
+registra lo ya enviado, no hay duplicados cuando ambas caen en la ventana, y
+la segunda sirve de reintento automático si la primera falló o el cron de
+GitHub venía atrasado (pasa seguido). No hay que tocar nada cuando Chile
+entra o sale del horario de verano.
 
 ## Cómo funciona el digest
 
