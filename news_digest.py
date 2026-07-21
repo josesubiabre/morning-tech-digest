@@ -3,26 +3,37 @@
 Digest diario de noticias tech -> resumen con Gemini -> envío por WhatsApp (CallMeBot).
 
 Variables de entorno requeridas (se configuran como GitHub Secrets):
-  GEMINI_API_KEY       -> API key de Google AI Studio
+  GEMINI_API_KEY        -> API key de Google AI Studio
   CALLMEBOT_PHONE       -> tu número de WhatsApp en formato internacional, ej: 56912345678
   CALLMEBOT_API_KEY     -> API key que te dio el bot de CallMeBot por WhatsApp
+
+Comportamiento:
+  - Solo envía a las 08:00 hora de Chile (America/Santiago). El workflow corre a las
+    11:00 y 12:00 UTC; la ejecución que no calza con las 08:00 locales sale sin enviar.
+  - Si el digest de hoy ya fue enviado (según digest_state.json), no reenvía.
+  - Las ejecuciones manuales (workflow_dispatch) saltan el control de hora.
+  - El flag --force salta ambos controles (hora y ya-enviado).
 
 Uso local (para probar):
   export GEMINI_API_KEY=xxx
   export CALLMEBOT_PHONE=xxx
   export CALLMEBOT_API_KEY=xxx
-  python news_digest.py
+  python news_digest.py --force
 """
 
 import os
+import re
 import sys
 import json
 import time
+import html
 import datetime
 import http.client
 import urllib.parse
 import urllib.request
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor
+from zoneinfo import ZoneInfo
 
 import feedparser
 
@@ -37,13 +48,40 @@ RSS_FEEDS = {
     "Wired": "https://www.wired.com/feed/rss",
 }
 
+USER_AGENT = "whatsapp-news-digest/1.0 (GitHub Actions; digest personal)"
+
 HN_TOP_STORIES_URL = "https://hacker-news.firebaseio.com/v0/topstories.json"
 HN_ITEM_URL = "https://hacker-news.firebaseio.com/v0/item/{}.json"
 HN_ITEMS_TO_CHECK = 40  # cuántos top stories de HN revisar
 HN_MIN_SCORE = 80       # solo considerar historias con este puntaje o más
+HN_MAX_WORKERS = 8      # consultas en paralelo a la API de HN
 
 MAX_ITEMS_PER_RSS_FEED = 12
-HOURS_LOOKBACK = 30  # ventana de tiempo para considerar una noticia "de hoy"
+HOURS_LOOKBACK = 30       # ventana de tiempo para considerar una noticia "de hoy"
+EXCERPT_MAX_CHARS = 1000  # largo máximo del extracto RSS que se le pasa a Gemini
+
+# ---------------------------------------------------------------------------
+# Horario, estado e historial
+# ---------------------------------------------------------------------------
+
+TIMEZONE = "America/Santiago"
+SEND_HOUR_LOCAL = 8    # hora local (Chile) a la que corresponde enviar
+STATE_PATH = "digest_state.json"
+HISTORY_DAYS = 7       # días hacia atrás para no repetir noticias
+SENT_KEEP_DAYS = 14    # cuánto conservar el registro de envíos
+
+# ---------------------------------------------------------------------------
+# Formato del digest
+# ---------------------------------------------------------------------------
+
+MIN_NEWS = 4
+MAX_NEWS = 5
+MAX_SUMMARY_CHARS = 350   # tope por resumen individual
+MAX_MESSAGE_CHARS = 3500  # tope del mensaje completo de WhatsApp
+
+# ---------------------------------------------------------------------------
+# Gemini
+# ---------------------------------------------------------------------------
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
@@ -68,14 +106,44 @@ def log(msg):
     print(f"[news_digest] {msg}", file=sys.stderr)
 
 
+def now_santiago():
+    return datetime.datetime.now(ZoneInfo(TIMEZONE))
+
+
 def http_get_json(url, timeout=30):
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.load(resp)
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="ignore")
         log(f"HTTP {e.code} en GET {url.split('?')[0]} -> {body[:300]}")
         raise
+
+
+def strip_html(text):
+    text = re.sub(r"<[^>]+>", " ", text or "")
+    text = html.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def truncate(text, limit):
+    if len(text) <= limit:
+        return text
+    cut = text[:limit].rsplit(" ", 1)[0]
+    return cut + "…"
+
+
+def normalize_title(title):
+    return re.sub(r"[^a-z0-9áéíóúñü ]", "", (title or "").lower()).strip()
+
+
+def normalize_link(link):
+    p = urllib.parse.urlsplit((link or "").strip())
+    host = p.netloc.lower()
+    if host.startswith("www."):
+        host = host[4:]
+    return f"{host}{p.path.rstrip('/')}"
 
 
 # ---------------------------------------------------------------------------
@@ -88,7 +156,7 @@ def fetch_rss_items():
 
     for source, url in RSS_FEEDS.items():
         try:
-            parsed = feedparser.parse(url)
+            parsed = feedparser.parse(url, agent=USER_AGENT)
         except Exception as e:
             log(f"Error parseando {source}: {e}")
             continue
@@ -108,11 +176,14 @@ def fetch_rss_items():
             if published and published < cutoff:
                 continue
 
+            excerpt = strip_html(entry.get("summary") or entry.get("description") or "")
+
             items.append({
                 "source": source,
                 "title": entry.get("title", "").strip(),
                 "link": entry.get("link", "").strip(),
                 "published": published.isoformat() if published else None,
+                "excerpt": truncate(excerpt, EXCERPT_MAX_CHARS),
             })
             count += 1
 
@@ -123,36 +194,121 @@ def fetch_rss_items():
 def fetch_hn_items():
     items = []
     try:
-        with urllib.request.urlopen(HN_TOP_STORIES_URL, timeout=15) as resp:
-            top_ids = json.load(resp)[:HN_ITEMS_TO_CHECK]
+        top_ids = http_get_json(HN_TOP_STORIES_URL, timeout=15)[:HN_ITEMS_TO_CHECK]
     except Exception as e:
         log(f"Error obteniendo top stories de HN: {e}")
         return items
 
-    for story_id in top_ids:
-        try:
-            with urllib.request.urlopen(HN_ITEM_URL.format(story_id), timeout=15) as resp:
-                item = json.load(resp)
-        except Exception as e:
-            log(f"Error obteniendo item HN {story_id}: {e}")
-            continue
+    cutoff_ts = time.time() - HOURS_LOOKBACK * 3600
 
+    def fetch_item(story_id):
+        for attempt in (1, 2):
+            try:
+                return http_get_json(HN_ITEM_URL.format(story_id), timeout=15)
+            except Exception as e:
+                if attempt == 2:
+                    log(f"Error obteniendo item HN {story_id}: {e}")
+        return None
+
+    with ThreadPoolExecutor(max_workers=HN_MAX_WORKERS) as pool:
+        stories = list(pool.map(fetch_item, top_ids))
+
+    for item in stories:
         if not item:
             continue
         if item.get("score", 0) < HN_MIN_SCORE:
             continue
+        # Descartar historias antiguas que siguen sumando votos
+        if item.get("time", 0) < cutoff_ts:
+            continue
 
+        story_id = item.get("id")
         link = item.get("url") or f"https://news.ycombinator.com/item?id={story_id}"
         items.append({
             "source": "Hacker News",
             "title": item.get("title", "").strip(),
             "link": link,
             "published": None,
+            "excerpt": "",
             "score": item.get("score"),
         })
 
     log(f"Hacker News: {len(items)} items recolectados (score >= {HN_MIN_SCORE})")
     return items
+
+
+# ---------------------------------------------------------------------------
+# Estado: envíos previos e historial para no repetir noticias
+# ---------------------------------------------------------------------------
+
+def load_state():
+    if os.path.exists(STATE_PATH):
+        try:
+            with open(STATE_PATH, encoding="utf-8") as f:
+                state = json.load(f)
+            if isinstance(state, dict):
+                state.setdefault("sent", {})
+                state.setdefault("history", {})
+                return state
+        except (json.JSONDecodeError, OSError) as e:
+            log(f"No se pudo leer {STATE_PATH} ({e}); partiendo con estado vacío")
+    return {"sent": {}, "history": {}}
+
+
+def save_state(state):
+    with open(STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2, sort_keys=True)
+    log(f"Estado guardado en {STATE_PATH}")
+
+
+def prune_state(state, today):
+    t = datetime.date.fromisoformat(today)
+
+    def keep(section, max_days):
+        pruned = {}
+        for date_str, value in section.items():
+            try:
+                d = datetime.date.fromisoformat(date_str)
+            except ValueError:
+                continue
+            if (t - d).days <= max_days:
+                pruned[date_str] = value
+        return pruned
+
+    state["sent"] = keep(state["sent"], SENT_KEEP_DAYS)
+    state["history"] = keep(state["history"], HISTORY_DAYS)
+
+
+def recent_coverage(state, today):
+    """Devuelve (temas para el prompt, links normalizados, títulos de fuente
+    normalizados) de lo enviado en los últimos HISTORY_DAYS días (sin incluir hoy,
+    para que un reenvío con --force no se filtre a sí mismo)."""
+    topics, links, source_titles = [], set(), set()
+    for date_str in sorted(state["history"], reverse=True):
+        if date_str == today:
+            continue
+        for entry in state["history"][date_str]:
+            if entry.get("titulo"):
+                topics.append(entry["titulo"])
+            if entry.get("link"):
+                links.add(entry["link"])
+            if entry.get("source_title"):
+                source_titles.add(entry["source_title"])
+    return topics[:40], links, source_titles
+
+
+def drop_recent_duplicates(items, links, source_titles):
+    kept = []
+    for item in items:
+        if normalize_link(item["link"]) in links:
+            continue
+        if normalize_title(item["title"]) in source_titles:
+            continue
+        kept.append(item)
+    dropped = len(items) - len(kept)
+    if dropped:
+        log(f"{dropped} items descartados por haber sido enviados en días anteriores")
+    return kept
 
 
 # ---------------------------------------------------------------------------
@@ -205,34 +361,52 @@ def rank_gemini_models(api_key):
 # Resumen con Gemini
 # ---------------------------------------------------------------------------
 
-def build_prompt(items):
+def build_prompt(items, recent_topics, today):
     lines = []
     for i, item in enumerate(items, 1):
-        lines.append(f"{i}. [{item['source']}] {item['title']} -- {item['link']}")
+        score = f" (HN score: {item['score']})" if item.get("score") else ""
+        excerpt = item.get("excerpt") or "(sin extracto)"
+        lines.append(
+            f"{i}. [{item['source']}]{score} {item['title']}\n"
+            f"   Extracto: {excerpt}\n"
+            f"   Link: {item['link']}"
+        )
     raw_list = "\n".join(lines)
 
-    today = datetime.date.today().isoformat()
+    covered = "\n".join(f"- {t}" for t in recent_topics) or "- (nada aún)"
 
-    prompt = f"""Eres un editor de noticias de tecnología. A continuación te doy una lista cruda \
-de titulares recolectados hoy ({today}) desde RSS de medios tech y Hacker News.
+    prompt = f"""Eres el editor de un digest diario de tecnología para un lector en Chile \
+interesado en: IA aplicada, startups, producto, infraestructura/cloud, venture capital, \
+regulación tecnológica y movimientos de empresas relevantes. Le interesan poco: reviews \
+de teléfonos y gadgets menores, gaming y cultura tech.
+
+Abajo tienes la lista cruda de titulares de hoy ({today}), cada uno con su extracto y link.
 
 Tu tarea:
-1. Filtra y elige SOLO las 6 a 10 noticias más importantes/relevantes del día para alguien \
-que sigue la industria tech (IA, startups, big tech, productos, seguridad, mercado). Ignora \
-notas de opinión genéricas, listículos, reviews de productos menores o contenido irrelevante.
-2. Elimina duplicados o noticias muy similares entre sí (quédate con la mejor fuente).
-3. Para cada noticia elegida, escribe un resumen de 1-2 frases en español (Chile), directo y \
-sin relleno, explicando qué pasó y por qué importa.
-4. Devuelve el resultado en texto plano listo para enviar por WhatsApp, con este formato exacto \
-por cada noticia:
+1. Elige entre {MIN_NEWS} y {MAX_NEWS} noticias, las más importantes del día, intentando \
+esta mezcla (ajústala si algún rubro no tiene nada relevante hoy):
+   - 1 o 2 de IA
+   - 1 de startups/producto
+   - 1 de big tech/mercado
+   - 1 de seguridad, regulación o algo inesperado
+2. Elimina duplicados o noticias muy similares (quédate con la mejor fuente).
+3. Resume cada noticia elegida en 1-2 frases en español (Chile), directo y sin relleno: \
+qué pasó y por qué importa. Usa SOLO hechos respaldados por el titular y el extracto; \
+no completes con conocimiento externo ni especules.
+4. Escribe además un encabezado editorial de UNA frase que capture el día, por ejemplo: \
+"Hoy domina: Google acelera X y el mercado reacciona a Y".
+5. Estos temas ya fueron cubiertos en días anteriores; NO los repitas salvo que haya una \
+actualización real (y en ese caso menciona que es una actualización):
+{covered}
 
-*<título corto>*
-<resumen de 1-2 frases>
-<link>
+Responde SOLO con un objeto JSON válido, sin texto adicional ni markdown, con esta \
+estructura exacta:
+{{"encabezado": "...", "noticias": [{{"titulo": "...", "resumen": "...", "link": "..."}}]}}
 
-5. Sepára cada noticia con una línea en blanco.
-6. No agregues introducción, encabezado ni conclusión. Solo la lista de noticias.
-7. No inventes noticias que no estén en la lista.
+Reglas del JSON:
+- "titulo": corto (máximo 60 caracteres), sin asteriscos ni comillas internas.
+- "resumen": 1-2 frases.
+- "link": copiado EXACTAMENTE desde la lista de titulares. No lo inventes ni lo modifiques.
 
 Lista cruda de titulares:
 {raw_list}
@@ -240,11 +414,60 @@ Lista cruda de titulares:
     return prompt
 
 
-def summarize_with_gemini(items, api_key):
-    prompt = build_prompt(items)
+def parse_digest_json(text, items_by_norm_link):
+    """Valida la respuesta de Gemini: JSON con encabezado y 1..MAX_NEWS noticias
+    cuyos links existan en las fuentes recolectadas. Lanza ValueError si no sirve."""
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```[a-zA-Z]*\s*|\s*```$", "", cleaned).strip()
+    data = json.loads(cleaned)
+    if not isinstance(data, dict):
+        raise ValueError("la respuesta no es un objeto JSON")
+
+    encabezado = str(data.get("encabezado") or "").strip()
+
+    noticias, seen = [], set()
+    for n in data.get("noticias") or []:
+        if not isinstance(n, dict):
+            continue
+        titulo = str(n.get("titulo") or "").strip().strip("*")
+        resumen = str(n.get("resumen") or "").strip()
+        link = str(n.get("link") or "").strip()
+        if not (titulo and resumen and link):
+            continue
+
+        norm = normalize_link(link)
+        source_item = items_by_norm_link.get(norm)
+        if not source_item:
+            log(f"Descartada noticia con link que no está en las fuentes: {link}")
+            continue
+        if norm in seen:
+            continue
+        seen.add(norm)
+
+        noticias.append({
+            "titulo": truncate(titulo, 80),
+            "resumen": truncate(resumen, MAX_SUMMARY_CHARS),
+            "link": source_item["link"],
+            "norm_link": norm,
+            "source_title": normalize_title(source_item["title"]),
+        })
+        if len(noticias) >= MAX_NEWS:
+            break
+
+    if not noticias:
+        raise ValueError("el JSON no traía ninguna noticia válida")
+    return encabezado, noticias
+
+
+def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, today):
+    prompt = build_prompt(items, recent_topics, today)
     body = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.3},
+        "generationConfig": {
+            "temperature": 0.3,
+            "responseMimeType": "application/json",
+        },
     }).encode("utf-8")
 
     candidates = rank_gemini_models(api_key)[:MAX_MODEL_ATTEMPTS]
@@ -257,7 +480,7 @@ def summarize_with_gemini(items, api_key):
             req = urllib.request.Request(
                 url,
                 data=body,
-                headers={"Content-Type": "application/json"},
+                headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
                 method="POST",
             )
 
@@ -298,22 +521,19 @@ def summarize_with_gemini(items, api_key):
                     time.sleep(RETRY_DELAY)
                 continue  # reintenta; si se agotan los intentos, siguiente modelo
 
-            # Extraer el texto de forma tolerante (algunos modelos devuelven
-            # varias partes, o respuestas vacías por filtros de seguridad).
+            # Extraer el texto y validar el JSON. Si el modelo no respetó el
+            # formato, probamos con el siguiente modelo.
             try:
                 parts = data["candidates"][0]["content"]["parts"]
                 text = "\n".join(p["text"] for p in parts if p.get("text")).strip()
-            except (KeyError, IndexError, TypeError) as e:
-                log(f"Respuesta inesperada de {model}: {json.dumps(data)[:400]}")
+                encabezado, noticias = parse_digest_json(text, items_by_norm_link)
+            except (KeyError, IndexError, TypeError, ValueError) as e:
+                log(f"Respuesta inválida de {model}: {e}")
                 last_error = e
                 break  # probar el siguiente modelo
 
-            if text:
-                log(f"Resumen generado con {model}")
-                return text
-
-            log(f"{model} devolvió una respuesta vacía, probando el siguiente modelo")
-            break
+            log(f"Resumen generado con {model} ({len(noticias)} noticias)")
+            return encabezado, noticias
 
     raise RuntimeError(
         f"Ningún modelo Gemini funcionó (probados: {', '.join(candidates)})."
@@ -321,8 +541,44 @@ def summarize_with_gemini(items, api_key):
 
 
 # ---------------------------------------------------------------------------
-# Envío por WhatsApp (CallMeBot)
+# Construcción y envío del mensaje
 # ---------------------------------------------------------------------------
+
+def digest_file_url(today):
+    """Link al digest del día en GitHub (disponible solo corriendo en Actions)."""
+    server = os.environ.get("GITHUB_SERVER_URL")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    if not (server and repo):
+        return None
+    branch = os.environ.get("GITHUB_REF_NAME", "main")
+    return f"{server}/{repo}/blob/{branch}/digests/{today}.md"
+
+
+def build_whatsapp_message(encabezado, noticias, now_local, today):
+    header = f"📰 *Resumen tech - {now_local.strftime('%d-%m-%Y')}*"
+    footer = None
+    url = digest_file_url(today)
+    if url:
+        footer = f"_Versión extendida: {url}_"
+
+    blocks = [header]
+    if encabezado:
+        blocks.append(f"_{encabezado}_")
+    for n in noticias:
+        blocks.append(f"*{n['titulo']}*\n{n['resumen']}\n{n['link']}")
+    if footer:
+        blocks.append(footer)
+
+    fixed_blocks = 1 + (1 if encabezado else 0) + (1 if footer else 0)
+    message = "\n\n".join(blocks)
+    while len(message) > MAX_MESSAGE_CHARS and len(blocks) - fixed_blocks > 1:
+        idx = -2 if footer else -1  # quitar la última noticia, no el footer
+        blocks.pop(idx)
+        log("Mensaje muy largo para WhatsApp; quitando la última noticia")
+        message = "\n\n".join(blocks)
+
+    return message
+
 
 def send_whatsapp(text, phone, apikey):
     encoded_text = urllib.parse.quote(text)
@@ -330,25 +586,30 @@ def send_whatsapp(text, phone, apikey):
         f"https://api.callmebot.com/whatsapp.php"
         f"?phone={phone}&text={encoded_text}&apikey={apikey}"
     )
-    with urllib.request.urlopen(url, timeout=30) as resp:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=30) as resp:
         result = resp.read().decode("utf-8", errors="ignore")
     log(f"CallMeBot respondió: {result[:200]}")
 
 
 # ---------------------------------------------------------------------------
-# Historial
+# Historial en el repo
 # ---------------------------------------------------------------------------
 
-def save_digest_to_history(digest_text, items):
+def save_digest_to_history(encabezado, noticias, items, today):
     os.makedirs("digests", exist_ok=True)
-    today = datetime.date.today().isoformat()
     path = os.path.join("digests", f"{today}.md")
 
     with open(path, "w", encoding="utf-8") as f:
         f.write(f"# Digest tech - {today}\n\n")
-        f.write(digest_text)
-        f.write("\n\n---\n\n")
-        f.write(f"_Generado a partir de {len(items)} noticias crudas recolectadas._\n")
+        if encabezado:
+            f.write(f"_{encabezado}_\n\n")
+        for n in noticias:
+            f.write(f"**{n['titulo']}**\n\n{n['resumen']}\n\n{n['link']}\n\n")
+        f.write("---\n\n")
+        f.write(f"## Versión extendida: los {len(items)} titulares considerados\n\n")
+        for item in items:
+            f.write(f"- [{item['source']}] {item['title']} — {item['link']}\n")
 
     log(f"Digest guardado en {path}")
     return path
@@ -359,6 +620,12 @@ def save_digest_to_history(digest_text, items):
 # ---------------------------------------------------------------------------
 
 def main():
+    force = "--force" in sys.argv
+    is_manual = os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch"
+
+    now_local = now_santiago()
+    today = now_local.date().isoformat()
+
     gemini_key = os.environ.get("GEMINI_API_KEY")
     phone = os.environ.get("CALLMEBOT_PHONE")
     callmebot_key = os.environ.get("CALLMEBOT_API_KEY")
@@ -372,19 +639,49 @@ def main():
         log(f"Faltan variables de entorno: {', '.join(missing)}")
         sys.exit(1)
 
-    items = fetch_rss_items() + fetch_hn_items()
+    state = load_state()
+    prune_state(state, today)
 
-    if not items:
-        log("No se recolectaron noticias. Abortando sin enviar mensaje.")
+    # Idempotencia: no reenviar si el digest de hoy ya salió
+    if not force and today in state["sent"]:
+        log(f"El digest de hoy ya fue enviado a las {state['sent'][today]}. "
+            "Usa --force para reenviar.")
         sys.exit(0)
 
-    digest_text = summarize_with_gemini(items, gemini_key)
+    # Control de horario: el cron corre a las 11:00 y 12:00 UTC; solo la
+    # ejecución que cae a las 08:00 de Chile envía (así el cambio de hora
+    # chileno no requiere editar el workflow).
+    if not force and not is_manual and now_local.hour != SEND_HOUR_LOCAL:
+        log(f"Hora local en Chile: {now_local.strftime('%H:%M')}. "
+            f"El envío corresponde a las {SEND_HOUR_LOCAL:02d}:00. Saliendo sin enviar.")
+        sys.exit(0)
 
-    today_label = datetime.date.today().strftime("%d-%m-%Y")
-    whatsapp_message = f"📰 *Resumen tech - {today_label}*\n\n{digest_text}"
+    items = fetch_rss_items() + fetch_hn_items()
 
-    send_whatsapp(whatsapp_message, phone, callmebot_key)
-    save_digest_to_history(digest_text, items)
+    recent_topics, recent_links, recent_titles = recent_coverage(state, today)
+    items = drop_recent_duplicates(items, recent_links, recent_titles)
+
+    if not items:
+        log("No se recolectaron noticias nuevas. Abortando sin enviar mensaje.")
+        sys.exit(0)
+
+    items_by_norm_link = {normalize_link(it["link"]): it for it in items}
+
+    encabezado, noticias = summarize_with_gemini(
+        items, gemini_key, recent_topics, items_by_norm_link, today
+    )
+
+    message = build_whatsapp_message(encabezado, noticias, now_local, today)
+    send_whatsapp(message, phone, callmebot_key)
+
+    state["sent"][today] = now_local.isoformat(timespec="seconds")
+    state["history"][today] = [
+        {"titulo": n["titulo"], "link": n["norm_link"], "source_title": n["source_title"]}
+        for n in noticias
+    ]
+
+    save_digest_to_history(encabezado, noticias, items, today)
+    save_state(state)
 
     log("Listo.")
 

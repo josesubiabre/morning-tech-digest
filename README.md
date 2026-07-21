@@ -57,29 +57,49 @@ Crea estos tres secrets:
 ### 5. Probar manualmente
 
 En tu repo: pestaña **Actions → Daily Tech News Digest → Run workflow**.
-Esto lo ejecuta al toque, sin esperar al cron. Si todo está bien configurado,
-en menos de un minuto te debería llegar el WhatsApp.
+Esto lo ejecuta al toque, sin esperar al cron ni al control de horario.
+Si el digest de hoy ya se envió, no lo reenvía — para forzar un reenvío
+marca el checkbox **force** al lanzar el workflow.
 
 ### 6. Listo
 
-El cron ya está configurado para correr todos los días a las 12:00 UTC (8:00 Chile,
-horario estándar). Si Chile entra en horario de verano (UTC-3) y quieres que siga
-llegando siempre a las 8:00 en punto, cambia el cron en
-`.github/workflows/daily-digest.yml` de `0 12 * * *` a `0 11 * * *`.
+El workflow corre todos los días a las 11:00 y 12:00 UTC, y el script decide
+solo (usando la zona horaria `America/Santiago`) cuál de las dos ejecuciones
+corresponde a las 08:00 de Chile — la otra sale sin enviar. No hay que tocar
+nada cuando Chile entra o sale del horario de verano.
+
+## Cómo funciona el digest
+
+- Se recolectan titulares **con su extracto RSS**, y Gemini resume solo hechos
+  respaldados por el titular y el extracto (sin completar con conocimiento externo).
+- Se eligen **4 a 5 noticias** con esta mezcla aproximada: 1-2 de IA, 1 de
+  startups/producto, 1 de big tech/mercado y 1 de seguridad/regulación o algo
+  inesperado. Prioriza IA aplicada, startups, infraestructura/cloud, venture
+  capital y regulación; baja el peso de reviews de gadgets, gaming y cultura tech.
+- Gemini responde **JSON estructurado** y el script valida en Python: cantidad,
+  largo máximo y que cada link exista realmente en las fuentes recolectadas.
+- El mensaje abre con una frase editorial ("Hoy domina: ...") y cierra con un
+  link a la versión extendida (todos los titulares del día) en `digests/`.
+- **No se repiten noticias entre días**: el script guarda lo enviado en los
+  últimos 7 días (`digest_state.json`) y descarta o penaliza temas ya cubiertos,
+  salvo que haya una actualización real.
 
 ## Ajustar el contenido
 
 Todo el criterio de filtrado y el tono del resumen está en la función `build_prompt()`
 dentro de `news_digest.py`. Puedes editar ese texto para pedir más o menos noticias,
-otro tono, otros temas prioritarios, etc.
+otro tono, otros temas prioritarios, etc. Las cantidades y largos están en las
+constantes `MIN_NEWS`, `MAX_NEWS`, `MAX_SUMMARY_CHARS` y `MAX_MESSAGE_CHARS`.
 
 Para agregar o quitar fuentes RSS, edita el diccionario `RSS_FEEDS` al inicio del archivo.
 
-## Historial
+## Historial y estado
 
-Cada digest queda guardado en `digests/YYYY-MM-DD.md` dentro del repo — puedes
-revisar cualquier día anterior ahí. Además, el mensaje completo queda en tu
-chat de WhatsApp con CallMeBot.
+Cada digest queda guardado en `digests/YYYY-MM-DD.md` dentro del repo (el workflow
+lo commitea al terminar) — incluye las noticias enviadas y la lista completa de
+titulares considerados. Además, `digest_state.json` registra qué días ya se
+enviaron (para no duplicar envíos si el workflow corre dos veces) y qué noticias
+salieron en los últimos 7 días (para no repetirlas).
 
 ## Probar en tu computador (opcional)
 
@@ -88,5 +108,5 @@ pip install -r requirements.txt
 export GEMINI_API_KEY=xxx
 export CALLMEBOT_PHONE=xxx
 export CALLMEBOT_API_KEY=xxx
-python news_digest.py
+python news_digest.py --force   # --force salta el control de hora y de ya-enviado
 ```

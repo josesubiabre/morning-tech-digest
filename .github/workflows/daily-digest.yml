@@ -2,11 +2,17 @@ name: Daily Tech News Digest
 
 on:
   schedule:
-    # 12:00 UTC = 08:00 en Chile (UTC-4). Si Chile cambia a horario de
-    # verano (UTC-3), este cron llegará a las 09:00 hora local — ajustar
-    # a "0 11 * * *" en esa temporada si quieres que sea siempre a las 8.
+    # Corre a las 11:00 y 12:00 UTC. El script decide (usando America/Santiago)
+    # cuál de las dos corresponde a las 08:00 de Chile y solo esa envía; la otra
+    # sale de inmediato. Así el cambio de hora chileno no requiere editar esto.
+    - cron: "0 11 * * *"
     - cron: "0 12 * * *"
-  workflow_dispatch: {}  # permite ejecutarlo manualmente desde la pestaña Actions
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Reenviar aunque el digest de hoy ya se haya enviado"
+        type: boolean
+        default: false
 
 permissions:
   contents: write  # necesario para poder commitear el digest de vuelta al repo
@@ -31,12 +37,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
           CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
-        run: python news_digest.py
+        # Las ejecuciones manuales saltan el control de hora automáticamente
+        # (el script mira GITHUB_EVENT_NAME); --force además permite reenviar.
+        run: python news_digest.py ${{ inputs.force && '--force' || '' }}
 
       - name: Commit digest history
         run: |
           git config user.name "tech-news-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add digests/
+          git add -A  # digests/ y digest_state.json
           git diff --staged --quiet || git commit -m "Digest del $(date -u +'%Y-%m-%d')"
           git push
