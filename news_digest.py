@@ -45,15 +45,18 @@ HOURS_LOOKBACK = 30  # ventana de tiempo para considerar una noticia "de hoy"
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
-# Orden de preferencia de modelos. El script elige el primero que tu key
-# realmente soporte (consultando la lista de modelos disponibles). Si Google
-# cambia los nombres, esto sigue funcionando igual.
+# Orden de preferencia de modelos. El script arma una lista ordenada de
+# candidatos y los va probando: si uno devuelve 404 (Google a veces lista
+# modelos que ya no están disponibles para keys nuevas), pasa al siguiente.
 PREFERRED_MODEL_HINTS = [
+    "gemini-3-flash",
+    "flash-latest",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
-    "flash-latest",
     "flash",
 ]
+
+MAX_MODEL_ATTEMPTS = 5  # cuántos modelos probar antes de rendirse
 
 
 def log(msg):
@@ -151,9 +154,11 @@ def fetch_hn_items():
 # Selección automática de modelo Gemini
 # ---------------------------------------------------------------------------
 
-def pick_gemini_model(api_key):
-    """Consulta los modelos disponibles para esta key y elige el mejor flash
-    que soporte generateContent. Así no dependemos de un nombre fijo."""
+def rank_gemini_models(api_key):
+    """Consulta los modelos disponibles para esta key y devuelve una lista
+    ordenada de candidatos (mejores primero). No garantiza que funcionen:
+    Google a veces lista modelos que luego devuelven 404 para keys nuevas,
+    así que el que llama debe probar el siguiente si uno falla."""
     data = http_get_json(f"{GEMINI_BASE}/models?key={api_key}")
     models = data.get("models", [])
 
@@ -173,15 +178,22 @@ def pick_gemini_model(api_key):
     if not usable:
         raise RuntimeError("Tu API key no tiene ningún modelo con generateContent disponible.")
 
-    # Elegir según el orden de preferencia
-    for hint in PREFERRED_MODEL_HINTS:
-        for short in usable:
-            if hint in short and "preview" not in short:
-                log(f"Modelo Gemini elegido: {short}")
-                return short
-    # Si ninguno calza con las pistas, tomar el primero utilizable
-    log(f"Modelo Gemini elegido (fallback): {usable[0]}")
-    return usable[0]
+    # Ordenar: primero los que calzan con las pistas (sin preview), luego los
+    # que calzan pero son preview, y al final el resto.
+    ranked = []
+    for allow_preview in (False, True):
+        for hint in PREFERRED_MODEL_HINTS:
+            for short in usable:
+                if short in ranked:
+                    continue
+                if hint in short and (allow_preview or "preview" not in short):
+                    ranked.append(short)
+    for short in usable:
+        if short not in ranked:
+            ranked.append(short)
+
+    log(f"Modelos Gemini candidatos (en orden): {', '.join(ranked[:MAX_MODEL_ATTEMPTS])}")
+    return ranked
 
 
 # ---------------------------------------------------------------------------
@@ -224,31 +236,43 @@ Lista cruda de titulares:
 
 
 def summarize_with_gemini(items, api_key):
-    model = pick_gemini_model(api_key)
-    url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
-
     prompt = build_prompt(items)
-    body = {
+    body = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.3},
-    }
+    }).encode("utf-8")
 
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(body).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
+    candidates = rank_gemini_models(api_key)[:MAX_MODEL_ATTEMPTS]
+    last_error = None
 
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = json.load(resp)
-    except urllib.error.HTTPError as e:
-        detail = e.read().decode("utf-8", errors="ignore")
-        log(f"HTTP {e.code} desde Gemini ({model}) -> {detail[:400]}")
-        raise
+    for model in candidates:
+        url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
+        req = urllib.request.Request(
+            url,
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
 
-    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.load(resp)
+            log(f"Resumen generado con {model}")
+            return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="ignore")
+            log(f"HTTP {e.code} desde Gemini ({model}) -> {detail[:400]}")
+            last_error = e
+            # 404: modelo listado pero no disponible para esta key.
+            # 429: sin cuota en este modelo. 403: sin permiso.
+            # En todos esos casos vale la pena probar el siguiente modelo.
+            if e.code in (403, 404, 429):
+                continue
+            raise
+
+    raise RuntimeError(
+        f"Ningún modelo Gemini funcionó (probados: {', '.join(candidates)})."
+    ) from last_error
 
 
 # ---------------------------------------------------------------------------
