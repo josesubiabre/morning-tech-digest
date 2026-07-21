@@ -1,8 +1,6 @@
 """Tests del formato del mensaje: construcción exacta y sanitización."""
 
-import os
 import datetime
-import tempfile
 import unittest
 from unittest import mock
 
@@ -59,12 +57,6 @@ class TestConstruccionMensaje(unittest.TestCase):
         self.assertNotIn("___", msg)
         self.assertNotIn("__________", msg)
 
-    def test_titulo_para_noticias_extra(self):
-        with mock.patch.object(formatter, "digest_file_url", return_value=None):
-            msg = formatter.build_whatsapp_message("", NOTICIAS, NOW, "2026-07-21",
-                                                   title="Más noticias")
-        self.assertTrue(msg.startswith("📰 *Más noticias - 21-07-2026*"))
-
     def test_sanitize(self):
         self.assertEqual(
             formatter.sanitize_whatsapp_text("hola __________ mundo"),
@@ -75,26 +67,6 @@ class TestConstruccionMensaje(unittest.TestCase):
             "línea cortada",
         )
         self.assertEqual(formatter.sanitize_whatsapp_text(None), "")
-
-
-class TestHistorialExtra(unittest.TestCase):
-    def test_extra_agrega_sin_borrar_el_digest_del_dia(self):
-        cwd = os.getcwd()
-        with tempfile.TemporaryDirectory() as tmp:
-            os.chdir(tmp)
-            try:
-                formatter.save_digest_to_history("Hoy domina: X", NOTICIAS, [],
-                                                 "2026-07-21")
-                formatter.save_digest_to_history("También hoy: Y", NOTICIAS[:1], [],
-                                                 "2026-07-21", extra=True)
-                with open(os.path.join("digests", "2026-07-21.md"),
-                          encoding="utf-8") as f:
-                    content = f.read()
-            finally:
-                os.chdir(cwd)
-        self.assertIn("Hoy domina: X", content)          # lo de la mañana sigue
-        self.assertIn("## Más noticias", content)
-        self.assertIn("También hoy: Y", content)
 
 
 if __name__ == "__main__":

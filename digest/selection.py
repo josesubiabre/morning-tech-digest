@@ -35,7 +35,7 @@ def is_valid_url(link):
     return p.scheme in ("http", "https") and bool(p.netloc)
 
 
-def validate_noticias(noticias, min_news=MIN_NEWS, max_news=MAX_NEWS):
+def validate_noticias(noticias):
     """Descarta noticias defectuosas (campos vacíos, URL inválida, resumen
     incompleto). Lanza ValueError si no sobrevive ninguna; avisa si quedan
     menos que el objetivo."""
@@ -60,10 +60,9 @@ def validate_noticias(noticias, min_news=MIN_NEWS, max_news=MAX_NEWS):
 
     if not valid:
         raise ValueError("ninguna noticia pasó la validación")
-    if len(valid) < min_news:
-        objetivo = str(min_news) if min_news == max_news else f"{min_news}-{max_news}"
+    if len(valid) < MIN_NEWS:
         log(f"Aviso: solo {len(valid)} noticias válidas "
-            f"(objetivo: {objetivo}); se envía igual.")
+            f"(objetivo: {MIN_NEWS}-{MAX_NEWS}); se envía igual.")
     return valid
 
 

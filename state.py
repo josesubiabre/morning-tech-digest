@@ -50,15 +50,13 @@ def prune_state(state, today):
     state["history"] = keep(state["history"], HISTORY_DAYS)
 
 
-def recent_coverage(state, today, include_today=False):
+def recent_coverage(state, today):
     """Devuelve (temas para el prompt, links normalizados, títulos de fuente
-    normalizados) de lo enviado en los últimos HISTORY_DAYS días. Por defecto
-    excluye hoy, para que un reenvío con --force no se filtre a sí mismo;
-    con include_today=True lo incluye, para que el modo --more no repita lo
-    que ya salió en el digest de la mañana."""
+    normalizados) de lo enviado en los últimos HISTORY_DAYS días (sin incluir hoy,
+    para que un reenvío con --force no se filtre a sí mismo)."""
     topics, links, source_titles = [], set(), set()
     for date_str in sorted(state["history"], reverse=True):
-        if date_str == today and not include_today:
+        if date_str == today:
             continue
         for entry in state["history"][date_str]:
             if entry.get("titulo"):

@@ -32,11 +32,6 @@ class TestEntryPoint(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertIn("Faltan variables de entorno", result.stderr)
 
-    def test_con_more(self):
-        result = run_entrypoint("--more")
-        self.assertEqual(result.returncode, 1, result.stderr)
-        self.assertIn("Faltan variables de entorno", result.stderr)
-
 
 if __name__ == "__main__":
     unittest.main()
