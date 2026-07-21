@@ -86,15 +86,24 @@ MAX_MESSAGE_CHARS = 3500  # tope del mensaje completo de WhatsApp
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 # Orden de preferencia de modelos. Primero versiones concretas (más
-# predecibles); los alias "latest" quedan como respaldo porque pueden
-# cambiar internamente o estar temporalmente saturados. Si un modelo
+# predecibles); el alias "latest" queda como respaldo porque puede
+# cambiar internamente o estar temporalmente saturado. Si un modelo
 # devuelve 404 (no disponible para esta key), se pasa al siguiente.
 PREFERRED_MODEL_HINTS = [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "flash-latest",
-    "flash",
+    "gemini-3.5-flash-lite",  # suficiente y económico para resumir noticias
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-flash-latest",
 ]
+
+# Modelos que esta cuenta no puede usar: 2.5 devuelve 404 para cuentas nuevas
+# y 2.0 está retirado (429 con cuota limit: 0). Se excluyen del ranking para
+# que no reaparezcan por el listado automático de la API.
+SKIP_MODEL_PREFIXES = (
+    "gemini-2.0-",
+    "gemini-2.5-",
+)
 
 MAX_MODEL_ATTEMPTS = 5   # cuántos modelos probar antes de rendirse
 GEMINI_TIMEOUT = 180     # segundos de espera por respuesta (modelos con thinking demoran)
@@ -333,6 +342,9 @@ def rank_gemini_models(api_key):
             continue
         # Evitar modelos especializados (imagen, audio, embeddings, etc.)
         if any(bad in short for bad in ("image", "tts", "audio", "embedding", "vision")):
+            continue
+        # Excluir generaciones que esta cuenta no puede usar (404/cuota 0)
+        if short.startswith(SKIP_MODEL_PREFIXES):
             continue
         usable.append(short)
 
