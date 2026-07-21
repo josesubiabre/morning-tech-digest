@@ -1,0 +1,10 @@
+# Entornos y caches locales
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+
+# OJO: digests/ y digest_state.json NO van aquí a propósito:
+# el workflow los commitea al repo y la deduplicación de 7 días
+# depende de que digest_state.json persista entre ejecuciones.

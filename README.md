@@ -84,14 +84,27 @@ nada cuando Chile entra o sale del horario de verano.
   últimos 7 días (`digest_state.json`) y descarta o penaliza temas ya cubiertos,
   salvo que haya una actualización real.
 
+## Estructura del código
+
+```
+news_digest.py    # entrada principal: solo el flujo general
+config.py         # todas las constantes: fuentes, horario, formato, Gemini
+utils.py          # helpers compartidos (log, http, normalización)
+collectors/       # rss.py y hacker_news.py
+summarizers/      # gemini.py (prompt, ranking de modelos, validación JSON)
+senders/          # callmebot.py (envío en partes)
+digest/           # selection.py (dedup) y formatter.py (mensaje + historial)
+state.py          # digest_state.json: envíos previos y noticias recientes
+```
+
 ## Ajustar el contenido
 
 Todo el criterio de filtrado y el tono del resumen está en la función `build_prompt()`
-dentro de `news_digest.py`. Puedes editar ese texto para pedir más o menos noticias,
-otro tono, otros temas prioritarios, etc. Las cantidades y largos están en las
-constantes `MIN_NEWS`, `MAX_NEWS`, `MAX_SUMMARY_CHARS` y `MAX_MESSAGE_CHARS`.
+dentro de `summarizers/gemini.py`. Puedes editar ese texto para pedir más o menos
+noticias, otro tono, otros temas prioritarios, etc. Las cantidades y largos están en
+`config.py` (`MIN_NEWS`, `MAX_NEWS`, `MAX_SUMMARY_CHARS`, `MAX_MESSAGE_CHARS`).
 
-Para agregar o quitar fuentes RSS, edita el diccionario `RSS_FEEDS` al inicio del archivo.
+Para agregar o quitar fuentes RSS, edita el diccionario `RSS_FEEDS` en `config.py`.
 
 ## Historial y estado
 
