@@ -73,12 +73,19 @@ entra o sale del horario de verano.
 
 ## Pedir más noticias durante el día
 
-¿Quedaste con gusto a poco? En tu repo: **Actions → Más noticias → Run workflow**
-(sirve el navegador o la app de GitHub en el teléfono). En ~1 minuto te llegan
-por WhatsApp 3 noticias adicionales que no estaban en el digest de la mañana ni
-en los últimos días, y quedan agregadas al archivo del día en `digests/`. Puedes
-pedirlas más de una vez: cada tanda excluye también las extra anteriores. La
-cantidad se ajusta con `EXTRA_NEWS` en `config.py`.
+¿Quedaste con gusto a poco? Hay dos formas de pedir 3 noticias adicionales —
+en ambas llegan por WhatsApp en ~1-2 minutos, sin repetir nada del digest de la
+mañana ni de los últimos días, y quedan agregadas al archivo del día en
+`digests/`:
+
+- **Botón**: en tu repo, **Actions → Más noticias → Run workflow** (sirve el
+  navegador o la app de GitHub en el teléfono). Funciona sin configurar nada.
+- **Escribiendo "más" por WhatsApp**: le mandas cualquier texto al número del
+  bot y llega la tanda. Requiere conectar una vez el webhook gratuito —
+  guía paso a paso en [`webhook/README.md`](webhook/README.md) (~20 min).
+
+Puedes pedirlas más de una vez: cada tanda excluye también las extra
+anteriores. La cantidad se ajusta con `EXTRA_NEWS` en `config.py`.
 
 ## Cómo funciona el digest
 

@@ -1,10 +1,15 @@
 name: Más noticias
 
-# Botón manual: Actions → "Más noticias" → Run workflow (web o app de GitHub).
 # Envía por WhatsApp EXTRA_NEWS noticias adicionales sin repetir nada de lo ya
-# enviado hoy ni en los últimos días.
+# enviado hoy ni en los últimos días. Se dispara de dos formas:
+#   - Botón manual: Actions → "Más noticias" → Run workflow (web o app).
+#   - Mensaje de WhatsApp: escribes "más" (o cualquier texto) al número del
+#     bot; el webhook (webhook/worker.js, corre en Cloudflare) recibe el
+#     mensaje y manda este repository_dispatch. Setup en webhook/README.md.
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [more-news]
 
 permissions:
   contents: write  # necesario para commitear historial y estado de vuelta al repo
