@@ -47,14 +47,14 @@ HOURS_LOOKBACK = 30  # ventana de tiempo para considerar una noticia "de hoy"
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
-# Orden de preferencia de modelos. El script arma una lista ordenada de
-# candidatos y los va probando: si uno devuelve 404 (Google a veces lista
-# modelos que ya no están disponibles para keys nuevas), pasa al siguiente.
+# Orden de preferencia de modelos. Primero versiones concretas (más
+# predecibles); los alias "latest" quedan como respaldo porque pueden
+# cambiar internamente o estar temporalmente saturados. Si un modelo
+# devuelve 404 (no disponible para esta key), se pasa al siguiente.
 PREFERRED_MODEL_HINTS = [
-    "gemini-3-flash",
-    "flash-latest",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
+    "flash-latest",
     "flash",
 ]
 
@@ -277,6 +277,11 @@ def summarize_with_gemini(items, api_key):
                 # reintentar; si se agotan los intentos, siguiente modelo.
                 if e.code >= 500:
                     if attempt < TRIES_PER_MODEL:
+                        log(
+                            f"{model} respondió {e.code}. "
+                            f"Esperando {RETRY_DELAY}s antes de reintentar "
+                            f"({attempt}/{TRIES_PER_MODEL})."
+                        )
                         time.sleep(RETRY_DELAY)
                         continue
                     break
@@ -286,6 +291,10 @@ def summarize_with_gemini(items, api_key):
                 log(f"Error de red con {model} (intento {attempt}/{TRIES_PER_MODEL}): {e}")
                 last_error = e
                 if attempt < TRIES_PER_MODEL:
+                    log(
+                        f"Esperando {RETRY_DELAY}s antes de reintentar "
+                        f"({attempt}/{TRIES_PER_MODEL})."
+                    )
                     time.sleep(RETRY_DELAY)
                 continue  # reintenta; si se agotan los intentos, siguiente modelo
 
