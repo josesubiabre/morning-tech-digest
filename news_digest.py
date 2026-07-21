@@ -17,6 +17,7 @@ Uso local (para probar):
 import os
 import sys
 import json
+import time
 import datetime
 import http.client
 import urllib.parse
@@ -59,7 +60,8 @@ PREFERRED_MODEL_HINTS = [
 
 MAX_MODEL_ATTEMPTS = 5   # cuántos modelos probar antes de rendirse
 GEMINI_TIMEOUT = 180     # segundos de espera por respuesta (modelos con thinking demoran)
-TRIES_PER_MODEL = 2      # reintentos por modelo ante timeout o error de red
+TRIES_PER_MODEL = 3      # intentos por modelo ante timeout, error de red o 5xx
+RETRY_DELAY = 20         # segundos de espera entre reintentos del mismo modelo
 
 
 def log(msg):
@@ -271,14 +273,20 @@ def summarize_with_gemini(items, api_key):
                 # Reintentar no ayuda -> probar el siguiente modelo.
                 if e.code in (403, 404, 429):
                     break
-                # 5xx suele ser transitorio -> reintentar este modelo.
-                if e.code >= 500 and attempt < TRIES_PER_MODEL:
-                    continue
+                # 5xx suele ser transitorio (ej: 503 high demand) -> esperar y
+                # reintentar; si se agotan los intentos, siguiente modelo.
+                if e.code >= 500:
+                    if attempt < TRIES_PER_MODEL:
+                        time.sleep(RETRY_DELAY)
+                        continue
+                    break
                 raise
             except (OSError, http.client.HTTPException) as e:
                 # Timeout de lectura, corte de conexión, error de red, etc.
                 log(f"Error de red con {model} (intento {attempt}/{TRIES_PER_MODEL}): {e}")
                 last_error = e
+                if attempt < TRIES_PER_MODEL:
+                    time.sleep(RETRY_DELAY)
                 continue  # reintenta; si se agotan los intentos, siguiente modelo
 
             # Extraer el texto de forma tolerante (algunos modelos devuelven
