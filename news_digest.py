@@ -593,15 +593,43 @@ def build_whatsapp_message(encabezado, noticias, now_local, today):
 
 
 def send_whatsapp(text, phone, apikey):
-    encoded_text = urllib.parse.quote(text)
-    url = (
-        f"https://api.callmebot.com/whatsapp.php"
-        f"?phone={phone}&text={encoded_text}&apikey={apikey}"
-    )
+    params = urllib.parse.urlencode({
+        "phone": phone,
+        "text": text,
+        "apikey": apikey,
+    })
+
+    url = f"https://api.callmebot.com/whatsapp.php?{params}"
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        result = resp.read().decode("utf-8", errors="ignore")
-    log(f"CallMeBot respondió: {result[:200]}")
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            result = resp.read().decode("utf-8", errors="ignore")
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="ignore")
+        raise RuntimeError(
+            f"CallMeBot falló con HTTP {e.code}: {body[:300]}"
+        ) from e
+
+    cleaned = re.sub(r"\s+", " ", result).strip()
+    log(f"CallMeBot respondió: {cleaned[:300]}")
+
+    lowered = cleaned.lower()
+    error_markers = (
+        "error",
+        "invalid",
+        "not authorized",
+        "not allowed",
+        "wrong",
+        "missing",
+        "phone number",
+        "api key",
+    )
+
+    if any(marker in lowered for marker in error_markers):
+        raise RuntimeError(f"CallMeBot no aceptó el envío: {cleaned[:300]}")
+
+    return cleaned
 
 
 # ---------------------------------------------------------------------------
