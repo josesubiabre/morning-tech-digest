@@ -615,19 +615,37 @@ def send_whatsapp(text, phone, apikey):
     log(f"CallMeBot respondió: {cleaned[:300]}")
 
     lowered = cleaned.lower()
-    error_markers = (
-        "error",
-        "invalid",
-        "not authorized",
-        "not allowed",
-        "wrong",
-        "missing",
-        "phone number",
-        "api key",
+
+    # CallMeBot responde HTML y además repite el texto enviado.
+    # Por eso NO buscamos palabras genéricas como "error" en toda la respuesta,
+    # porque una noticia puede contener esa palabra y producir un falso fallo.
+    success_markers = (
+        "message to:",
+        "text to send:",
+        "queued",
+        "message queued",
+        "ticket",
     )
 
-    if any(marker in lowered for marker in error_markers):
+    hard_error_markers = (
+        "invalid api key",
+        "wrong api key",
+        "api key is invalid",
+        "phone number is not authorized",
+        "not authorized",
+        "not allowed",
+        "missing parameter",
+        "missing phone",
+        "missing apikey",
+    )
+
+    if any(marker in lowered for marker in hard_error_markers):
         raise RuntimeError(f"CallMeBot no aceptó el envío: {cleaned[:300]}")
+
+    if not any(marker in lowered for marker in success_markers):
+        raise RuntimeError(
+            f"Respuesta inesperada de CallMeBot; no se confirma envío: {cleaned[:300]}"
+        )
 
     return cleaned
 
