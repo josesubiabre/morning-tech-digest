@@ -2,9 +2,9 @@
 
 CallMeBot corta los mensajes que superan ~700 caracteres: trunca a mitad de
 palabra, descarta texto e inserta su propio separador "__________". Por eso
-cada parte enviada (sufijo "Parte i/n" incluido) debe quedar bajo
-CALLMEBOT_CHUNK_CHARS, y send_callmebot_message rechaza cualquier texto que
-supere CALLMEBOT_MAX_CHARS como defensa final.
+cada parte enviada debe quedar bajo CALLMEBOT_CHUNK_CHARS, y
+send_callmebot_message rechaza cualquier texto que supere CALLMEBOT_MAX_CHARS
+como defensa final.
 """
 
 import re
@@ -21,14 +21,10 @@ from config import (
 )
 from utils import log
 
-PART_SUFFIX_RESERVE = 16  # espacio para "\n\n_Parte xx/yy_" dentro del límite
-
 
 def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
-    """Divide el mensaje en partes de a lo más `limit` caracteres, contando el
-    sufijo "_Parte i/n_". Respeta los bloques separados por línea en blanco."""
-    effective = max(200, limit - PART_SUFFIX_RESERVE)
-
+    """Divide el mensaje en partes de a lo más `limit` caracteres, respetando
+    los bloques separados por línea en blanco (sin partir noticias)."""
     blocks = text.split("\n\n")
     chunks = []
     current = ""
@@ -36,32 +32,25 @@ def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
     for block in blocks:
         candidate = block if not current else f"{current}\n\n{block}"
 
-        if len(candidate) <= effective:
+        if len(candidate) <= limit:
             current = candidate
             continue
 
         if current:
             chunks.append(current)
 
-        if len(block) <= effective:
+        if len(block) <= limit:
             current = block
         else:
             # Fallback para bloques demasiado largos: cortar por caracteres.
-            for i in range(0, len(block), effective):
-                chunks.append(block[i:i + effective])
+            for i in range(0, len(block), limit):
+                chunks.append(block[i:i + limit])
             current = ""
 
     if current:
         chunks.append(current)
 
-    if len(chunks) <= 1:
-        return chunks
-
-    total = len(chunks)
-    return [
-        f"{chunk}\n\n_Parte {i}/{total}_"
-        for i, chunk in enumerate(chunks, start=1)
-    ]
+    return chunks
 
 
 def _mask_secrets(text, phone, apikey):

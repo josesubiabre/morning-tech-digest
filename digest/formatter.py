@@ -45,8 +45,7 @@ def build_whatsapp_message(encabezado, noticias, now_local, today):
     for i, n in enumerate(noticias, 1):
         titulo = sanitize_whatsapp_text(n["titulo"])
         resumen = sanitize_whatsapp_text(n["resumen"])
-        fuente = f" — {n['source']}" if n.get("source") else ""
-        blocks.append(f"*{i}. {titulo}*{fuente}\n{resumen}\n{n['link']}")
+        blocks.append(f"*{i}. {titulo}*\n{resumen}\n{n['link']}")
     if footer:
         blocks.append(footer)
 

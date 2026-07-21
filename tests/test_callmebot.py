@@ -7,22 +7,21 @@ from config import CALLMEBOT_CHUNK_CHARS, CALLMEBOT_MAX_CHARS
 
 
 class TestSplit(unittest.TestCase):
-    def test_mensaje_corto_una_parte_sin_sufijo(self):
+    def test_mensaje_corto_una_sola_parte(self):
         msg = "📰 *Resumen*\n\n*1. Noticia*\nresumen\nhttps://a.com"
         self.assertEqual(callmebot.split_whatsapp_message(msg), [msg])
 
-    def test_partes_respetan_limite_incluyendo_sufijo(self):
+    def test_partes_respetan_limite(self):
         blocks = [f"*{i}. Noticia {i}*\n" + ("relleno " * 40).strip() + f"\nhttps://e.com/{i}"
                   for i in range(8)]
         msg = "\n\n".join(blocks)
         chunks = callmebot.split_whatsapp_message(msg)
         self.assertGreater(len(chunks), 1)
         for i, c in enumerate(chunks, 1):
-            # El límite DEBE incluir el sufijo "_Parte i/n_" (antes se sumaba
-            # después del corte y la parte quedaba sobre el umbral de CallMeBot)
             self.assertLessEqual(len(c), CALLMEBOT_CHUNK_CHARS, f"parte {i} excede")
             self.assertLessEqual(len(c), CALLMEBOT_MAX_CHARS, f"parte {i} sobre tope duro")
-            self.assertTrue(c.endswith(f"_Parte {i}/{len(chunks)}_"))
+            # Sin sufijo "Parte i/n": el contenido va limpio
+            self.assertNotIn("_Parte", c)
 
     def test_no_parte_bloques_por_la_mitad(self):
         blocks = [f"*{i}. N{i}*\n" + ("x " * 100).strip() + f"\nhttps://e.com/{i}"

@@ -29,23 +29,23 @@ class TestConstruccionMensaje(unittest.TestCase):
             "\n"
             "_Hoy domina: la IA_\n"
             "\n"
-            "*1. Google lanza Gemini 3.6 Flash* — TechCrunch\n"
+            "*1. Google lanza Gemini 3.6 Flash*\n"
             "Google liberó nuevos modelos flash.\n"
             "https://techcrunch.com/2026/07/21/google/\n"
             "\n"
-            "*2. Nvidia presenta Vera Rubin* — Wired\n"
+            "*2. Nvidia presenta Vera Rubin*\n"
             "Nvidia combina CPUs y GPUs en un solo sistema.\n"
             "https://www.wired.com/story/nvidia/"
         )
         self.assertEqual(msg, esperado)
 
-    def test_numeracion_y_fuente_presentes(self):
+    def test_numeracion_presente_sin_fuente(self):
         with mock.patch.object(formatter, "digest_file_url", return_value=None):
             msg = formatter.build_whatsapp_message("", NOTICIAS, NOW, "2026-07-21")
         self.assertIn("*1. ", msg)
         self.assertIn("*2. ", msg)
-        self.assertIn("— TechCrunch", msg)
-        self.assertIn("— Wired", msg)
+        self.assertNotIn("— TechCrunch", msg)
+        self.assertNotIn("— Wired", msg)
 
     def test_sin_separadores_de_underscores(self):
         sucias = [dict(NOTICIAS[0],
