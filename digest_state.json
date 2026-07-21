@@ -2,23 +2,28 @@
   "history": {
     "2026-07-21": [
       {
-        "link": "theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
-        "source_title": "google launches a cheaper alternative to large ai security models like mythos",
-        "titulo": "Google lanza modelo de seguridad"
+        "link": "blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber",
+        "source_title": "gemini 36 flash 35 flashlite and 35 flash cyber",
+        "titulo": "Google lanza Gemini 3.6 Flash y modelo de seguridad"
+      },
+      {
+        "link": "techcrunch.com/2026/07/21/us-threatens-sanctions-against-chinese-ai-models-over-ip-theft",
+        "source_title": "us threatens sanctions against chinese ai models over ip theft",
+        "titulo": "EEUU amenaza con sanciones a modelos de IA chinos"
       },
       {
         "link": "arstechnica.com/tech-policy/2026/07/judge-halts-paramounts-111b-purchase-of-warner-bros-in-win-for-us-states",
         "source_title": "judge halts paramounts 111b purchase of warner bros in win for us states",
-        "titulo": "Frena millonaria compra de Warner Bros"
+        "titulo": "Frenan compra de Warner Bros. por Paramount"
       },
       {
         "link": "techcrunch.com/2026/07/21/ai-music-generator-suno-breach-affects-55m-users-per-have-i-been-pwned",
         "source_title": "ai music generator suno breach affects 55m users per have i been pwned",
-        "titulo": "Brecha de datos en Suno"
+        "titulo": "Fuga masiva de datos en Suno afecta a 55M"
       }
     ]
   },
   "sent": {
-    "2026-07-21": "2026-07-21T11:30:46-04:00"
+    "2026-07-21": "2026-07-21T11:53:56-04:00"
   }
 }
