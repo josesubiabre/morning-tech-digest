@@ -79,6 +79,9 @@ MAX_NEWS = 5
 MAX_SUMMARY_CHARS = 350   # tope por resumen individual
 MAX_MESSAGE_CHARS = 3500  # tope del mensaje completo de WhatsApp
 
+CALLMEBOT_CHUNK_CHARS = 1100   # CallMeBot corta mensajes largos; enviar en partes
+CALLMEBOT_DELAY_SECONDS = 3    # pausa entre partes para que lleguen en orden
+
 # ---------------------------------------------------------------------------
 # Gemini
 # ---------------------------------------------------------------------------
@@ -592,7 +595,43 @@ def build_whatsapp_message(encabezado, noticias, now_local, today):
     return message
 
 
-def send_whatsapp(text, phone, apikey):
+def split_whatsapp_message(text, limit=CALLMEBOT_CHUNK_CHARS):
+    blocks = text.split("\n\n")
+    chunks = []
+    current = ""
+
+    for block in blocks:
+        candidate = block if not current else f"{current}\n\n{block}"
+
+        if len(candidate) <= limit:
+            current = candidate
+            continue
+
+        if current:
+            chunks.append(current)
+
+        if len(block) <= limit:
+            current = block
+        else:
+            # Fallback para bloques demasiado largos: cortar por caracteres.
+            for i in range(0, len(block), limit):
+                chunks.append(block[i:i + limit])
+            current = ""
+
+    if current:
+        chunks.append(current)
+
+    if len(chunks) <= 1:
+        return chunks
+
+    total = len(chunks)
+    return [
+        f"{chunk}\n\n_Parte {i}/{total}_"
+        for i, chunk in enumerate(chunks, start=1)
+    ]
+
+
+def send_callmebot_message(text, phone, apikey):
     params = urllib.parse.urlencode({
         "phone": phone,
         "text": text,
@@ -616,17 +655,6 @@ def send_whatsapp(text, phone, apikey):
 
     lowered = cleaned.lower()
 
-    # CallMeBot responde HTML y además repite el texto enviado.
-    # Por eso NO buscamos palabras genéricas como "error" en toda la respuesta,
-    # porque una noticia puede contener esa palabra y producir un falso fallo.
-    success_markers = (
-        "message to:",
-        "text to send:",
-        "queued",
-        "message queued",
-        "ticket",
-    )
-
     hard_error_markers = (
         "invalid api key",
         "wrong api key",
@@ -642,12 +670,20 @@ def send_whatsapp(text, phone, apikey):
     if any(marker in lowered for marker in hard_error_markers):
         raise RuntimeError(f"CallMeBot no aceptó el envío: {cleaned[:300]}")
 
-    if not any(marker in lowered for marker in success_markers):
-        raise RuntimeError(
-            f"Respuesta inesperada de CallMeBot; no se confirma envío: {cleaned[:300]}"
-        )
-
     return cleaned
+
+
+def send_whatsapp(text, phone, apikey):
+    chunks = split_whatsapp_message(text)
+
+    log(f"Enviando WhatsApp en {len(chunks)} parte(s)")
+
+    for idx, chunk in enumerate(chunks, start=1):
+        log(f"Enviando parte {idx}/{len(chunks)} ({len(chunk)} caracteres)")
+        send_callmebot_message(chunk, phone, apikey)
+
+        if idx < len(chunks):
+            time.sleep(CALLMEBOT_DELAY_SECONDS)
 
 
 # ---------------------------------------------------------------------------
