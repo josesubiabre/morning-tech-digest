@@ -1,86 +1,86 @@
 # 📰 morning-tech-digest
 
-Resumen diario de noticias tech directo a tu WhatsApp, cada mañana. Recolecta lo más
-relevante de medios y comunidades tech, lo filtra y resume con IA, y te lo envía a las
-8:00 AM — todo corriendo gratis sobre GitHub Actions, sin ningún servidor.
+A daily tech news digest delivered straight to your WhatsApp, every morning. It gathers the
+most relevant stories from tech media and communities, filters and summarizes them with AI,
+and sends them to you at 8:00 AM — running entirely free on GitHub Actions, with no server.
 
-<!-- Reemplaza esta línea por una captura real del mensaje que te llega:
-![Ejemplo del digest en WhatsApp](docs/ejemplo-whatsapp.png)
+<!-- Replace this line with a real screenshot of the message you receive:
+![Digest example on WhatsApp](docs/whatsapp-example.png)
 -->
 
-## ✨ Qué hace
+## ✨ What it does
 
-- **Recolecta** noticias desde múltiples fuentes (RSS de medios tech + Hacker News).
-- **Filtra y resume** con la API de Google Gemini, quedándose solo con lo importante del día.
-- **Envía** el resumen por WhatsApp usando CallMeBot.
-- **Guarda** un historial de cada digest en la carpeta `digests/`.
-- **Se ejecuta solo** todos los días vía GitHub Actions (cron), sin infraestructura propia.
+- **Collects** news from multiple sources (tech RSS feeds + Hacker News).
+- **Filters and summarizes** with the Google Gemini API, keeping only what matters that day.
+- **Sends** the summary to WhatsApp via CallMeBot.
+- **Stores** a history of every digest in the `digests/` folder.
+- **Runs itself** every day via GitHub Actions (cron), with zero infrastructure.
 
-## 🧱 Arquitectura
+## 🧱 Architecture
 
-El flujo está modularizado por responsabilidad:
+The pipeline is split by responsibility:
 
 ```
-GitHub Actions (cron 08:00 Chile)
+GitHub Actions (cron 08:00 Chile time)
         │
         ▼
-   collectors/   →  obtienen las noticias crudas (RSS, Hacker News)
+   collectors/   →  fetch raw news (RSS, Hacker News)
         │
         ▼
-   summarizers/  →  filtran y resumen con Gemini
+   summarizers/  →  filter and summarize with Gemini
         │
         ▼
-   senders/      →  envían el mensaje a WhatsApp (CallMeBot)
+   senders/      →  deliver the message to WhatsApp (CallMeBot)
         │
         ▼
-   digests/      →  historial en Markdown de cada día
+   digests/      →  Markdown history of each day
 ```
 
-Módulos de apoyo: `config.py` (configuración central), `state.py` (estado entre corridas),
-`utils.py` (utilidades comunes) y `tests/` (pruebas).
+Supporting modules: `config.py` (central configuration), `state.py` (state across runs),
+`utils.py` (shared helpers), and `tests/` (tests).
 
 ## 🛠️ Stack
 
 - **Python 3.11**
-- **Google Gemini API** — resumen y filtrado
-- **CallMeBot** — envío a WhatsApp (gratis, uso personal)
-- **GitHub Actions** — scheduler y ejecución (gratis)
-- **feedparser** — lectura de feeds RSS
+- **Google Gemini API** — summarization and filtering
+- **CallMeBot** — WhatsApp delivery (free, personal use)
+- **GitHub Actions** — scheduler and execution (free)
+- **feedparser** — RSS feed parsing
 
 ## 🚀 Setup
 
-### 1. Requisitos de cuentas (gratis)
+### 1. Accounts you'll need (all free)
 
-| Servicio      | Para qué                        | Cómo obtenerlo                                              |
-|---------------|---------------------------------|------------------------------------------------------------|
-| Gemini API    | Resumir las noticias            | [Google AI Studio](https://aistudio.google.com/apikey)     |
-| CallMeBot     | Enviar el WhatsApp              | Agrega **+34 644 71 81 99** y envía `I allow callmebot to send me messages`; te responde con tu API key |
+| Service    | Purpose                    | How to get it                                                                                  |
+|------------|----------------------------|------------------------------------------------------------------------------------------------|
+| Gemini API | Summarize the news         | [Google AI Studio](https://aistudio.google.com/apikey)                                         |
+| CallMeBot  | Send the WhatsApp message  | Add **+34 644 71 81 99** and send `I allow callmebot to send me messages`; it replies with your API key |
 
-### 2. Configurar los Secrets en GitHub
+### 2. Configure GitHub Secrets
 
-En el repo: **Settings → Secrets and variables → Actions → New repository secret**.
+In the repo: **Settings → Secrets and variables → Actions → New repository secret**.
 
-| Nombre               | Valor                                              |
-|----------------------|-----------------------------------------------------|
-| `GEMINI_API_KEY`     | Tu API key de Gemini                               |
-| `CALLMEBOT_PHONE`    | Tu número en formato internacional sin `+` (ej: `56912345678`) |
-| `CALLMEBOT_API_KEY`  | La API key que te dio CallMeBot                    |
+| Name                 | Value                                                          |
+|----------------------|----------------------------------------------------------------|
+| `GEMINI_API_KEY`     | Your Gemini API key                                            |
+| `CALLMEBOT_PHONE`    | Your number in international format, no `+` (e.g. `56912345678`) |
+| `CALLMEBOT_API_KEY`  | The API key CallMeBot gave you                                 |
 
-### 3. Ejecutar
+### 3. Run it
 
-- **Manual:** pestaña **Actions → Daily Tech News Digest → Run workflow**.
-- **Automático:** ya está agendado vía cron para las 08:00 (hora de Chile).
+- **Manually:** the **Actions → Daily Tech News Digest → Run workflow** tab.
+- **Automatically:** it's already scheduled via cron for 08:00 (Chile time).
 
-> El cron corre a las 12:00 UTC (08:00 en horario estándar de Chile). Si Chile entra en
-> horario de verano (UTC-3), cambia el cron a `0 11 * * *` para mantener la hora local.
+> The cron runs at 12:00 UTC (08:00 in Chile standard time). If Chile switches to daylight
+> saving time (UTC-3), change the cron to `0 11 * * *` to keep the same local hour.
 
-## ⚙️ Personalización
+## ⚙️ Customization
 
-- **Fuentes:** edita la configuración de feeds en `config.py` / `collectors/`.
-- **Criterio y tono del resumen:** ajusta el prompt en `summarizers/`.
-- **Horario:** modifica el `cron` en `.github/workflows/`.
+- **Sources:** edit the feed configuration in `config.py` / `collectors/`.
+- **Summary criteria and tone:** tweak the prompt in `summarizers/`.
+- **Schedule:** change the `cron` in `.github/workflows/`.
 
-## 🧪 Correr localmente
+## 🧪 Run locally
 
 ```bash
 pip install -r requirements.txt
@@ -90,6 +90,6 @@ export CALLMEBOT_API_KEY=xxx
 python news_digest.py
 ```
 
-## 📄 Licencia
+## 📄 License
 
-MIT — ver [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
