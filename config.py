@@ -29,11 +29,16 @@ EXCERPT_MAX_CHARS = 1000  # largo máximo del extracto RSS que se le pasa a Gemi
 # ---------------------------------------------------------------------------
 
 TIMEZONE = "America/Santiago"
-SEND_HOUR_LOCAL = 8    # hora local (Chile) a la que corresponde enviar
+SEND_HOUR_LOCAL = 8    # hora local (Chile) a la que debe LLEGAR el mensaje
 # Los cron de GitHub Actions suelen atrasarse (a veces más de una hora), así
-# que se acepta enviar hasta esta hora local inclusive (ventana 08:00-09:59).
-# El control de ya-enviado evita duplicados cuando ambas ejecuciones caen en
-# la ventana; la sobrante queda como reintento automático si la primera falló.
+# que el workflow parte varias veces ANTES de las 08:00: la ejecución que cae
+# dentro de esta antesala prepara el digest y duerme hasta las 08:00:00 en
+# punto para enviar. Ejecuciones más tempranas que esto salen sin hacer nada.
+MAX_WAIT_MINUTES = 100
+# Si todas las ejecuciones tempranas se atrasaron más allá de las 08:00, se
+# acepta enviar de inmediato hasta esta hora local inclusive (08:00-09:59).
+# El control de ya-enviado evita duplicados; la ejecución sobrante queda como
+# reintento automático si la primera falló.
 SEND_WINDOW_END_LOCAL = 9
 STATE_PATH = "digest_state.json"
 HISTORY_DAYS = 7       # días hacia atrás para no repetir noticias

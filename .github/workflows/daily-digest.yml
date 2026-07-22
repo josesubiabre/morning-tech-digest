@@ -2,12 +2,18 @@ name: Daily Tech News Digest
 
 on:
   schedule:
-    # Corre a las 11:00 y 12:00 UTC. El script envía solo si la hora en Chile
-    # (America/Santiago) cae en la ventana 08:00-09:59; el control de ya-enviado
-    # evita duplicados, así que la ejecución sobrante actúa de reintento si la
-    # primera falló, y el cambio de hora chileno no requiere editar esto.
-    - cron: "0 11 * * *"
-    - cron: "0 12 * * *"
+    # El mensaje debe LLEGAR a las 08:00 en punto (hora de Chile), pero los
+    # cron de Actions parten con atraso impredecible (a veces >1 hora). Por eso
+    # hay varios arranques ANTES de las 08:00 locales: el primero que caiga en
+    # la antesala (MAX_WAIT_MINUTES en config.py) prepara el digest y duerme
+    # hasta las 08:00:00 exactas para enviar. Los demás salen solos: muy
+    # temprano no hacen nada, y después de las 08:00 actúan de reintento
+    # inmediato si nada se envió. Las horas cubren invierno (UTC-4) y verano
+    # (UTC-3) chilenos sin editar esto.
+    - cron: "40 9 * * *"   # verano 06:40 (antesala) / invierno 05:40 (sale)
+    - cron: "20 10 * * *"  # verano 07:20 (antesala) / invierno 06:20 (antesala)
+    - cron: "20 11 * * *"  # verano 08:20 (reintento) / invierno 07:20 (antesala)
+    - cron: "30 12 * * *"  # verano 09:30 (reintento) / invierno 08:30 (reintento)
   workflow_dispatch:
     inputs:
       force:
@@ -18,9 +24,10 @@ on:
 permissions:
   contents: write  # necesario para poder commitear el digest de vuelta al repo
 
-# Nunca correr dos digests a la vez: si una ejecución atrasada sigue viva
-# cuando parte la siguiente, la segunda espera en cola (y al partir verá el
-# estado ya commiteado y saldrá sin enviar).
+# Nunca correr dos digests a la vez: mientras una ejecución espera dormida
+# hasta las 08:00 (o sigue viva por atraso), la siguiente queda en cola y al
+# partir verá el estado ya commiteado y saldrá sin enviar. La cola no consume
+# minutos de Actions; solo la ejecución que duerme lo hace.
 concurrency:
   group: daily-digest
   cancel-in-progress: false
@@ -28,7 +35,10 @@ concurrency:
 jobs:
   send-digest:
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # corta descargas o APIs colgadas; el otro cron reintenta
+    # Debe cubrir la espera hasta las 08:00 (hasta MAX_WAIT_MINUTES) más el
+    # trabajo previo; también corta descargas o APIs colgadas y deja que el
+    # siguiente cron reintente.
+    timeout-minutes: 115
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

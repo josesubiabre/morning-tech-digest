@@ -69,8 +69,11 @@ In the repo: **Settings → Secrets and variables → Actions → New repository
 - **Manually:** the **Actions → Daily Tech News Digest → Run workflow** tab.
 - **Automatically:** it's already scheduled via cron for 08:00 (Chile time).
 
-> The cron runs at 12:00 UTC (08:00 in Chile standard time). If Chile switches to daylight
-> saving time (UTC-3), change the cron to `0 11 * * *` to keep the same local hour.
+> GitHub Actions crons start with unpredictable delays, so the workflow starts several
+> times before 08:00 Chile time: the first run that lands close enough to 08:00 prepares
+> the digest and sleeps until exactly 08:00:00 to send it. Later runs act as an immediate
+> fallback if every early run was delayed past 08:00. The schedule covers both Chilean
+> winter (UTC-4) and summer (UTC-3) without edits.
 
 ## ⚙️ Customization
 

@@ -12,10 +12,13 @@ Variables de entorno requeridas (se configuran como GitHub Secrets):
   CALLMEBOT_API_KEY     -> API key que te dio el bot de CallMeBot por WhatsApp
 
 Comportamiento:
-  - Envía cuando la hora de Chile (America/Santiago) cae entre las 08:00 y las
-    09:59. El workflow corre a las 11:00 y 12:00 UTC; la ventana tolera los
-    atrasos habituales del cron de Actions, y como el estado registra lo ya
-    enviado, la ejecución sobrante queda como reintento si la primera falló.
+  - El mensaje debe LLEGAR a las 08:00 en punto (hora de Chile). Como los cron
+    de Actions se atrasan de forma impredecible, el workflow parte varias veces
+    antes de las 08:00: la ejecución que cae dentro de la antesala
+    (MAX_WAIT_MINUTES antes de las 08:00) prepara todo el digest y duerme hasta
+    las 08:00:00 exactas para enviar. Si todas se atrasaron más allá de las
+    08:00, se envía de inmediato hasta las 09:59 como plan B, y el estado de
+    ya-enviado evita duplicados entre ejecuciones.
   - Si el digest de hoy ya fue enviado (según digest_state.json), no reenvía.
   - Las ejecuciones manuales (workflow_dispatch) saltan el control de hora.
   - El flag --force salta ambos controles (hora y ya-enviado).
@@ -27,10 +30,12 @@ Uso local (para probar):
   python news_digest.py --force
 """
 
+import datetime
 import os
 import sys
+import time
 
-from config import SEND_HOUR_LOCAL, SEND_WINDOW_END_LOCAL
+from config import SEND_HOUR_LOCAL, SEND_WINDOW_END_LOCAL, MAX_WAIT_MINUTES
 from utils import log, now_santiago, normalize_link
 from collectors import fetch_rss_items, fetch_hn_items
 from state import load_state, save_state, prune_state, recent_coverage
@@ -73,18 +78,33 @@ def main():
             "Usa --force para reenviar.")
         sys.exit(0)
 
-    # Control de horario: el cron corre a las 11:00 y 12:00 UTC, pero los cron
-    # de Actions suelen atrasarse, así que se acepta cualquier ejecución dentro
-    # de la ventana local (el control de ya-enviado de arriba evita duplicados
-    # y la ejecución sobrante sirve de reintento si la primera falló; el cambio
-    # de hora chileno tampoco requiere editar el workflow).
-    if not force and not is_manual and not (
-        SEND_HOUR_LOCAL <= now_local.hour <= SEND_WINDOW_END_LOCAL
-    ):
-        log(f"Hora local en Chile: {now_local.strftime('%H:%M')}. "
-            f"El envío corresponde a las {SEND_HOUR_LOCAL:02d}:00-"
-            f"{SEND_WINDOW_END_LOCAL:02d}:59. Saliendo sin enviar.")
-        sys.exit(0)
+    # Control de horario. El mensaje debe LLEGAR a las 08:00 en punto, pero
+    # los cron de Actions parten con atraso impredecible, así que el workflow
+    # arranca varias veces antes de la hora:
+    #   - Antesala (hasta MAX_WAIT_MINUTES antes de las 08:00): se prepara el
+    #     digest ahora y se duerme hasta las 08:00:00 exactas para enviar.
+    #   - Más temprano que eso: salir sin hacer nada (otra ejecución vendrá).
+    #   - Entre las 08:00 y el fin de ventana: enviar de inmediato (plan B si
+    #     todas las ejecuciones tempranas llegaron tarde o fallaron).
+    #   - Más tarde: salir sin enviar.
+    # El control de ya-enviado de arriba evita duplicados entre ejecuciones y
+    # el cambio de hora chileno no requiere editar el workflow.
+    send_target = now_local.replace(
+        hour=SEND_HOUR_LOCAL, minute=0, second=0, microsecond=0
+    )
+    wait_for_target = False
+    if not force and not is_manual:
+        if now_local < send_target - datetime.timedelta(minutes=MAX_WAIT_MINUTES):
+            log(f"Hora local en Chile: {now_local.strftime('%H:%M')}. Demasiado "
+                f"temprano para preparar el envío de las "
+                f"{SEND_HOUR_LOCAL:02d}:00. Saliendo sin enviar.")
+            sys.exit(0)
+        if now_local.hour > SEND_WINDOW_END_LOCAL:
+            log(f"Hora local en Chile: {now_local.strftime('%H:%M')}. "
+                f"El envío corresponde a las {SEND_HOUR_LOCAL:02d}:00-"
+                f"{SEND_WINDOW_END_LOCAL:02d}:59. Saliendo sin enviar.")
+            sys.exit(0)
+        wait_for_target = now_local < send_target
 
     items = fetch_rss_items() + fetch_hn_items()
 
@@ -103,9 +123,17 @@ def main():
     noticias = validate_noticias(noticias)
 
     message = build_whatsapp_message(encabezado, noticias, now_local)
+
+    if wait_for_target:
+        remaining = (send_target - now_santiago()).total_seconds()
+        if remaining > 0:
+            log(f"Digest listo; esperando {int(remaining)} s para enviar a las "
+                f"{SEND_HOUR_LOCAL:02d}:00:00 en punto.")
+            time.sleep(remaining)
+
     send_whatsapp(message, phone, callmebot_key)
 
-    state["sent"][today] = now_local.isoformat(timespec="seconds")
+    state["sent"][today] = now_santiago().isoformat(timespec="seconds")
     state["history"][today] = [
         {"titulo": n["titulo"], "link": n["norm_link"], "source_title": n["source_title"]}
         for n in noticias
