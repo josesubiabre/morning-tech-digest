@@ -1,10 +1,33 @@
-# Entornos y caches locales
-.venv/
-venv/
+# Python
 __pycache__/
 *.py[cod]
-.env
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
 
-# OJO: digests/ y digest_state.json NO van aquí a propósito:
-# el workflow los commitea al repo y la deduplicación de 7 días
-# depende de que digest_state.json persista entre ejecuciones.
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Variables de entorno / secretos (NUNCA subir keys al repo)
+.env
+.env.*
+*.key
+secrets.*
+gemini_api_key*
+callmebot*
+
+# NOTA: digest_state.json SÍ se versiona a propósito — es la "memoria" del bot
+# (qué noticias ya envió) y en GitHub Actions es la única forma de persistir
+# ese estado entre corridas. No lo agregues aquí.
+
+# Sistema operativo / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
