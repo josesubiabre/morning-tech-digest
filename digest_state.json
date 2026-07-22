@@ -26,9 +26,27 @@
         "source_title": "us threatens sanctions against chinese ai models over ip theft",
         "titulo": "EE.UU. amenaza con sanciones a modelos de IA chinos"
       }
+    ],
+    "2026-07-22": [
+      {
+        "link": "techcrunch.com/2026/07/21/openai-says-hugging-face-was-breached-by-its-pre-release-models",
+        "source_title": "openai says hugging face was breached by its prerelease models",
+        "titulo": "OpenAI admite brecha en Hugging Face por modelos propios"
+      },
+      {
+        "link": "arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors",
+        "source_title": "anthropics 15b copyright settlement approved only 350 authors opted out",
+        "titulo": "Juez aprueba acuerdo de 1.500 millones con Anthropic"
+      },
+      {
+        "link": "techcrunch.com/2026/07/22/glow-emerges-from-stealth-at-1-2b-valuation-to-challenge-endpoint-security-in-the-ai-era",
+        "source_title": "glow emerges from stealth at 12b valuation to challenge endpoint security in the ai era",
+        "titulo": "Glow surge con valorización de 1.200 millones de dólares"
+      }
     ]
   },
   "sent": {
-    "2026-07-21": "2026-07-21T15:11:03-04:00"
+    "2026-07-21": "2026-07-21T15:11:03-04:00",
+    "2026-07-22": "2026-07-22T08:22:41-04:00"
   }
 }
