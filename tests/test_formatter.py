@@ -2,7 +2,6 @@
 
 import datetime
 import unittest
-from unittest import mock
 
 from digest import formatter
 
@@ -20,10 +19,7 @@ NOTICIAS = [
 
 class TestConstruccionMensaje(unittest.TestCase):
     def test_mensaje_exacto(self):
-        with mock.patch.object(formatter, "digest_file_url", return_value=None):
-            msg = formatter.build_whatsapp_message(
-                "Hoy domina: la IA", NOTICIAS, NOW, "2026-07-21"
-            )
+        msg = formatter.build_whatsapp_message("Hoy domina: la IA", NOTICIAS, NOW)
         esperado = (
             "📰 *Resumen tech - 21-07-2026*\n"
             "\n"
@@ -40,8 +36,7 @@ class TestConstruccionMensaje(unittest.TestCase):
         self.assertEqual(msg, esperado)
 
     def test_numeracion_presente_sin_fuente(self):
-        with mock.patch.object(formatter, "digest_file_url", return_value=None):
-            msg = formatter.build_whatsapp_message("", NOTICIAS, NOW, "2026-07-21")
+        msg = formatter.build_whatsapp_message("", NOTICIAS, NOW)
         self.assertIn("*1. ", msg)
         self.assertIn("*2. ", msg)
         self.assertNotIn("— TechCrunch", msg)
@@ -50,10 +45,9 @@ class TestConstruccionMensaje(unittest.TestCase):
     def test_sin_separadores_de_underscores(self):
         sucias = [dict(NOTICIAS[0],
                        resumen="Antes __________ después de la ronda de 10 millones.")]
-        with mock.patch.object(formatter, "digest_file_url", return_value=None):
-            msg = formatter.build_whatsapp_message(
-                "Encabezado ______ con basura", sucias, NOW, "2026-07-21"
-            )
+        msg = formatter.build_whatsapp_message(
+            "Encabezado ______ con basura", sucias, NOW
+        )
         self.assertNotIn("___", msg)
         self.assertNotIn("__________", msg)
 

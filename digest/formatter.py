@@ -17,25 +17,11 @@ def sanitize_whatsapp_text(text):
     return t.strip()
 
 
-def digest_file_url(today):
-    """Link al digest del día en GitHub (disponible solo corriendo en Actions)."""
-    server = os.environ.get("GITHUB_SERVER_URL")
-    repo = os.environ.get("GITHUB_REPOSITORY")
-    if not (server and repo):
-        return None
-    branch = os.environ.get("GITHUB_REF_NAME", "main")
-    return f"{server}/{repo}/blob/{branch}/digests/{today}.md"
-
-
-def build_whatsapp_message(encabezado, noticias, now_local, today):
+def build_whatsapp_message(encabezado, noticias, now_local):
     """Arma el mensaje de forma determinista: encabezado con emoji y fecha,
-    noticias numeradas con fuente y link, y footer con la versión extendida.
+    y noticias numeradas con fuente y link.
     Nunca emite separadores de guiones/underscores."""
     header = f"📰 *Resumen tech - {now_local.strftime('%d-%m-%Y')}*"
-    footer = None
-    url = digest_file_url(today)
-    if url:
-        footer = f"_Versión extendida: {url}_"
 
     encabezado = sanitize_whatsapp_text(encabezado)
 
@@ -46,14 +32,11 @@ def build_whatsapp_message(encabezado, noticias, now_local, today):
         titulo = sanitize_whatsapp_text(n["titulo"])
         resumen = sanitize_whatsapp_text(n["resumen"])
         blocks.append(f"*{i}. {titulo}*\n{resumen}\n{n['link']}")
-    if footer:
-        blocks.append(footer)
 
-    fixed_blocks = 1 + (1 if encabezado else 0) + (1 if footer else 0)
+    fixed_blocks = 1 + (1 if encabezado else 0)
     message = "\n\n".join(blocks)
     while len(message) > MAX_MESSAGE_CHARS and len(blocks) - fixed_blocks > 1:
-        idx = -2 if footer else -1  # quitar la última noticia, no el footer
-        blocks.pop(idx)
+        blocks.pop()  # quitar la última noticia
         log("Mensaje muy largo para WhatsApp; quitando la última noticia")
         message = "\n\n".join(blocks)
 

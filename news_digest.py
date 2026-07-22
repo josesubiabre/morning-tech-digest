@@ -102,7 +102,7 @@ def main():
     )
     noticias = validate_noticias(noticias)
 
-    message = build_whatsapp_message(encabezado, noticias, now_local, today)
+    message = build_whatsapp_message(encabezado, noticias, now_local)
     send_whatsapp(message, phone, callmebot_key)
 
     state["sent"][today] = now_local.isoformat(timespec="seconds")
