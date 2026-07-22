@@ -4,9 +4,7 @@ A daily tech news digest delivered straight to your WhatsApp, every morning. It 
 most relevant stories from tech media and communities, filters and summarizes them with AI,
 and sends them to you at 8:00 AM — running entirely free on GitHub Actions, with no server.
 
-<!-- Replace this line with a real screenshot of the message you receive:
 ![Digest example on WhatsApp](docs/whatsapp-example.png)
--->
 
 ## ✨ What it does
 
