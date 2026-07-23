@@ -43,10 +43,38 @@
         "source_title": "glow emerges from stealth at 12b valuation to challenge endpoint security in the ai era",
         "titulo": "Glow surge con valorización de 1.200 millones de dólares"
       }
+    ],
+    "2026-07-23": [
+      {
+        "link": "theverge.com/tech/943866/google-alphabet-eu-dma-fine-search-services-play-store-steering",
+        "source_title": "google hit with 1 billion fine for breaking eu antitrust rules",
+        "titulo": "Google recibe multa de mil millones en la UE"
+      },
+      {
+        "link": "github.com/marcelroed/gigatoken",
+        "source_title": "gigatoken 1000x faster language model tokenization",
+        "titulo": "GigaToken: tokenización 1000x más rápida"
+      },
+      {
+        "link": "techcrunch.com/2026/07/22/travis-kalanicks-robotics-company-raises-1-7b-led-by-a16z",
+        "source_title": "travis kalanicks robotics company raises 17b led by a16z",
+        "titulo": "Travis Kalanick recauda 1.700M para Atoms"
+      },
+      {
+        "link": "techcrunch.com/2026/07/22/yope-raises-12-3m-to-build-a-private-social-network-without-algorithms-or-ads",
+        "source_title": "yope raises 123m to build a private social network without algorithms or ads",
+        "titulo": "Yope recauda 12.3M para red social privada"
+      },
+      {
+        "link": "theverge.com/tech/969361/google-account-sign-in-selfie-video-security",
+        "source_title": "google now lets you sign in to your account using a selfie video",
+        "titulo": "Google añade verificación por video de autor"
+      }
     ]
   },
   "sent": {
     "2026-07-21": "2026-07-21T15:11:03-04:00",
-    "2026-07-22": "2026-07-22T08:22:41-04:00"
+    "2026-07-22": "2026-07-22T08:22:41-04:00",
+    "2026-07-23": "2026-07-23T08:00:20-04:00"
   }
 }
