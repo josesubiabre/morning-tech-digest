@@ -73,12 +73,26 @@ jobs:
           # main puede haber avanzado mientras corría el job (un push manual):
           # sin esto el push fallaba y el digest quedaba enviado pero sin
           # registrar (dedup ciega + link de versión extendida en 404).
+          # No se usa `git pull --rebase`: si el remoto también subió el
+          # digest de hoy (run local pusheado a mano) el rebase queda a
+          # medias con conflictos y, con `bash -e`, mata el step. En su
+          # lugar se recommitea encima del remoto quedándose con NUESTROS
+          # archivos, que son los que este run envió de verdad por WhatsApp.
           for i in 1 2 3; do
             if git push; then
               exit 0
             fi
-            echo "Push rechazado (el remoto avanzó); rebase y reintento ($i/3)"
-            git pull --rebase origin main
+            echo "Push rechazado (el remoto avanzó); recommit y reintento ($i/3)"
+            git fetch origin main
+            NUESTRO=$(git rev-parse HEAD)
+            git reset --hard origin/main
+            git checkout "$NUESTRO" -- digests/ digest_state.json
+            git add -A
+            if git diff --staged --quiet; then
+              echo "El remoto ya contiene exactamente estos cambios"
+              exit 0
+            fi
+            git commit -m "Digest del $(date -u +'%Y-%m-%d')"
           done
-          echo "No se pudo pushear tras 3 rebases"
+          echo "No se pudo pushear tras 3 reintentos"
           exit 1
