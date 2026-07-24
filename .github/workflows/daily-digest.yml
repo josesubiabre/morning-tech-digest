@@ -42,6 +42,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          # La punta de main AL EJECUTAR, no el SHA fijado al disparar el
+          # cron: un run encolado por concurrency partiría con un snapshot
+          # anterior al push del run que lo precedió, vería el estado sin
+          # el digest de hoy y lo reenviaría (pasó el 24-07-2026: dos
+          # mensajes casi idénticos a las 08:00).
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
