@@ -51,6 +51,10 @@ jobs:
           # el digest de hoy y lo reenviaría (pasó el 24-07-2026: dos
           # mensajes casi idénticos a las 08:00).
           ref: main
+          # No dejar el GITHUB_TOKEN (contents: write) en .git/config mientras
+          # corren pip install y el script: una dependencia comprometida podría
+          # leerlo y pushear al repo. El step de commit se autentica solo.
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
@@ -70,10 +74,17 @@ jobs:
         run: python news_digest.py ${{ inputs.force && '--force' || '' }}
 
       - name: Commit digest history
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           git config user.name "tech-news-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A  # digests/ y digest_state.json
+          # Credenciales de escritura solo en este step (el checkout usa
+          # persist-credentials: false). Actions enmascara el token en logs.
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # Solo los archivos del digest: `git add -A` publicaría cualquier
+          # archivo que un paso o dependencia deje botado en el workspace.
+          git add digests digest_state.json
           if git diff --staged --quiet; then
             echo "Sin cambios que commitear"
             exit 0
@@ -96,7 +107,7 @@ jobs:
             NUESTRO=$(git rev-parse HEAD)
             git reset --hard origin/main
             git checkout "$NUESTRO" -- digests/ digest_state.json
-            git add -A
+            git add digests digest_state.json
             if git diff --staged --quiet; then
               echo "El remoto ya contiene exactamente estos cambios"
               exit 0

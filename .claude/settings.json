@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(gh run *)",
-      "Bash(./.venv/Scripts/python.exe -m unittest discover -s tests -v)"
+      "Bash(./.venv/Scripts/python.exe -m unittest discover -s tests -v)",
+      "Bash(./.venv/Scripts/python.exe -c \"import yaml, sys; yaml.safe_load\\(open\\('.github/workflows/daily-digest.yml', encoding='utf-8'\\)\\); print\\('YAML OK'\\)\")",
+      "Bash(py -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/daily-digest.yml', encoding='utf-8'\\)\\); print\\('YAML OK'\\)\")",
+      "Bash(gh workflow *)",
+      "Bash(ruby -ryaml -e \"YAML.load_file\\('.github/workflows/daily-digest.yml'\\); puts 'YAML OK'\")",
+      "Bash(./.venv/Scripts/python.exe -m pip install pyyaml -q)",
+      "Bash(./.venv/Scripts/python.exe -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/daily-digest.yml', encoding='utf-8'\\)\\); print\\('YAML OK'\\)\")"
     ]
   }
 }
