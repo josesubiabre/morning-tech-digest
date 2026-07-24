@@ -21,8 +21,8 @@ def now_santiago():
     return datetime.datetime.now(ZoneInfo(TIMEZONE))
 
 
-def http_get_bytes(url, timeout=30):
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def http_get_bytes(url, timeout=30, headers=None):
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return resp.read()
@@ -32,8 +32,8 @@ def http_get_bytes(url, timeout=30):
         raise
 
 
-def http_get_json(url, timeout=30):
-    return json.loads(http_get_bytes(url, timeout=timeout))
+def http_get_json(url, timeout=30, headers=None):
+    return json.loads(http_get_bytes(url, timeout=timeout, headers=headers))
 
 
 def strip_html(text):

@@ -28,7 +28,9 @@ def rank_gemini_models(api_key):
     ordenada de candidatos (mejores primero). No garantiza que funcionen:
     Google a veces lista modelos que luego devuelven 404 para keys nuevas,
     así que el que llama debe probar el siguiente si uno falla."""
-    data = http_get_json(f"{GEMINI_BASE}/models?key={api_key}")
+    # La key va en el header (no en la URL) para que no quede en logs de
+    # proxies ni en los atributos de HTTPError.
+    data = http_get_json(f"{GEMINI_BASE}/models", headers={"x-goog-api-key": api_key})
     models = data.get("models", [])
 
     # Solo modelos que soportan generateContent
@@ -182,14 +184,18 @@ def summarize_with_gemini(items, api_key, recent_topics, items_by_norm_link, tod
     last_error = None
 
     for model in candidates:
-        url = f"{GEMINI_BASE}/models/{model}:generateContent?key={api_key}"
+        url = f"{GEMINI_BASE}/models/{model}:generateContent"
         json_retry_used = False  # máximo un segundo intento por JSON inválido
 
         for attempt in range(1, TRIES_PER_MODEL + 1):
             req = urllib.request.Request(
                 url,
                 data=body,
-                headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+                headers={
+                    "Content-Type": "application/json",
+                    "User-Agent": USER_AGENT,
+                    "x-goog-api-key": api_key,
+                },
                 method="POST",
             )
 
