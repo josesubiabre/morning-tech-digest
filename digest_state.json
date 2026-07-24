@@ -70,11 +70,34 @@
         "source_title": "google now lets you sign in to your account using a selfie video",
         "titulo": "Google añade verificación por video de autor"
       }
+    ],
+    "2026-07-24": [
+      {
+        "link": "theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
+        "source_title": "claudes voice mode is now available for opus and sonnet",
+        "titulo": "Anthropic expande su modo de voz"
+      },
+      {
+        "link": "techcrunch.com/2026/07/23/meta-drops-out-of-a-major-clean-energy-pact-as-its-natural-gas-buildout-accelerates",
+        "source_title": "meta drops out of a major clean energy pact as its natural gas buildout accelerates",
+        "titulo": "Meta se retira de pacto de energía limpia"
+      },
+      {
+        "link": "techcrunch.com/2026/07/23/aegisai-founded-by-former-google-security-execs-lands-36m-to-stop-ai-driven-spear-phishing",
+        "source_title": "aegisai founded by former google security execs lands 36m to stop aidriven spear phishing",
+        "titulo": "AegisAI recauda 36 millones de dólares"
+      },
+      {
+        "link": "techcrunch.com/2026/07/23/patreon-lays-off-off-20-of-its-workforce",
+        "source_title": "patreon lays off 20 of its workforce",
+        "titulo": "Patreon despide al 20 por ciento de su personal"
+      }
     ]
   },
   "sent": {
     "2026-07-21": "2026-07-21T15:11:03-04:00",
     "2026-07-22": "2026-07-22T08:22:41-04:00",
-    "2026-07-23": "2026-07-23T08:00:20-04:00"
+    "2026-07-23": "2026-07-23T08:00:20-04:00",
+    "2026-07-24": "2026-07-24T08:00:16-04:00"
   }
 }
