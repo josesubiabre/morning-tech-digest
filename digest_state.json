@@ -97,12 +97,35 @@
         "source_title": "meta drops out of a major clean energy pact as its natural gas buildout accelerates",
         "titulo": "Meta abandona pacto de energía limpia y acelera gas natural"
       }
+    ],
+    "2026-07-25": [
+      {
+        "link": "anthropic.com/news/claude-opus-5",
+        "source_title": "claude opus 5",
+        "titulo": "Anthropic lanza Claude Opus 5"
+      },
+      {
+        "link": "cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html",
+        "source_title": "nvidia microsoft meta warn against overregulating openweight models",
+        "titulo": "Gigantes advierten sobre regulación de IA"
+      },
+      {
+        "link": "techcrunch.com/2026/07/24/anduril-reportedly-in-talks-to-raise-funding-at-100b-valuation-more-than-3x-last-years-mark",
+        "source_title": "anduril reportedly in talks to raise funding at 100b valuation more than 3x last years mark",
+        "titulo": "Anduril busca valoracion de 100 mil millones"
+      },
+      {
+        "link": "thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece",
+        "source_title": "government orders github to remove bluetoothbased chat app bitchat jack dorsey",
+        "titulo": "Gobierno ordena retirar app Bitchat de GitHub"
+      }
     ]
   },
   "sent": {
     "2026-07-21": "2026-07-21T15:11:03-04:00",
     "2026-07-22": "2026-07-22T08:22:41-04:00",
     "2026-07-23": "2026-07-23T08:00:20-04:00",
-    "2026-07-24": "2026-07-24T09:56:04-04:00"
+    "2026-07-24": "2026-07-24T09:56:04-04:00",
+    "2026-07-25": "2026-07-25T08:00:15-04:00"
   }
 }
