@@ -119,6 +119,28 @@
         "source_title": "government orders github to remove bluetoothbased chat app bitchat jack dorsey",
         "titulo": "Gobierno ordena retirar app Bitchat de GitHub"
       }
+    ],
+    "2026-07-26": [
+      {
+        "link": "blog.cloudflare.com/content-independence-day-ai-options",
+        "source_title": "cloudflares new ai traffic options for customers",
+        "titulo": "Cloudflare lanza opciones de tráfico de IA para clientes"
+      },
+      {
+        "link": "techcrunch.com/2026/07/25/one-fallen-power-line-exposed-a-growing-ai-data-center-problem-heres-how-to-fix-it",
+        "source_title": "one fallen power line exposed a growing ai data center problem heres how to fix it",
+        "titulo": "Crisis en la red eléctrica por centros de datos de IA"
+      },
+      {
+        "link": "techcrunch.com/2026/07/25/elon-musks-boring-company-reportedly-raising-funding-at-a-20-billion-valuation",
+        "source_title": "elon musks boring company reportedly raising funding at a 20 billion valuation",
+        "titulo": "The Boring Company recauda fondos a valorización de 20B"
+      },
+      {
+        "link": "kitsumed.github.io/blog/posts/android-may-soon-restrict-on-device-adb",
+        "source_title": "android may soon restrict ondevice adb",
+        "titulo": "Android evaluaría restringir ADB directamente en el dispositivo"
+      }
     ]
   },
   "sent": {
@@ -126,6 +148,7 @@
     "2026-07-22": "2026-07-22T08:22:41-04:00",
     "2026-07-23": "2026-07-23T08:00:20-04:00",
     "2026-07-24": "2026-07-24T09:56:04-04:00",
-    "2026-07-25": "2026-07-25T08:00:15-04:00"
+    "2026-07-25": "2026-07-25T08:00:15-04:00",
+    "2026-07-26": "2026-07-26T08:00:16-04:00"
   }
 }
