@@ -141,6 +141,28 @@
         "source_title": "android may soon restrict ondevice adb",
         "titulo": "Android evaluaría restringir ADB directamente en el dispositivo"
       }
+    ],
+    "2026-07-27": [
+      {
+        "link": "theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity",
+        "source_title": "nvidia microsoft launch open ai security alliance  without openai google or anthropic",
+        "titulo": "Alianza de seguridad en IA"
+      },
+      {
+        "link": "huggingface.co/moonshotai/Kimi-K3",
+        "source_title": "kimik3 releases on huggingface 727",
+        "titulo": "Lanzamiento de Kimi-K3"
+      },
+      {
+        "link": "github.com/vercel-labs/scriptc",
+        "source_title": "scriptc by vercel typescripttonative compiler no javascript engine in binary",
+        "titulo": "Vercel lanza Scriptc"
+      },
+      {
+        "link": "techspot.com/news/113236-us-prosecutors-charge-atlanta-man-after-grapheneos-phone.html",
+        "source_title": "us citizen charged after grapheneos phone wipes during airport search",
+        "titulo": "Procesan a ciudadano por borrar teléfono"
+      }
     ]
   },
   "sent": {
@@ -149,6 +171,7 @@
     "2026-07-23": "2026-07-23T08:00:20-04:00",
     "2026-07-24": "2026-07-24T09:56:04-04:00",
     "2026-07-25": "2026-07-25T08:00:15-04:00",
-    "2026-07-26": "2026-07-26T08:00:16-04:00"
+    "2026-07-26": "2026-07-26T08:00:16-04:00",
+    "2026-07-27": "2026-07-27T08:44:24-04:00"
   }
 }
