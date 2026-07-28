@@ -163,6 +163,28 @@
         "source_title": "us citizen charged after grapheneos phone wipes during airport search",
         "titulo": "Procesan a ciudadano por borrar teléfono"
       }
+    ],
+    "2026-07-28": [
+      {
+        "link": "techcrunch.com/2026/07/27/anthropics-dario-amodei-responds-doesnt-oppose-open-weight-models-but-fears-chinese-ai",
+        "source_title": "anthropics dario amodei responds doesnt oppose openweight models but fears chinese ai",
+        "titulo": "Dario Amodei defiende su postura sobre modelos abiertos"
+      },
+      {
+        "link": "techcrunch.com/2026/07/27/psa-your-claude-shared-chats-and-artifacts-may-have-ended-up-on-google",
+        "source_title": "psa your claude shared chats and artifacts may have ended up on google",
+        "titulo": "Conversaciones compartidas de Claude expuestas en Google"
+      },
+      {
+        "link": "arstechnica.com/ai/2026/07/verizon-seeks-ai-profits-with-mini-data-centers-1b-dark-fiber-deal-with-google",
+        "source_title": "verizon touts 1b dark fiber deal for google data centers as first of many",
+        "titulo": "Verizon firma acuerdo de fibra oscura con Google por 1B"
+      },
+      {
+        "link": "theverge.com/ai-artificial-intelligence/971723/hugging-face-nudify-deepfake-undress-women-children",
+        "source_title": "hugging face is being used to easily undress women and children",
+        "titulo": "Investigación expone uso de Hugging Face para deepfakes"
+      }
     ]
   },
   "sent": {
@@ -172,6 +194,7 @@
     "2026-07-24": "2026-07-24T09:56:04-04:00",
     "2026-07-25": "2026-07-25T08:00:15-04:00",
     "2026-07-26": "2026-07-26T08:00:16-04:00",
-    "2026-07-27": "2026-07-27T08:44:24-04:00"
+    "2026-07-27": "2026-07-27T08:44:24-04:00",
+    "2026-07-28": "2026-07-28T08:00:16-04:00"
   }
 }
