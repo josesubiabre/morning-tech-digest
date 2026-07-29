@@ -1,32 +1,5 @@
 {
   "history": {
-    "2026-07-21": [
-      {
-        "link": "techcrunch.com/2026/07/21/google-releases-three-new-gemini-models-but-no-3-5-pro",
-        "source_title": "google releases three new gemini models  but no 35 pro",
-        "titulo": "Google lanza Gemini 3.6 Flash y variantes de seguridad"
-      },
-      {
-        "link": "techcrunch.com/2026/07/21/data-centers-expected-to-use-4x-more-electricity-by-2035",
-        "source_title": "data centers expected to use 4x more electricity by 2035",
-        "titulo": "Demanda de energía en centros de datos se cuadruplicará"
-      },
-      {
-        "link": "techcrunch.com/2026/07/21/apple-teams-up-with-klarna-to-launch-a-lease-to-own-program-for-iphones-ipads-and-macs",
-        "source_title": "apple teams up with klarna to launch a leasetoown program for iphones ipads and macs",
-        "titulo": "Apple se alía con Klarna para programa de leasing"
-      },
-      {
-        "link": "arstechnica.com/tech-policy/2026/07/judge-halts-paramounts-111b-purchase-of-warner-bros-in-win-for-us-states",
-        "source_title": "judge halts paramounts 111b purchase of warner bros in win for us states",
-        "titulo": "Juez frena compra de Warner Bros por Paramount"
-      },
-      {
-        "link": "techcrunch.com/2026/07/21/us-threatens-sanctions-against-chinese-ai-models-over-ip-theft",
-        "source_title": "us threatens sanctions against chinese ai models over ip theft",
-        "titulo": "EE.UU. amenaza con sanciones a modelos de IA chinos"
-      }
-    ],
     "2026-07-22": [
       {
         "link": "techcrunch.com/2026/07/21/openai-says-hugging-face-was-breached-by-its-pre-release-models",
@@ -185,6 +158,23 @@
         "source_title": "hugging face is being used to easily undress women and children",
         "titulo": "Investigación expone uso de Hugging Face para deepfakes"
       }
+    ],
+    "2026-07-29": [
+      {
+        "link": "techcrunch.com/2026/07/29/as-ai-content-floods-the-internet-pangram-raises-9m-to-detect-it",
+        "source_title": "as ai content floods the internet pangram raises 9m to detect it",
+        "titulo": "Pangram capta 9 millones"
+      },
+      {
+        "link": "theverge.com/ai-artificial-intelligence/972119/ai-stock-fall-google-capex",
+        "source_title": "ais finally expensive enough to make wall street nervous",
+        "titulo": "Inversión récord en Google preocupa a Wall Street"
+      },
+      {
+        "link": "theverge.com/tech/972259/us-foreign-robots-power-inverter-ban",
+        "source_title": "the us is banning foreign robots",
+        "titulo": "EE.UU. prohibirá robots avanzados extranjeros"
+      }
     ]
   },
   "sent": {
@@ -195,6 +185,7 @@
     "2026-07-25": "2026-07-25T08:00:15-04:00",
     "2026-07-26": "2026-07-26T08:00:16-04:00",
     "2026-07-27": "2026-07-27T08:44:24-04:00",
-    "2026-07-28": "2026-07-28T08:00:16-04:00"
+    "2026-07-28": "2026-07-28T08:00:16-04:00",
+    "2026-07-29": "2026-07-29T08:00:12-04:00"
   }
 }
