@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-07-22": [
-      {
-        "link": "techcrunch.com/2026/07/21/openai-says-hugging-face-was-breached-by-its-pre-release-models",
-        "source_title": "openai says hugging face was breached by its prerelease models",
-        "titulo": "OpenAI admite brecha en Hugging Face por modelos propios"
-      },
-      {
-        "link": "arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors",
-        "source_title": "anthropics 15b copyright settlement approved only 350 authors opted out",
-        "titulo": "Juez aprueba acuerdo de 1.500 millones con Anthropic"
-      },
-      {
-        "link": "techcrunch.com/2026/07/22/glow-emerges-from-stealth-at-1-2b-valuation-to-challenge-endpoint-security-in-the-ai-era",
-        "source_title": "glow emerges from stealth at 12b valuation to challenge endpoint security in the ai era",
-        "titulo": "Glow surge con valorización de 1.200 millones de dólares"
-      }
-    ],
     "2026-07-23": [
       {
         "link": "theverge.com/tech/943866/google-alphabet-eu-dma-fine-search-services-play-store-steering",
@@ -175,6 +158,28 @@
         "source_title": "the us is banning foreign robots",
         "titulo": "EE.UU. prohibirá robots avanzados extranjeros"
       }
+    ],
+    "2026-07-30": [
+      {
+        "link": "techcrunch.com/2026/07/29/microsoft-is-openly-competing-with-openai-anthropic-more-than-ever",
+        "source_title": "microsoft is openly competing with openai anthropic more than ever",
+        "titulo": "Microsoft compite abiertamente con OpenAI y Anthropic"
+      },
+      {
+        "link": "techcrunch.com/2026/07/29/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years",
+        "source_title": "mark zuckerberg predicts that billions of people will have personal ai agents in five years",
+        "titulo": "Zuckerberg predice miles de millones de agentes de IA"
+      },
+      {
+        "link": "techcrunch.com/2026/07/29/us-government-bans-new-foreign-made-humanoids-robot-dogs-and-solar-inverters-citing-risks-to-national-security",
+        "source_title": "us government bans new foreignmade humanoids robot dogs and solar inverters citing risks to national security",
+        "titulo": "EE. UU. prohíbe robots y hardware extranjero"
+      },
+      {
+        "link": "wired.com/story/how-linkedin-is-keeping-its-compute-capacity-flat",
+        "source_title": "linkedin wont be expanding its data centers in the next year",
+        "titulo": "LinkedIn frena la expansión de sus centros de datos"
+      }
     ]
   },
   "sent": {
@@ -186,6 +191,7 @@
     "2026-07-26": "2026-07-26T08:00:16-04:00",
     "2026-07-27": "2026-07-27T08:44:24-04:00",
     "2026-07-28": "2026-07-28T08:00:16-04:00",
-    "2026-07-29": "2026-07-29T08:00:12-04:00"
+    "2026-07-29": "2026-07-29T08:00:12-04:00",
+    "2026-07-30": "2026-07-30T08:00:16-04:00"
   }
 }
