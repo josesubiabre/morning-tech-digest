@@ -1,32 +1,5 @@
 {
   "history": {
-    "2026-07-23": [
-      {
-        "link": "theverge.com/tech/943866/google-alphabet-eu-dma-fine-search-services-play-store-steering",
-        "source_title": "google hit with 1 billion fine for breaking eu antitrust rules",
-        "titulo": "Google recibe multa de mil millones en la UE"
-      },
-      {
-        "link": "github.com/marcelroed/gigatoken",
-        "source_title": "gigatoken 1000x faster language model tokenization",
-        "titulo": "GigaToken: tokenización 1000x más rápida"
-      },
-      {
-        "link": "techcrunch.com/2026/07/22/travis-kalanicks-robotics-company-raises-1-7b-led-by-a16z",
-        "source_title": "travis kalanicks robotics company raises 17b led by a16z",
-        "titulo": "Travis Kalanick recauda 1.700M para Atoms"
-      },
-      {
-        "link": "techcrunch.com/2026/07/22/yope-raises-12-3m-to-build-a-private-social-network-without-algorithms-or-ads",
-        "source_title": "yope raises 123m to build a private social network without algorithms or ads",
-        "titulo": "Yope recauda 12.3M para red social privada"
-      },
-      {
-        "link": "theverge.com/tech/969361/google-account-sign-in-selfie-video-security",
-        "source_title": "google now lets you sign in to your account using a selfie video",
-        "titulo": "Google añade verificación por video de autor"
-      }
-    ],
     "2026-07-24": [
       {
         "link": "theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
@@ -180,6 +153,23 @@
         "source_title": "linkedin wont be expanding its data centers in the next year",
         "titulo": "LinkedIn frena la expansión de sus centros de datos"
       }
+    ],
+    "2026-07-31": [
+      {
+        "link": "deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots",
+        "source_title": "gemini robotics 2 brings whole body intelligence to robots",
+        "titulo": "Gemini Robotics 2 trae control de cuerpo completo"
+      },
+      {
+        "link": "github.blog/changelog/2026-07-30-stacked-pull-requests-are-now-in-public-preview",
+        "source_title": "stacked prs are now live on github",
+        "titulo": "GitHub lanza oficialmentes Pull Requests apilados"
+      },
+      {
+        "link": "techcrunch.com/2026/07/30/linkedin-adds-a-button-to-report-ai-generated-slop",
+        "source_title": "linkedin adds a button to report aigenerated slop",
+        "titulo": "LinkedIn añade botón para reportar basura de IA"
+      }
     ]
   },
   "sent": {
@@ -192,6 +182,7 @@
     "2026-07-27": "2026-07-27T08:44:24-04:00",
     "2026-07-28": "2026-07-28T08:00:16-04:00",
     "2026-07-29": "2026-07-29T08:00:12-04:00",
-    "2026-07-30": "2026-07-30T08:00:16-04:00"
+    "2026-07-30": "2026-07-30T08:00:16-04:00",
+    "2026-07-31": "2026-07-31T08:00:12-04:00"
   }
 }
