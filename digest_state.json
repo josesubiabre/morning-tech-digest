@@ -1,32 +1,5 @@
 {
   "history": {
-    "2026-07-24": [
-      {
-        "link": "theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
-        "source_title": "claudes voice mode is now available for opus and sonnet",
-        "titulo": "Anthropic lleva su modo voz a Claude Opus y Sonnet"
-      },
-      {
-        "link": "techcrunch.com/2026/07/23/amd-takes-on-nvidia-with-its-helios-ai-rack-scale-system",
-        "source_title": "amd takes on nvidia with its helios ai rackscale system",
-        "titulo": "AMD lanza el sistema Helios AI para competir con Nvidia"
-      },
-      {
-        "link": "techcrunch.com/2026/07/23/patreon-lays-off-off-20-of-its-workforce",
-        "source_title": "patreon lays off 20 of its workforce",
-        "titulo": "Patreon despide al 20 por ciento de su personal"
-      },
-      {
-        "link": "techcrunch.com/2026/07/23/aegisai-founded-by-former-google-security-execs-lands-36m-to-stop-ai-driven-spear-phishing",
-        "source_title": "aegisai founded by former google security execs lands 36m to stop aidriven spear phishing",
-        "titulo": "AegisAI recauda 36 millones para frenar ataques de phishing"
-      },
-      {
-        "link": "techcrunch.com/2026/07/23/meta-drops-out-of-a-major-clean-energy-pact-as-its-natural-gas-buildout-accelerates",
-        "source_title": "meta drops out of a major clean energy pact as its natural gas buildout accelerates",
-        "titulo": "Meta abandona pacto de energía limpia y acelera gas natural"
-      }
-    ],
     "2026-07-25": [
       {
         "link": "anthropic.com/news/claude-opus-5",
@@ -170,6 +143,28 @@
         "source_title": "linkedin adds a button to report aigenerated slop",
         "titulo": "LinkedIn añade botón para reportar basura de IA"
       }
+    ],
+    "2026-08-01": [
+      {
+        "link": "techcrunch.com/2026/07/31/openai-reportedly-finds-evidence-that-more-of-its-agents-ran-amok",
+        "source_title": "openai reportedly finds evidence that more of its agents ran amok",
+        "titulo": "Agentes de IA desbocados"
+      },
+      {
+        "link": "techcrunch.com/2026/07/31/google-nixes-its-earth-ai-feature-one-day-after-launch-amid-criticism-it-would-spread-misinformation",
+        "source_title": "google nixes its earth ai feature one day after launch amid criticism it would spread misinformation",
+        "titulo": "Google frena tool de IA en mapas"
+      },
+      {
+        "link": "techcrunch.com/2026/07/31/fresh-off-its-wiz-payout-index-ventures-raises-2b-across-three-funds",
+        "source_title": "fresh off its wiz payout index ventures raises 2b across three funds",
+        "titulo": "Index Ventures capta 2000M"
+      },
+      {
+        "link": "theverge.com/tech/973709/new-york-kalshi-lawsuit-illegal-gambling-operation",
+        "source_title": "new york sues kalshi for allegedly running an illegal gambling operation",
+        "titulo": "Demanda contra mercado de predicción"
+      }
     ]
   },
   "sent": {
@@ -183,6 +178,7 @@
     "2026-07-28": "2026-07-28T08:00:16-04:00",
     "2026-07-29": "2026-07-29T08:00:12-04:00",
     "2026-07-30": "2026-07-30T08:00:16-04:00",
-    "2026-07-31": "2026-07-31T08:00:12-04:00"
+    "2026-07-31": "2026-07-31T08:00:12-04:00",
+    "2026-08-01": "2026-08-01T08:00:11-04:00"
   }
 }
