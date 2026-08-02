@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-07-25": [
-      {
-        "link": "anthropic.com/news/claude-opus-5",
-        "source_title": "claude opus 5",
-        "titulo": "Anthropic lanza Claude Opus 5"
-      },
-      {
-        "link": "cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html",
-        "source_title": "nvidia microsoft meta warn against overregulating openweight models",
-        "titulo": "Gigantes advierten sobre regulación de IA"
-      },
-      {
-        "link": "techcrunch.com/2026/07/24/anduril-reportedly-in-talks-to-raise-funding-at-100b-valuation-more-than-3x-last-years-mark",
-        "source_title": "anduril reportedly in talks to raise funding at 100b valuation more than 3x last years mark",
-        "titulo": "Anduril busca valoracion de 100 mil millones"
-      },
-      {
-        "link": "thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece",
-        "source_title": "government orders github to remove bluetoothbased chat app bitchat jack dorsey",
-        "titulo": "Gobierno ordena retirar app Bitchat de GitHub"
-      }
-    ],
     "2026-07-26": [
       {
         "link": "blog.cloudflare.com/content-independence-day-ai-options",
@@ -165,6 +143,28 @@
         "source_title": "new york sues kalshi for allegedly running an illegal gambling operation",
         "titulo": "Demanda contra mercado de predicción"
       }
+    ],
+    "2026-08-02": [
+      {
+        "link": "wired.com/story/europeans-are-about-to-find-out-how-entrenched-ai-is-in-their-daily-lives",
+        "source_title": "europeans are about to find out how entrenched ai is in their daily lives",
+        "titulo": "Europa implementa nuevas normativas de transparencia para IA"
+      },
+      {
+        "link": "techcrunch.com/2026/08/01/judge-denies-xais-request-to-block-minnesota-ban-on-nudify-apps",
+        "source_title": "judge denies xais request to block minnesota ban on nudify apps",
+        "titulo": "Juez frena intento de xAI por bloquear ley de apps nudify"
+      },
+      {
+        "link": "arstechnica.com/ai/2026/08/reddit-ceo-on-ai-overviews-were-still-looking-for-that-win-win",
+        "source_title": "as reddit stock falls ceo questions value of googles ai overviews",
+        "titulo": "Reddit cuestiona el valor real de los AI Overviews de Google"
+      },
+      {
+        "link": "arstechnica.com/tech-policy/2026/08/after-noise-complaints-judge-orders-waymo-to-stop-overnight-charging-in-santa-monica",
+        "source_title": "after noise complaints judge orders waymo to stop overnight charging in santa monica",
+        "titulo": "Juez ordena a Waymo detener la carga nocturna por ruido"
+      }
     ]
   },
   "sent": {
@@ -179,6 +179,7 @@
     "2026-07-29": "2026-07-29T08:00:12-04:00",
     "2026-07-30": "2026-07-30T08:00:16-04:00",
     "2026-07-31": "2026-07-31T08:00:12-04:00",
-    "2026-08-01": "2026-08-01T08:00:11-04:00"
+    "2026-08-01": "2026-08-01T08:00:11-04:00",
+    "2026-08-02": "2026-08-02T08:00:16-04:00"
   }
 }
