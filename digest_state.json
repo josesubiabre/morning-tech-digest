@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-07-26": [
-      {
-        "link": "blog.cloudflare.com/content-independence-day-ai-options",
-        "source_title": "cloudflares new ai traffic options for customers",
-        "titulo": "Cloudflare lanza opciones de tráfico de IA para clientes"
-      },
-      {
-        "link": "techcrunch.com/2026/07/25/one-fallen-power-line-exposed-a-growing-ai-data-center-problem-heres-how-to-fix-it",
-        "source_title": "one fallen power line exposed a growing ai data center problem heres how to fix it",
-        "titulo": "Crisis en la red eléctrica por centros de datos de IA"
-      },
-      {
-        "link": "techcrunch.com/2026/07/25/elon-musks-boring-company-reportedly-raising-funding-at-a-20-billion-valuation",
-        "source_title": "elon musks boring company reportedly raising funding at a 20 billion valuation",
-        "titulo": "The Boring Company recauda fondos a valorización de 20B"
-      },
-      {
-        "link": "kitsumed.github.io/blog/posts/android-may-soon-restrict-on-device-adb",
-        "source_title": "android may soon restrict ondevice adb",
-        "titulo": "Android evaluaría restringir ADB directamente en el dispositivo"
-      }
-    ],
     "2026-07-27": [
       {
         "link": "theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity",
@@ -165,6 +143,28 @@
         "source_title": "after noise complaints judge orders waymo to stop overnight charging in santa monica",
         "titulo": "Juez ordena a Waymo detener la carga nocturna por ruido"
       }
+    ],
+    "2026-08-03": [
+      {
+        "link": "theverge.com/ai-artificial-intelligence/974342/alibaba-qwen-max-open-weight-ai",
+        "source_title": "china8217s alibaba takes another swipe at americas ai supremacy",
+        "titulo": "Alibaba lanza Qwen3.8-Max"
+      },
+      {
+        "link": "techcrunch.com/2026/08/03/a-marc-benioff-backed-startup-thinks-ai-can-solve-the-ai-deployment-problem",
+        "source_title": "a marc benioffbacked startup thinks ai can solve the ai deployment problem",
+        "titulo": "Startup June capta 20M pre-seed"
+      },
+      {
+        "link": "techcrunch.com/2026/08/03/samsung-bans-smart-tv-apps-that-share-users-internet-connections-with-strangers",
+        "source_title": "samsung bans smart tv apps that share users internet connections with strangers",
+        "titulo": "Samsung prohíbe apps proxy en Smart TVs"
+      },
+      {
+        "link": "wired.com/story/ai-conquered-coding-fast-food-is-next",
+        "source_title": "ai conquered coding fast food is next",
+        "titulo": "IA en comida rápida"
+      }
     ]
   },
   "sent": {
@@ -180,6 +180,7 @@
     "2026-07-30": "2026-07-30T08:00:16-04:00",
     "2026-07-31": "2026-07-31T08:00:12-04:00",
     "2026-08-01": "2026-08-01T08:00:11-04:00",
-    "2026-08-02": "2026-08-02T08:00:16-04:00"
+    "2026-08-02": "2026-08-02T08:00:16-04:00",
+    "2026-08-03": "2026-08-03T08:44:18-04:00"
   }
 }
