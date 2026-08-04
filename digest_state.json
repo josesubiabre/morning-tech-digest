@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-07-27": [
-      {
-        "link": "theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity",
-        "source_title": "nvidia microsoft launch open ai security alliance  without openai google or anthropic",
-        "titulo": "Alianza de seguridad en IA"
-      },
-      {
-        "link": "huggingface.co/moonshotai/Kimi-K3",
-        "source_title": "kimik3 releases on huggingface 727",
-        "titulo": "Lanzamiento de Kimi-K3"
-      },
-      {
-        "link": "github.com/vercel-labs/scriptc",
-        "source_title": "scriptc by vercel typescripttonative compiler no javascript engine in binary",
-        "titulo": "Vercel lanza Scriptc"
-      },
-      {
-        "link": "techspot.com/news/113236-us-prosecutors-charge-atlanta-man-after-grapheneos-phone.html",
-        "source_title": "us citizen charged after grapheneos phone wipes during airport search",
-        "titulo": "Procesan a ciudadano por borrar teléfono"
-      }
-    ],
     "2026-07-28": [
       {
         "link": "techcrunch.com/2026/07/27/anthropics-dario-amodei-responds-doesnt-oppose-open-weight-models-but-fears-chinese-ai",
@@ -165,6 +143,28 @@
         "source_title": "ai conquered coding fast food is next",
         "titulo": "IA en comida rápida"
       }
+    ],
+    "2026-08-04": [
+      {
+        "link": "techcrunch.com/2026/08/04/bending-spoons-to-buy-airtable-for-1-28b",
+        "source_title": "bending spoons to buy airtable for 128b",
+        "titulo": "Bending Spoons compra Airtable"
+      },
+      {
+        "link": "techcrunch.com/2026/08/03/aws-is-helping-vibe-coding-startup-superblocks-and-the-implications-are-big",
+        "source_title": "aws is helping vibecoding startup superblocks and the implications are big",
+        "titulo": "AWS integra Superblocks"
+      },
+      {
+        "link": "theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes",
+        "source_title": "europes ai labeling and transparency rules are now in effect",
+        "titulo": "Nuevas reglas de transparencia de IA en la UE"
+      },
+      {
+        "link": "arstechnica.com/ai/2026/08/ukraines-drones-get-ai-upgrades-for-kamikaze-strikes-future-swarm-attacks",
+        "source_title": "us companys ai lets ukraines cheap kamikaze drones track targets on their own",
+        "titulo": "Drones ucranianos con IA de EE.UU."
+      }
     ]
   },
   "sent": {
@@ -181,6 +181,7 @@
     "2026-07-31": "2026-07-31T08:00:12-04:00",
     "2026-08-01": "2026-08-01T08:00:11-04:00",
     "2026-08-02": "2026-08-02T08:00:16-04:00",
-    "2026-08-03": "2026-08-03T08:44:18-04:00"
+    "2026-08-03": "2026-08-03T08:44:18-04:00",
+    "2026-08-04": "2026-08-04T08:00:16-04:00"
   }
 }
