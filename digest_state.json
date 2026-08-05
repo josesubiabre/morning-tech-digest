@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-07-28": [
-      {
-        "link": "techcrunch.com/2026/07/27/anthropics-dario-amodei-responds-doesnt-oppose-open-weight-models-but-fears-chinese-ai",
-        "source_title": "anthropics dario amodei responds doesnt oppose openweight models but fears chinese ai",
-        "titulo": "Dario Amodei defiende su postura sobre modelos abiertos"
-      },
-      {
-        "link": "techcrunch.com/2026/07/27/psa-your-claude-shared-chats-and-artifacts-may-have-ended-up-on-google",
-        "source_title": "psa your claude shared chats and artifacts may have ended up on google",
-        "titulo": "Conversaciones compartidas de Claude expuestas en Google"
-      },
-      {
-        "link": "arstechnica.com/ai/2026/07/verizon-seeks-ai-profits-with-mini-data-centers-1b-dark-fiber-deal-with-google",
-        "source_title": "verizon touts 1b dark fiber deal for google data centers as first of many",
-        "titulo": "Verizon firma acuerdo de fibra oscura con Google por 1B"
-      },
-      {
-        "link": "theverge.com/ai-artificial-intelligence/971723/hugging-face-nudify-deepfake-undress-women-children",
-        "source_title": "hugging face is being used to easily undress women and children",
-        "titulo": "Investigación expone uso de Hugging Face para deepfakes"
-      }
-    ],
     "2026-07-29": [
       {
         "link": "techcrunch.com/2026/07/29/as-ai-content-floods-the-internet-pangram-raises-9m-to-detect-it",
@@ -165,10 +143,31 @@
         "source_title": "us companys ai lets ukraines cheap kamikaze drones track targets on their own",
         "titulo": "Drones ucranianos con IA de EE.UU."
       }
+    ],
+    "2026-08-05": [
+      {
+        "link": "mistral.ai/news/shieldstral",
+        "source_title": "mistrals shieldstral 3b openweights model for multimodal moderation",
+        "titulo": "Mistral presenta Shieldstral"
+      },
+      {
+        "link": "techcrunch.com/2026/08/04/spacex-doubles-revenues-on-anthropic-and-google-compute-deals-starlink-growth",
+        "source_title": "spacex doubles revenue on anthropic and google compute deals starlink growth",
+        "titulo": "SpaceX y sus ingresos por IA"
+      },
+      {
+        "link": "sec.gov/Archives/edgar/data/1795071/000179507126000002/xslFormDX01/primary_doc.xml",
+        "source_title": "oxide computer raises 445m sec form d",
+        "titulo": "Oxide Computer capta 445 millones"
+      },
+      {
+        "link": "arstechnica.com/ai/2026/08/texas-halts-data-center-connections-to-power-grid-amid-overwhelming-demand",
+        "source_title": "texas halts data center connections to power grid amid overwhelming demand",
+        "titulo": "Texas frena centros de datos"
+      }
     ]
   },
   "sent": {
-    "2026-07-21": "2026-07-21T15:11:03-04:00",
     "2026-07-22": "2026-07-22T08:22:41-04:00",
     "2026-07-23": "2026-07-23T08:00:20-04:00",
     "2026-07-24": "2026-07-24T09:56:04-04:00",
@@ -182,6 +181,7 @@
     "2026-08-01": "2026-08-01T08:00:11-04:00",
     "2026-08-02": "2026-08-02T08:00:16-04:00",
     "2026-08-03": "2026-08-03T08:44:18-04:00",
-    "2026-08-04": "2026-08-04T08:00:16-04:00"
+    "2026-08-04": "2026-08-04T08:00:16-04:00",
+    "2026-08-05": "2026-08-05T08:00:16-04:00"
   }
 }
