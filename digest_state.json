@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-07-29": [
-      {
-        "link": "techcrunch.com/2026/07/29/as-ai-content-floods-the-internet-pangram-raises-9m-to-detect-it",
-        "source_title": "as ai content floods the internet pangram raises 9m to detect it",
-        "titulo": "Pangram capta 9 millones"
-      },
-      {
-        "link": "theverge.com/ai-artificial-intelligence/972119/ai-stock-fall-google-capex",
-        "source_title": "ais finally expensive enough to make wall street nervous",
-        "titulo": "Inversión récord en Google preocupa a Wall Street"
-      },
-      {
-        "link": "theverge.com/tech/972259/us-foreign-robots-power-inverter-ban",
-        "source_title": "the us is banning foreign robots",
-        "titulo": "EE.UU. prohibirá robots avanzados extranjeros"
-      }
-    ],
     "2026-07-30": [
       {
         "link": "techcrunch.com/2026/07/29/microsoft-is-openly-competing-with-openai-anthropic-more-than-ever",
@@ -165,10 +148,31 @@
         "source_title": "texas halts data center connections to power grid amid overwhelming demand",
         "titulo": "Texas frena centros de datos"
       }
+    ],
+    "2026-08-06": [
+      {
+        "link": "blog.google/company-news/inside-google/message-ceo/next-chapter-ai-momentum",
+        "source_title": "changes at google deepmind demis hassabis from ceo to chair jeff dean departs",
+        "titulo": "Google reestructura su cúpula de IA"
+      },
+      {
+        "link": "techcrunch.com/2026/08/05/meta-launches-muse-code-an-ai-agent-for-large-code-bases",
+        "source_title": "meta launches muse code an ai agent for large code bases",
+        "titulo": "Meta lanza Muse Code para bases de código"
+      },
+      {
+        "link": "arstechnica.com/security/2026/08/anthropics-ai-used-fake-identities-malware-in-rogue-attack-on-github-project",
+        "source_title": "anthropics ai used fake identities malware in rogue attack on github project",
+        "titulo": "Ataque autónomo de IA frena pruebas en UK"
+      },
+      {
+        "link": "costar.com/article/970809918/nashville-council-approves-eminent-domain-action-to-halt-data-center-project",
+        "source_title": "nashville uses eminent domain to block data center near zoo",
+        "titulo": "Nashville frena centro de datos con expropiación"
+      }
     ]
   },
   "sent": {
-    "2026-07-22": "2026-07-22T08:22:41-04:00",
     "2026-07-23": "2026-07-23T08:00:20-04:00",
     "2026-07-24": "2026-07-24T09:56:04-04:00",
     "2026-07-25": "2026-07-25T08:00:15-04:00",
@@ -182,6 +186,7 @@
     "2026-08-02": "2026-08-02T08:00:16-04:00",
     "2026-08-03": "2026-08-03T08:44:18-04:00",
     "2026-08-04": "2026-08-04T08:00:16-04:00",
-    "2026-08-05": "2026-08-05T08:00:16-04:00"
+    "2026-08-05": "2026-08-05T08:00:16-04:00",
+    "2026-08-06": "2026-08-06T08:00:16-04:00"
   }
 }
