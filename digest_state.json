@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-07-30": [
-      {
-        "link": "techcrunch.com/2026/07/29/microsoft-is-openly-competing-with-openai-anthropic-more-than-ever",
-        "source_title": "microsoft is openly competing with openai anthropic more than ever",
-        "titulo": "Microsoft compite abiertamente con OpenAI y Anthropic"
-      },
-      {
-        "link": "techcrunch.com/2026/07/29/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years",
-        "source_title": "mark zuckerberg predicts that billions of people will have personal ai agents in five years",
-        "titulo": "Zuckerberg predice miles de millones de agentes de IA"
-      },
-      {
-        "link": "techcrunch.com/2026/07/29/us-government-bans-new-foreign-made-humanoids-robot-dogs-and-solar-inverters-citing-risks-to-national-security",
-        "source_title": "us government bans new foreignmade humanoids robot dogs and solar inverters citing risks to national security",
-        "titulo": "EE. UU. prohíbe robots y hardware extranjero"
-      },
-      {
-        "link": "wired.com/story/how-linkedin-is-keeping-its-compute-capacity-flat",
-        "source_title": "linkedin wont be expanding its data centers in the next year",
-        "titulo": "LinkedIn frena la expansión de sus centros de datos"
-      }
-    ],
     "2026-07-31": [
       {
         "link": "deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots",
@@ -170,10 +148,26 @@
         "source_title": "nashville uses eminent domain to block data center near zoo",
         "titulo": "Nashville frena centro de datos con expropiación"
       }
+    ],
+    "2026-08-07": [
+      {
+        "link": "techcrunch.com/2026/08/06/defense-tech-hadrian-raises-1-37b-at-8b-valuation",
+        "source_title": "defense tech hadrian raises 137b at 8b valuation",
+        "titulo": "Hadrian capta 1.370 millones con valoración de 8.000M"
+      },
+      {
+        "link": "theguardian.com/technology/2026/aug/06/new-mexico-court-meta",
+        "source_title": "new mexico court orders meta to pay 567m over harms to childrens mental health",
+        "titulo": "Meta recibe multa adicional de 567 millones por salud mental"
+      },
+      {
+        "link": "techcrunch.com/2026/08/06/openais-new-ai-smart-speaker-will-reportedly-sell-for-between-300-and-400",
+        "source_title": "openais new ai smart speaker will reportedly sell for between 300 and 400",
+        "titulo": "OpenAI prepara un altavoz inteligente de hasta 400 dólares"
+      }
     ]
   },
   "sent": {
-    "2026-07-23": "2026-07-23T08:00:20-04:00",
     "2026-07-24": "2026-07-24T09:56:04-04:00",
     "2026-07-25": "2026-07-25T08:00:15-04:00",
     "2026-07-26": "2026-07-26T08:00:16-04:00",
@@ -187,6 +181,7 @@
     "2026-08-03": "2026-08-03T08:44:18-04:00",
     "2026-08-04": "2026-08-04T08:00:16-04:00",
     "2026-08-05": "2026-08-05T08:00:16-04:00",
-    "2026-08-06": "2026-08-06T08:00:16-04:00"
+    "2026-08-06": "2026-08-06T08:00:16-04:00",
+    "2026-08-07": "2026-08-07T08:00:13-04:00"
   }
 }
