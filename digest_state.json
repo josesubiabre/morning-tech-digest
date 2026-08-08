@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-07-31": [
-      {
-        "link": "deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots",
-        "source_title": "gemini robotics 2 brings whole body intelligence to robots",
-        "titulo": "Gemini Robotics 2 trae control de cuerpo completo"
-      },
-      {
-        "link": "github.blog/changelog/2026-07-30-stacked-pull-requests-are-now-in-public-preview",
-        "source_title": "stacked prs are now live on github",
-        "titulo": "GitHub lanza oficialmentes Pull Requests apilados"
-      },
-      {
-        "link": "techcrunch.com/2026/07/30/linkedin-adds-a-button-to-report-ai-generated-slop",
-        "source_title": "linkedin adds a button to report aigenerated slop",
-        "titulo": "LinkedIn añade botón para reportar basura de IA"
-      }
-    ],
     "2026-08-01": [
       {
         "link": "techcrunch.com/2026/07/31/openai-reportedly-finds-evidence-that-more-of-its-agents-ran-amok",
@@ -165,10 +148,26 @@
         "source_title": "openais new ai smart speaker will reportedly sell for between 300 and 400",
         "titulo": "OpenAI prepara un altavoz inteligente de hasta 400 dólares"
       }
+    ],
+    "2026-08-08": [
+      {
+        "link": "techcrunch.com/2026/08/07/after-rippling-blew-millions-on-ai-in-months-it-built-an-employee-roi-tool",
+        "source_title": "after rippling blew millions on ai in months it built an employee roi tool",
+        "titulo": "Rippling lanza consola para controlar gasto en IA"
+      },
+      {
+        "link": "techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents",
+        "source_title": "cloudflare launches kitesurf a browser built for ai agents",
+        "titulo": "Cloudflare lanza Kitesurf, un navegador para IA"
+      },
+      {
+        "link": "app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code",
+        "source_title": "oracle bans aigenerated code from openjdk",
+        "titulo": "Oracle prohíbe código creado por IA en OpenJDK"
+      }
     ]
   },
   "sent": {
-    "2026-07-24": "2026-07-24T09:56:04-04:00",
     "2026-07-25": "2026-07-25T08:00:15-04:00",
     "2026-07-26": "2026-07-26T08:00:16-04:00",
     "2026-07-27": "2026-07-27T08:44:24-04:00",
@@ -182,6 +181,7 @@
     "2026-08-04": "2026-08-04T08:00:16-04:00",
     "2026-08-05": "2026-08-05T08:00:16-04:00",
     "2026-08-06": "2026-08-06T08:00:16-04:00",
-    "2026-08-07": "2026-08-07T08:00:13-04:00"
+    "2026-08-07": "2026-08-07T08:00:13-04:00",
+    "2026-08-08": "2026-08-08T08:00:12-04:00"
   }
 }
