@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-02": [
-      {
-        "link": "wired.com/story/europeans-are-about-to-find-out-how-entrenched-ai-is-in-their-daily-lives",
-        "source_title": "europeans are about to find out how entrenched ai is in their daily lives",
-        "titulo": "Europa implementa nuevas normativas de transparencia para IA"
-      },
-      {
-        "link": "techcrunch.com/2026/08/01/judge-denies-xais-request-to-block-minnesota-ban-on-nudify-apps",
-        "source_title": "judge denies xais request to block minnesota ban on nudify apps",
-        "titulo": "Juez frena intento de xAI por bloquear ley de apps nudify"
-      },
-      {
-        "link": "arstechnica.com/ai/2026/08/reddit-ceo-on-ai-overviews-were-still-looking-for-that-win-win",
-        "source_title": "as reddit stock falls ceo questions value of googles ai overviews",
-        "titulo": "Reddit cuestiona el valor real de los AI Overviews de Google"
-      },
-      {
-        "link": "arstechnica.com/tech-policy/2026/08/after-noise-complaints-judge-orders-waymo-to-stop-overnight-charging-in-santa-monica",
-        "source_title": "after noise complaints judge orders waymo to stop overnight charging in santa monica",
-        "titulo": "Juez ordena a Waymo detener la carga nocturna por ruido"
-      }
-    ],
     "2026-08-03": [
       {
         "link": "theverge.com/ai-artificial-intelligence/974342/alibaba-qwen-max-open-weight-ai",
@@ -165,10 +143,31 @@
         "source_title": "shopify replaced redis with mysql for inventory reservationsand it scaled",
         "titulo": "Shopify reemplaza Redis con MySQL para inventarios"
       }
+    ],
+    "2026-08-10": [
+      {
+        "link": "techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default",
+        "source_title": "anthropic is turning claude codes auto mode on by default",
+        "titulo": "Anthropic activa el modo automático en Claude Code"
+      },
+      {
+        "link": "techcrunch.com/2026/08/09/embattled-hedge-fund-situational-awareness-invests-400m-in-chip-startup-source-foundry",
+        "source_title": "embattled hedge fund situational awareness invests 400m in chip startup source foundry",
+        "titulo": "Fondo invierte 400 millones en chip startup Source Foundry"
+      },
+      {
+        "link": "techcrunch.com/2026/08/09/the-ai-safety-test-is-becoming-a-safety-risk",
+        "source_title": "the ai safety test is becoming a safety risk",
+        "titulo": "Los tests de seguridad en IA generan nuevos riesgos"
+      },
+      {
+        "link": "wired.com/story/the-rise-of-the-1-am-job-interview",
+        "source_title": "the rise of the 1 am job interview",
+        "titulo": "El auge de las entrevistas de trabajo de IA a la 1 AM"
+      }
     ]
   },
   "sent": {
-    "2026-07-26": "2026-07-26T08:00:16-04:00",
     "2026-07-27": "2026-07-27T08:44:24-04:00",
     "2026-07-28": "2026-07-28T08:00:16-04:00",
     "2026-07-29": "2026-07-29T08:00:12-04:00",
@@ -182,6 +181,7 @@
     "2026-08-06": "2026-08-06T08:00:16-04:00",
     "2026-08-07": "2026-08-07T08:00:13-04:00",
     "2026-08-08": "2026-08-08T08:00:12-04:00",
-    "2026-08-09": "2026-08-09T08:00:17-04:00"
+    "2026-08-09": "2026-08-09T08:00:17-04:00",
+    "2026-08-10": "2026-08-10T08:00:16-04:00"
   }
 }
