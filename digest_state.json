@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-03": [
-      {
-        "link": "theverge.com/ai-artificial-intelligence/974342/alibaba-qwen-max-open-weight-ai",
-        "source_title": "china8217s alibaba takes another swipe at americas ai supremacy",
-        "titulo": "Alibaba lanza Qwen3.8-Max"
-      },
-      {
-        "link": "techcrunch.com/2026/08/03/a-marc-benioff-backed-startup-thinks-ai-can-solve-the-ai-deployment-problem",
-        "source_title": "a marc benioffbacked startup thinks ai can solve the ai deployment problem",
-        "titulo": "Startup June capta 20M pre-seed"
-      },
-      {
-        "link": "techcrunch.com/2026/08/03/samsung-bans-smart-tv-apps-that-share-users-internet-connections-with-strangers",
-        "source_title": "samsung bans smart tv apps that share users internet connections with strangers",
-        "titulo": "Samsung prohíbe apps proxy en Smart TVs"
-      },
-      {
-        "link": "wired.com/story/ai-conquered-coding-fast-food-is-next",
-        "source_title": "ai conquered coding fast food is next",
-        "titulo": "IA en comida rápida"
-      }
-    ],
     "2026-08-04": [
       {
         "link": "techcrunch.com/2026/08/04/bending-spoons-to-buy-airtable-for-1-28b",
@@ -165,10 +143,31 @@
         "source_title": "the rise of the 1 am job interview",
         "titulo": "El auge de las entrevistas de trabajo de IA a la 1 AM"
       }
+    ],
+    "2026-08-11": [
+      {
+        "link": "research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
+        "source_title": "muse glimmer 30bparameter model optimized for alwayson local agent workflows",
+        "titulo": "Meta lanza Muse Glimmer y apuesta por modelos abiertos"
+      },
+      {
+        "link": "techcrunch.com/2026/08/10/as-ai-led-attacks-multiply-openai-launches-a-new-cyber-model",
+        "source_title": "as ailed attacks multiply openai launches a new cyber model",
+        "titulo": "OpenAI lanza nuevo modelo de ciberseguridad"
+      },
+      {
+        "link": "techcrunch.com/2026/08/10/aptoide-becomes-the-first-rival-app-store-to-return-to-google-play-in-the-us",
+        "source_title": "aptoide becomes the first rival app store to return to google play in the us",
+        "titulo": "Aptoide vuelve a Google Play en EE.UU."
+      },
+      {
+        "link": "arstechnica.com/tech-policy/2026/08/amazon-funds-biggest-gas-power-plant-in-us-despite-climate-pledge",
+        "source_title": "amazon backs power plant that may become top source of us climate pollution",
+        "titulo": "Amazon respalda central eléctrica de gas"
+      }
     ]
   },
   "sent": {
-    "2026-07-27": "2026-07-27T08:44:24-04:00",
     "2026-07-28": "2026-07-28T08:00:16-04:00",
     "2026-07-29": "2026-07-29T08:00:12-04:00",
     "2026-07-30": "2026-07-30T08:00:16-04:00",
@@ -182,6 +181,7 @@
     "2026-08-07": "2026-08-07T08:00:13-04:00",
     "2026-08-08": "2026-08-08T08:00:12-04:00",
     "2026-08-09": "2026-08-09T08:00:17-04:00",
-    "2026-08-10": "2026-08-10T08:00:16-04:00"
+    "2026-08-10": "2026-08-10T08:00:16-04:00",
+    "2026-08-11": "2026-08-11T08:00:13-04:00"
   }
 }
