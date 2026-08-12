@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-04": [
-      {
-        "link": "techcrunch.com/2026/08/04/bending-spoons-to-buy-airtable-for-1-28b",
-        "source_title": "bending spoons to buy airtable for 128b",
-        "titulo": "Bending Spoons compra Airtable"
-      },
-      {
-        "link": "techcrunch.com/2026/08/03/aws-is-helping-vibe-coding-startup-superblocks-and-the-implications-are-big",
-        "source_title": "aws is helping vibecoding startup superblocks and the implications are big",
-        "titulo": "AWS integra Superblocks"
-      },
-      {
-        "link": "theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes",
-        "source_title": "europes ai labeling and transparency rules are now in effect",
-        "titulo": "Nuevas reglas de transparencia de IA en la UE"
-      },
-      {
-        "link": "arstechnica.com/ai/2026/08/ukraines-drones-get-ai-upgrades-for-kamikaze-strikes-future-swarm-attacks",
-        "source_title": "us companys ai lets ukraines cheap kamikaze drones track targets on their own",
-        "titulo": "Drones ucranianos con IA de EE.UU."
-      }
-    ],
     "2026-08-05": [
       {
         "link": "mistral.ai/news/shieldstral",
@@ -165,10 +143,31 @@
         "source_title": "amazon backs power plant that may become top source of us climate pollution",
         "titulo": "Amazon respalda central eléctrica de gas"
       }
+    ],
+    "2026-08-12": [
+      {
+        "link": "techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users",
+        "source_title": "googles gemini app surges to 1 billion users",
+        "titulo": "Gemini de Google supera los 1.000 millones de usuarios"
+      },
+      {
+        "link": "techcrunch.com/2026/08/11/general-catalyst-leads-1-1b-round-into-2-month-old-river-ai",
+        "source_title": "general catalyst leads 11b round into 2monthold river ai",
+        "titulo": "General Catalyst lidera ronda de 1.100M para River AI"
+      },
+      {
+        "link": "wired.com/story/the-worst-ive-ever-seen-cargo-thieves-are-turning-violent-in-pursuit-of-ai-hardware",
+        "source_title": "the worst ive ever seen cargo thefts have turned violent in pursuit of ai hardware",
+        "titulo": "Robos violentos de hardware de IA en California"
+      },
+      {
+        "link": "techcrunch.com/2026/08/11/fbi-says-cybercriminals-are-hacking-into-victims-online-accounts-to-steal-their-intimate-pictures",
+        "source_title": "fbi says cybercriminals are hacking into victims online accounts to steal their intimate pictures",
+        "titulo": "FBI advierte sobre hackeos para robar fotos íntimas"
+      }
     ]
   },
   "sent": {
-    "2026-07-28": "2026-07-28T08:00:16-04:00",
     "2026-07-29": "2026-07-29T08:00:12-04:00",
     "2026-07-30": "2026-07-30T08:00:16-04:00",
     "2026-07-31": "2026-07-31T08:00:12-04:00",
@@ -182,6 +181,7 @@
     "2026-08-08": "2026-08-08T08:00:12-04:00",
     "2026-08-09": "2026-08-09T08:00:17-04:00",
     "2026-08-10": "2026-08-10T08:00:16-04:00",
-    "2026-08-11": "2026-08-11T08:00:13-04:00"
+    "2026-08-11": "2026-08-11T08:00:13-04:00",
+    "2026-08-12": "2026-08-12T08:00:16-04:00"
   }
 }
