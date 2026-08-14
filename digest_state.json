@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-06": [
-      {
-        "link": "blog.google/company-news/inside-google/message-ceo/next-chapter-ai-momentum",
-        "source_title": "changes at google deepmind demis hassabis from ceo to chair jeff dean departs",
-        "titulo": "Google reestructura su cúpula de IA"
-      },
-      {
-        "link": "techcrunch.com/2026/08/05/meta-launches-muse-code-an-ai-agent-for-large-code-bases",
-        "source_title": "meta launches muse code an ai agent for large code bases",
-        "titulo": "Meta lanza Muse Code para bases de código"
-      },
-      {
-        "link": "arstechnica.com/security/2026/08/anthropics-ai-used-fake-identities-malware-in-rogue-attack-on-github-project",
-        "source_title": "anthropics ai used fake identities malware in rogue attack on github project",
-        "titulo": "Ataque autónomo de IA frena pruebas en UK"
-      },
-      {
-        "link": "costar.com/article/970809918/nashville-council-approves-eminent-domain-action-to-halt-data-center-project",
-        "source_title": "nashville uses eminent domain to block data center near zoo",
-        "titulo": "Nashville frena centro de datos con expropiación"
-      }
-    ],
     "2026-08-07": [
       {
         "link": "techcrunch.com/2026/08/06/defense-tech-hadrian-raises-1-37b-at-8b-valuation",
@@ -165,10 +143,26 @@
         "source_title": "google reveals 2026 hardware lineup pixel 11 pixel watch 5 and pixel tag",
         "titulo": "Google presenta su nueva familia Pixel 11"
       }
+    ],
+    "2026-08-14": [
+      {
+        "link": "techcrunch.com/2026/08/13/openai-introduces-ultrafast-a-new-mode-that-makes-gpt-5-6-sol-work-at-14x-the-speed",
+        "source_title": "openai introduces ultrafast a new mode that makes gpt56 sol work at 14x the speed",
+        "titulo": "OpenAI presenta Ultrafast para GPT-5.6 Sol"
+      },
+      {
+        "link": "techcrunch.com/2026/08/13/databricks-wanted-to-raise-1b-investors-wanted-15b-it-settled-on-5b-at-a-190b-valuation",
+        "source_title": "databricks wanted to raise 1b investors wanted 15b it settled on 5b at a 190b valuation",
+        "titulo": "Databricks capta 5 mil millones a valoración de 190B"
+      },
+      {
+        "link": "theverge.com/policy/979734/trump-administration-cybercrime-private-firms",
+        "source_title": "the trump admin will start letting private firms launch international cyberattacks",
+        "titulo": "Firmas de seguridad privadas podrán hackear a criminales"
+      }
     ]
   },
   "sent": {
-    "2026-07-30": "2026-07-30T08:00:16-04:00",
     "2026-07-31": "2026-07-31T08:00:12-04:00",
     "2026-08-01": "2026-08-01T08:00:11-04:00",
     "2026-08-02": "2026-08-02T08:00:16-04:00",
@@ -182,6 +176,7 @@
     "2026-08-10": "2026-08-10T08:00:16-04:00",
     "2026-08-11": "2026-08-11T08:00:13-04:00",
     "2026-08-12": "2026-08-12T08:00:16-04:00",
-    "2026-08-13": "2026-08-13T08:00:17-04:00"
+    "2026-08-13": "2026-08-13T08:00:17-04:00",
+    "2026-08-14": "2026-08-14T08:00:13-04:00"
   }
 }
