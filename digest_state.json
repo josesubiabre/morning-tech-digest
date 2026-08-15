@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-08-07": [
-      {
-        "link": "techcrunch.com/2026/08/06/defense-tech-hadrian-raises-1-37b-at-8b-valuation",
-        "source_title": "defense tech hadrian raises 137b at 8b valuation",
-        "titulo": "Hadrian capta 1.370 millones con valoración de 8.000M"
-      },
-      {
-        "link": "theguardian.com/technology/2026/aug/06/new-mexico-court-meta",
-        "source_title": "new mexico court orders meta to pay 567m over harms to childrens mental health",
-        "titulo": "Meta recibe multa adicional de 567 millones por salud mental"
-      },
-      {
-        "link": "techcrunch.com/2026/08/06/openais-new-ai-smart-speaker-will-reportedly-sell-for-between-300-and-400",
-        "source_title": "openais new ai smart speaker will reportedly sell for between 300 and 400",
-        "titulo": "OpenAI prepara un altavoz inteligente de hasta 400 dólares"
-      }
-    ],
     "2026-08-08": [
       {
         "link": "techcrunch.com/2026/08/07/after-rippling-blew-millions-on-ai-in-months-it-built-an-employee-roi-tool",
@@ -160,10 +143,31 @@
         "source_title": "the trump admin will start letting private firms launch international cyberattacks",
         "titulo": "Firmas de seguridad privadas podrán hackear a criminales"
       }
+    ],
+    "2026-08-15": [
+      {
+        "link": "techcrunch.com/2026/08/14/talks-to-sell-paypal-to-stripe-and-advent-are-heating-up",
+        "source_title": "talks to sell paypal to stripe and advent are heating up",
+        "titulo": "Negociaciones para la venta de PayPal"
+      },
+      {
+        "link": "arstechnica.com/ai/2026/08/openai-and-anthropic-in-price-war-as-chinese-ai-rivals-gain-ground",
+        "source_title": "openai and anthropic in price war as chinese ai rivals gain ground",
+        "titulo": "Guerra de precios en IA: OpenAI y Anthropic"
+      },
+      {
+        "link": "techcrunch.com/2026/08/14/apple-proposes-to-take-a-15-cut-of-purchases-made-outside-the-app-store",
+        "source_title": "apple proposes to take a 15 cut of purchases made outside the app store",
+        "titulo": "Apple propone comisión del 15% fuera de la App Store"
+      },
+      {
+        "link": "blog.google/security/how-google-is-making-private-ai-practical-with-homomorphic-encryption",
+        "source_title": "google is making private ai practical with homomorphic encryption",
+        "titulo": "Google y el cifrado homomórfico para IA privada"
+      }
     ]
   },
   "sent": {
-    "2026-07-31": "2026-07-31T08:00:12-04:00",
     "2026-08-01": "2026-08-01T08:00:11-04:00",
     "2026-08-02": "2026-08-02T08:00:16-04:00",
     "2026-08-03": "2026-08-03T08:44:18-04:00",
@@ -177,6 +181,7 @@
     "2026-08-11": "2026-08-11T08:00:13-04:00",
     "2026-08-12": "2026-08-12T08:00:16-04:00",
     "2026-08-13": "2026-08-13T08:00:17-04:00",
-    "2026-08-14": "2026-08-14T08:00:13-04:00"
+    "2026-08-14": "2026-08-14T08:00:13-04:00",
+    "2026-08-15": "2026-08-15T08:00:17-04:00"
   }
 }
