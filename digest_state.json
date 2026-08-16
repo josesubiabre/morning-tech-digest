@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-08-08": [
-      {
-        "link": "techcrunch.com/2026/08/07/after-rippling-blew-millions-on-ai-in-months-it-built-an-employee-roi-tool",
-        "source_title": "after rippling blew millions on ai in months it built an employee roi tool",
-        "titulo": "Rippling lanza consola para controlar gasto en IA"
-      },
-      {
-        "link": "techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents",
-        "source_title": "cloudflare launches kitesurf a browser built for ai agents",
-        "titulo": "Cloudflare lanza Kitesurf, un navegador para IA"
-      },
-      {
-        "link": "app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code",
-        "source_title": "oracle bans aigenerated code from openjdk",
-        "titulo": "Oracle prohíbe código creado por IA en OpenJDK"
-      }
-    ],
     "2026-08-09": [
       {
         "link": "techcrunch.com/2026/08/08/openai-acquires-presentation-startup-nextslide",
@@ -165,10 +148,31 @@
         "source_title": "google is making private ai practical with homomorphic encryption",
         "titulo": "Google y el cifrado homomórfico para IA privada"
       }
+    ],
+    "2026-08-16": [
+      {
+        "link": "techcrunch.com/2026/08/15/anthropic-shares-more-details-about-how-claudes-new-watermarks-will-work",
+        "source_title": "anthropic shares more details about how claudes new watermarks will work",
+        "titulo": "Anthropic detalla el funcionamiento de marcas de agua en Claude"
+      },
+      {
+        "link": "techcrunch.com/2026/08/15/spacex-officially-closes-its-cursor-acquisition",
+        "source_title": "spacex officially closes its cursor acquisition",
+        "titulo": "SpaceX cierra oficialmente la adquisición de Cursor"
+      },
+      {
+        "link": "anthropic.com/research/multiagent-systems",
+        "source_title": "patterns and problems in emerging multiagent systems",
+        "titulo": "Patrones y problemas en sistemas multi-agente emergentes"
+      },
+      {
+        "link": "wired.com/story/instapaper-the-original-read-it-later-app-just-got-a-huge-upgrade",
+        "source_title": "instapaper the original readitlater app just got a huge upgrade",
+        "titulo": "Instapaper recibe una actualización mayor de diseño"
+      }
     ]
   },
   "sent": {
-    "2026-08-01": "2026-08-01T08:00:11-04:00",
     "2026-08-02": "2026-08-02T08:00:16-04:00",
     "2026-08-03": "2026-08-03T08:44:18-04:00",
     "2026-08-04": "2026-08-04T08:00:16-04:00",
@@ -182,6 +186,7 @@
     "2026-08-12": "2026-08-12T08:00:16-04:00",
     "2026-08-13": "2026-08-13T08:00:17-04:00",
     "2026-08-14": "2026-08-14T08:00:13-04:00",
-    "2026-08-15": "2026-08-15T08:00:17-04:00"
+    "2026-08-15": "2026-08-15T08:00:17-04:00",
+    "2026-08-16": "2026-08-16T08:00:18-04:00"
   }
 }
