@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-09": [
-      {
-        "link": "techcrunch.com/2026/08/08/openai-acquires-presentation-startup-nextslide",
-        "source_title": "openai acquires presentation startup nextslide",
-        "titulo": "OpenAI adquiere la startup NextSlide"
-      },
-      {
-        "link": "arstechnica.com/science/2026/08/deepminds-hurricane-model-bought-forecasters-an-extra-day",
-        "source_title": "deepminds hurricane breakthrough has surprised weather scientists",
-        "titulo": "Modelo WeatherNext de DeepMind predice huracanes"
-      },
-      {
-        "link": "techcrunch.com/2026/08/08/planned-amazon-data-center-could-become-the-biggest-climate-polluter-in-the-u-s",
-        "source_title": "planned amazon data center could become the biggest climate polluter in the us",
-        "titulo": "Centro de datos de Amazon y su impacto ambiental"
-      },
-      {
-        "link": "shopify.engineering/scaling-inventory-reservations",
-        "source_title": "shopify replaced redis with mysql for inventory reservationsand it scaled",
-        "titulo": "Shopify reemplaza Redis con MySQL para inventarios"
-      }
-    ],
     "2026-08-10": [
       {
         "link": "techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default",
@@ -170,10 +148,31 @@
         "source_title": "instapaper the original readitlater app just got a huge upgrade",
         "titulo": "Instapaper recibe una actualización mayor de diseño"
       }
+    ],
+    "2026-08-17": [
+      {
+        "link": "techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b",
+        "source_title": "stripe will reportedly acquire openrouter for 7b",
+        "titulo": "Stripe prepara la compra de OpenRouter por más de 7 mil M"
+      },
+      {
+        "link": "theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team",
+        "source_title": "openai reportedly disbanded its preparedness team",
+        "titulo": "OpenAI disuelve su equipo de preparación técnica"
+      },
+      {
+        "link": "theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+        "source_title": "chatgpts computer history tracks your clicks and keystrokes",
+        "titulo": "Nuevas funciones de historial y datos en ChatGPT para macOS"
+      },
+      {
+        "link": "theverge.com/tech/980752/amazon-class-action-arbitration-terms-and-conditions",
+        "source_title": "amazon is trying to crush class action suits before they get started",
+        "titulo": "Amazon actualiza condiciones para evitar demandas colectivas"
+      }
     ]
   },
   "sent": {
-    "2026-08-02": "2026-08-02T08:00:16-04:00",
     "2026-08-03": "2026-08-03T08:44:18-04:00",
     "2026-08-04": "2026-08-04T08:00:16-04:00",
     "2026-08-05": "2026-08-05T08:00:16-04:00",
@@ -187,6 +186,7 @@
     "2026-08-13": "2026-08-13T08:00:17-04:00",
     "2026-08-14": "2026-08-14T08:00:13-04:00",
     "2026-08-15": "2026-08-15T08:00:17-04:00",
-    "2026-08-16": "2026-08-16T08:00:18-04:00"
+    "2026-08-16": "2026-08-16T08:00:18-04:00",
+    "2026-08-17": "2026-08-17T08:00:16-04:00"
   }
 }
