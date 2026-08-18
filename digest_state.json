@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-10": [
-      {
-        "link": "techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default",
-        "source_title": "anthropic is turning claude codes auto mode on by default",
-        "titulo": "Anthropic activa el modo automático en Claude Code"
-      },
-      {
-        "link": "techcrunch.com/2026/08/09/embattled-hedge-fund-situational-awareness-invests-400m-in-chip-startup-source-foundry",
-        "source_title": "embattled hedge fund situational awareness invests 400m in chip startup source foundry",
-        "titulo": "Fondo invierte 400 millones en chip startup Source Foundry"
-      },
-      {
-        "link": "techcrunch.com/2026/08/09/the-ai-safety-test-is-becoming-a-safety-risk",
-        "source_title": "the ai safety test is becoming a safety risk",
-        "titulo": "Los tests de seguridad en IA generan nuevos riesgos"
-      },
-      {
-        "link": "wired.com/story/the-rise-of-the-1-am-job-interview",
-        "source_title": "the rise of the 1 am job interview",
-        "titulo": "El auge de las entrevistas de trabajo de IA a la 1 AM"
-      }
-    ],
     "2026-08-11": [
       {
         "link": "research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
@@ -170,10 +148,31 @@
         "source_title": "amazon is trying to crush class action suits before they get started",
         "titulo": "Amazon actualiza condiciones para evitar demandas colectivas"
       }
+    ],
+    "2026-08-18": [
+      {
+        "link": "techcrunch.com/2026/08/17/anthropics-annualized-revenue-surges-to-65b",
+        "source_title": "anthropics annualized revenue surges to 65b",
+        "titulo": "Ingresos de Anthropic se disparan"
+      },
+      {
+        "link": "arstechnica.com/information-technology/2026/08/nvidia-discloses-21b-stake-in-spacex",
+        "source_title": "nvidia discloses 21b stake in spacex",
+        "titulo": "Nvidia adquiere participación en SpaceX"
+      },
+      {
+        "link": "wiz.io/blog/red-agent-snowflake-copilot-cicd-bug",
+        "source_title": "aigenerated github copilot autofix allowed compromise of snowflakes jira",
+        "titulo": "Riesgos en herramientas de IA y CI/CD"
+      },
+      {
+        "link": "theverge.com/tech/980977/apple-app-tracking-transparency-settlement-germany",
+        "source_title": "apple ordered to stop scaring iphone and ipad users away from thirdparty apps",
+        "titulo": "Alemania frena las alertas de Apple"
+      }
     ]
   },
   "sent": {
-    "2026-08-03": "2026-08-03T08:44:18-04:00",
     "2026-08-04": "2026-08-04T08:00:16-04:00",
     "2026-08-05": "2026-08-05T08:00:16-04:00",
     "2026-08-06": "2026-08-06T08:00:16-04:00",
@@ -187,6 +186,7 @@
     "2026-08-14": "2026-08-14T08:00:13-04:00",
     "2026-08-15": "2026-08-15T08:00:17-04:00",
     "2026-08-16": "2026-08-16T08:00:18-04:00",
-    "2026-08-17": "2026-08-17T08:00:16-04:00"
+    "2026-08-17": "2026-08-17T08:00:16-04:00",
+    "2026-08-18": "2026-08-18T08:00:15-04:00"
   }
 }
