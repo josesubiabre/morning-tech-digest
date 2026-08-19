@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-11": [
-      {
-        "link": "research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
-        "source_title": "muse glimmer 30bparameter model optimized for alwayson local agent workflows",
-        "titulo": "Meta lanza Muse Glimmer y apuesta por modelos abiertos"
-      },
-      {
-        "link": "techcrunch.com/2026/08/10/as-ai-led-attacks-multiply-openai-launches-a-new-cyber-model",
-        "source_title": "as ailed attacks multiply openai launches a new cyber model",
-        "titulo": "OpenAI lanza nuevo modelo de ciberseguridad"
-      },
-      {
-        "link": "techcrunch.com/2026/08/10/aptoide-becomes-the-first-rival-app-store-to-return-to-google-play-in-the-us",
-        "source_title": "aptoide becomes the first rival app store to return to google play in the us",
-        "titulo": "Aptoide vuelve a Google Play en EE.UU."
-      },
-      {
-        "link": "arstechnica.com/tech-policy/2026/08/amazon-funds-biggest-gas-power-plant-in-us-despite-climate-pledge",
-        "source_title": "amazon backs power plant that may become top source of us climate pollution",
-        "titulo": "Amazon respalda central eléctrica de gas"
-      }
-    ],
     "2026-08-12": [
       {
         "link": "techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users",
@@ -170,10 +148,31 @@
         "source_title": "apple ordered to stop scaring iphone and ipad users away from thirdparty apps",
         "titulo": "Alemania frena las alertas de Apple"
       }
+    ],
+    "2026-08-19": [
+      {
+        "link": "techcrunch.com/2026/08/18/openai-institutes-new-safeguards-after-hugging-face-breach",
+        "source_title": "openai institutes new safeguards after hugging face breach",
+        "titulo": "OpenAI endurece su seguridad tras incidente con Hugging Face"
+      },
+      {
+        "link": "techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month",
+        "source_title": "etcheds valuation doubles to 21b in a month",
+        "titulo": "Valoración de Etched se duplica a 21 mil millones en un mes"
+      },
+      {
+        "link": "techcrunch.com/2026/08/18/apple-overhauls-its-eu-app-store-fees-loosens-rules-for-alternative-app-stores",
+        "source_title": "apple overhauls its eu app store fees loosens rules for alternative app stores",
+        "titulo": "Apple simplifica tarifas de la App Store en la Unión Europea"
+      },
+      {
+        "link": "wired.com/story/reverse-lookup-service-exposed-millions-of-photos-of-peoples-faces",
+        "source_title": "reverselookup service exposed millions of photos of peoples faces",
+        "titulo": "Servicio de búsqueda inversa expone millones de fotos"
+      }
     ]
   },
   "sent": {
-    "2026-08-04": "2026-08-04T08:00:16-04:00",
     "2026-08-05": "2026-08-05T08:00:16-04:00",
     "2026-08-06": "2026-08-06T08:00:16-04:00",
     "2026-08-07": "2026-08-07T08:00:13-04:00",
@@ -187,6 +186,7 @@
     "2026-08-15": "2026-08-15T08:00:17-04:00",
     "2026-08-16": "2026-08-16T08:00:18-04:00",
     "2026-08-17": "2026-08-17T08:00:16-04:00",
-    "2026-08-18": "2026-08-18T08:00:15-04:00"
+    "2026-08-18": "2026-08-18T08:00:15-04:00",
+    "2026-08-19": "2026-08-19T08:00:16-04:00"
   }
 }
