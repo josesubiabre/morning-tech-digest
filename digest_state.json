@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-12": [
-      {
-        "link": "techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users",
-        "source_title": "googles gemini app surges to 1 billion users",
-        "titulo": "Gemini de Google supera los 1.000 millones de usuarios"
-      },
-      {
-        "link": "techcrunch.com/2026/08/11/general-catalyst-leads-1-1b-round-into-2-month-old-river-ai",
-        "source_title": "general catalyst leads 11b round into 2monthold river ai",
-        "titulo": "General Catalyst lidera ronda de 1.100M para River AI"
-      },
-      {
-        "link": "wired.com/story/the-worst-ive-ever-seen-cargo-thieves-are-turning-violent-in-pursuit-of-ai-hardware",
-        "source_title": "the worst ive ever seen cargo thefts have turned violent in pursuit of ai hardware",
-        "titulo": "Robos violentos de hardware de IA en California"
-      },
-      {
-        "link": "techcrunch.com/2026/08/11/fbi-says-cybercriminals-are-hacking-into-victims-online-accounts-to-steal-their-intimate-pictures",
-        "source_title": "fbi says cybercriminals are hacking into victims online accounts to steal their intimate pictures",
-        "titulo": "FBI advierte sobre hackeos para robar fotos íntimas"
-      }
-    ],
     "2026-08-13": [
       {
         "link": "lovable.dev/blog/series-c",
@@ -170,10 +148,31 @@
         "source_title": "reverselookup service exposed millions of photos of peoples faces",
         "titulo": "Servicio de búsqueda inversa expone millones de fotos"
       }
+    ],
+    "2026-08-20": [
+      {
+        "link": "techcrunch.com/2026/08/20/binance-now-lets-ai-agents-trade-but-keeping-them-in-check-is-largely-up-to-users",
+        "source_title": "binance now lets ai agents trade but keeping them in check is largely up to users",
+        "titulo": "Binance permite trading con agentes de IA"
+      },
+      {
+        "link": "techcrunch.com/2026/08/19/openai-seeks-to-one-up-anthropic-with-new-customer-privacy-protections",
+        "source_title": "openai seeks to oneup anthropic with new customer privacy protections",
+        "titulo": "OpenAI busca superar a Anthropic en privacidad"
+      },
+      {
+        "link": "techcrunch.com/2026/08/19/rillet-raises-100m-series-c-at-1b-valuation-2-years-after-emerging-from-stealth",
+        "source_title": "rillet raises 100m series c at 1b valuation  2 years after emerging from stealth",
+        "titulo": "Rillet recauda 100 millones en Serie C"
+      },
+      {
+        "link": "techcrunch.com/2026/08/19/google-launches-new-study-tools-for-students-across-search-and-gemini",
+        "source_title": "google packs search and gemini with new ai study tools",
+        "titulo": "Google integra nuevas herramientas de estudio con IA"
+      }
     ]
   },
   "sent": {
-    "2026-08-05": "2026-08-05T08:00:16-04:00",
     "2026-08-06": "2026-08-06T08:00:16-04:00",
     "2026-08-07": "2026-08-07T08:00:13-04:00",
     "2026-08-08": "2026-08-08T08:00:12-04:00",
@@ -187,6 +186,7 @@
     "2026-08-16": "2026-08-16T08:00:18-04:00",
     "2026-08-17": "2026-08-17T08:00:16-04:00",
     "2026-08-18": "2026-08-18T08:00:15-04:00",
-    "2026-08-19": "2026-08-19T08:00:16-04:00"
+    "2026-08-19": "2026-08-19T08:00:16-04:00",
+    "2026-08-20": "2026-08-20T08:00:11-04:00"
   }
 }
