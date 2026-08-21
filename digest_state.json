@@ -1,27 +1,5 @@
 {
   "history": {
-    "2026-08-13": [
-      {
-        "link": "lovable.dev/blog/series-c",
-        "source_title": "lovable raises 400m series c",
-        "titulo": "Lovable recauda 400 millones en Serie C"
-      },
-      {
-        "link": "openrouter.ai/deepseek/deepseek-v4-pro-0813",
-        "source_title": "deepseek v4 pro 0813",
-        "titulo": "DeepSeek V4 Pro 0813 ya está disponible"
-      },
-      {
-        "link": "theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai",
-        "source_title": "twitch streamers can now opt out from training amazons ai",
-        "titulo": "Twitch permite excluir contenido de IA de Amazon"
-      },
-      {
-        "link": "arstechnica.com/gadgets/2026/08/google-reveals-2026-hardware-lineup-pixel-11-pixel-watch-5-and-pixel-tag",
-        "source_title": "google reveals 2026 hardware lineup pixel 11 pixel watch 5 and pixel tag",
-        "titulo": "Google presenta su nueva familia Pixel 11"
-      }
-    ],
     "2026-08-14": [
       {
         "link": "techcrunch.com/2026/08/13/openai-introduces-ultrafast-a-new-mode-that-makes-gpt-5-6-sol-work-at-14x-the-speed",
@@ -170,10 +148,26 @@
         "source_title": "google packs search and gemini with new ai study tools",
         "titulo": "Google integra nuevas herramientas de estudio con IA"
       }
+    ],
+    "2026-08-21": [
+      {
+        "link": "techcrunch.com/2026/08/20/tesla-uber-and-waymo-all-get-the-ok-to-operate-thousands-of-robotaxis-in-nevada",
+        "source_title": "tesla uber and waymo all get the ok to operate thousands of robotaxis in nevada",
+        "titulo": "Nevada autoriza miles de robotaxis"
+      },
+      {
+        "link": "safedep.io/arrayref-proc-macro1-rust-build-time-malware",
+        "source_title": "malicious rust crate arrayref runs a buildtime payload",
+        "titulo": "Malicious Rust crate Arrayref"
+      },
+      {
+        "link": "techcrunch.com/2026/08/20/google-gives-publishers-a-new-way-to-fight-ai-driven-traffic-losses",
+        "source_title": "google gives publishers a new way to fight aidriven traffic losses",
+        "titulo": "Google da a editores nuevas opciones contra pérdidas"
+      }
     ]
   },
   "sent": {
-    "2026-08-06": "2026-08-06T08:00:16-04:00",
     "2026-08-07": "2026-08-07T08:00:13-04:00",
     "2026-08-08": "2026-08-08T08:00:12-04:00",
     "2026-08-09": "2026-08-09T08:00:17-04:00",
@@ -187,6 +181,7 @@
     "2026-08-17": "2026-08-17T08:00:16-04:00",
     "2026-08-18": "2026-08-18T08:00:15-04:00",
     "2026-08-19": "2026-08-19T08:00:16-04:00",
-    "2026-08-20": "2026-08-20T08:00:11-04:00"
+    "2026-08-20": "2026-08-20T08:00:11-04:00",
+    "2026-08-21": "2026-08-21T08:00:12-04:00"
   }
 }
