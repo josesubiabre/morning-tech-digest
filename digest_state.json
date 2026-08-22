@@ -1,22 +1,5 @@
 {
   "history": {
-    "2026-08-14": [
-      {
-        "link": "techcrunch.com/2026/08/13/openai-introduces-ultrafast-a-new-mode-that-makes-gpt-5-6-sol-work-at-14x-the-speed",
-        "source_title": "openai introduces ultrafast a new mode that makes gpt56 sol work at 14x the speed",
-        "titulo": "OpenAI presenta Ultrafast para GPT-5.6 Sol"
-      },
-      {
-        "link": "techcrunch.com/2026/08/13/databricks-wanted-to-raise-1b-investors-wanted-15b-it-settled-on-5b-at-a-190b-valuation",
-        "source_title": "databricks wanted to raise 1b investors wanted 15b it settled on 5b at a 190b valuation",
-        "titulo": "Databricks capta 5 mil millones a valoración de 190B"
-      },
-      {
-        "link": "theverge.com/policy/979734/trump-administration-cybercrime-private-firms",
-        "source_title": "the trump admin will start letting private firms launch international cyberattacks",
-        "titulo": "Firmas de seguridad privadas podrán hackear a criminales"
-      }
-    ],
     "2026-08-15": [
       {
         "link": "techcrunch.com/2026/08/14/talks-to-sell-paypal-to-stripe-and-advent-are-heating-up",
@@ -165,10 +148,31 @@
         "source_title": "google gives publishers a new way to fight aidriven traffic losses",
         "titulo": "Google da a editores nuevas opciones contra pérdidas"
       }
+    ],
+    "2026-08-22": [
+      {
+        "link": "techcrunch.com/2026/08/21/nvidia-partners-with-data-center-developer-cloverleaf",
+        "source_title": "nvidia partners with data center developer cloverleaf",
+        "titulo": "Nvidia se alía con Cloverleaf para centros de datos"
+      },
+      {
+        "link": "techcrunch.com/2026/08/21/how-ai-accounting-startup-rillet-raised-100m-and-became-a-unicorn-in-48-hours",
+        "source_title": "how ai accounting startup rillet raised 100m and became a unicorn in 48 hours",
+        "titulo": "Rillet recauda 100M y alcanza estatus de unicornio"
+      },
+      {
+        "link": "techcrunch.com/2026/08/21/apple-is-reportedly-cutting-hundreds-of-jobs-from-siri-vision-pro-teams",
+        "source_title": "apple is reportedly cutting hundreds of jobs from siri vision pro teams",
+        "titulo": "Apple recorta cientos de empleos en Siri y Vision Pro"
+      },
+      {
+        "link": "techcrunch.com/2026/08/21/tiktok-reaches-400m-settlement-over-childrens-privacy-lawsuit",
+        "source_title": "tiktok reaches 400m settlement over childrens privacy lawsuit",
+        "titulo": "TikTok pagará 400 millones por demanda de privacidad"
+      }
     ]
   },
   "sent": {
-    "2026-08-07": "2026-08-07T08:00:13-04:00",
     "2026-08-08": "2026-08-08T08:00:12-04:00",
     "2026-08-09": "2026-08-09T08:00:17-04:00",
     "2026-08-10": "2026-08-10T08:00:16-04:00",
@@ -182,6 +186,7 @@
     "2026-08-18": "2026-08-18T08:00:15-04:00",
     "2026-08-19": "2026-08-19T08:00:16-04:00",
     "2026-08-20": "2026-08-20T08:00:11-04:00",
-    "2026-08-21": "2026-08-21T08:00:12-04:00"
+    "2026-08-21": "2026-08-21T08:00:12-04:00",
+    "2026-08-22": "2026-08-22T08:00:15-04:00"
   }
 }
